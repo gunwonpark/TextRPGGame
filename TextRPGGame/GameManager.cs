@@ -34,7 +34,8 @@ namespace TextRPGGame
 
         public GameManager()
         {
-            
+            //HHi
+
         }
 
         public void GameStart()
@@ -50,10 +51,16 @@ namespace TextRPGGame
             switch (action)
             {
                 case 1:
+                    DungeonStart();
                     break;
                 case 2:
                     break;
             }
+        }
+
+        private void DungeonStart()
+        {
+            throw new NotImplementedException();
         }
 
         #region 행동 선택
