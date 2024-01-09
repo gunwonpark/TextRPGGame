@@ -63,6 +63,8 @@ namespace TextRPGGame
             while (IsInValidAction(minValue, maxValue) == false) { Console.WriteLine("잘못된 입력입니다 다시 선택해 주세요"); }
             Console.WriteLine();
         }
+
+
         bool IsInValidAction(int minValue, int maxValue)
         {
             if (int.TryParse(Console.ReadLine(), out action) == false) return false;
