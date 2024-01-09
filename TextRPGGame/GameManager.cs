@@ -50,10 +50,16 @@ namespace TextRPGGame
             switch (action)
             {
                 case 1:
+                    Dungeon();
                     break;
                 case 2:
                     break;
             }
+        }
+
+        private void Dungeon()
+        {
+            throw new NotImplementedException();
         }
 
         #region 행동 선택
