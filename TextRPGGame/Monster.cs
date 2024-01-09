@@ -6,16 +6,36 @@ using System.Threading.Tasks;
 
 namespace TextRPGGame
 {
-    class Monster
+    public class Monster
     {
-        // 스텟
+        public string name;
+        public int level;
+        public int health;
+        public float damage;
+        public bool death;
 
-        public Monster() { }
-
-        // 몬스터 스테이터스 보여주기
-        public void ShowStatus()
+        public Monster(string monsterName,int initHealth,float initDamage)
         {
+            name = monsterName;
+            level = 1;
+            health = initHealth;
+            damage = initDamage;
+        }
 
+
+        public void SetMonsterState()
+        {
+            int randomLevel = new Random().Next(1, 6);
+            level = randomLevel;
+            health += randomLevel * 5;
+            damage += randomLevel * 2;
+
+        }
+
+        public Monster Clone()
+        {
+            Monster clone = new Monster(this.name,this.health,this.damage);
+            return clone;
         }
 
     }

@@ -30,11 +30,14 @@ namespace TextRPGGame
         #endregion
 
         public Player player;
+        BattleManager battleManager;
+        
         public int action;
+
 
         public GameManager()
         {
-            
+            battleManager = new BattleManager();
         }
 
         public void GameStart()
@@ -52,7 +55,10 @@ namespace TextRPGGame
                 case 1:
                     break;
                 case 2:
+                    Console.Clear();
+                    battleManager.BattleMenu();
                     break;
+            
             }
         }
 
