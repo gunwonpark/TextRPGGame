@@ -10,7 +10,7 @@ namespace TextRPGGame
     // 1. 게임 시작
     // 2. 행동 선택
     // 3.
-    class GameManager
+    class GameManager : ConsoleText
     {
         #region GameManager
         // 싱글톤 방식으로 하나의 GameManager만 구현한다.
@@ -55,6 +55,8 @@ namespace TextRPGGame
             switch (action)
             {
                 case 1:
+                    Console.Clear();
+                    StateMenu();
                     break;
                 case 2:
                     Console.Clear();
@@ -67,6 +69,126 @@ namespace TextRPGGame
 
 
         }
+        #region State
+        void StateMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("상태 보기");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.ResetColor();
+            string level = "";
+
+
+            Console.Write("Name\t: ");
+            DarkMagentaText(player.playerName);
+            Console.WriteLine();
+            if (player.level < 10)
+            {
+                level = "0" + player.level;
+            }
+            else
+            {
+                level = player.level.ToString();
+            }
+
+            Console.Write("LV. ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine(level);
+            Console.ResetColor();
+
+            Console.Write("Class\t:");
+            Console.Write("{0}\n", player.clas);
+
+            Console.Write("Damage\t: ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.Write(player.attackDamge);
+            Console.ResetColor();
+            if (player.increaseInDamage != 0)
+            {
+                Console.Write(" (");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("+");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write(player.increaseInDamage);
+                Console.ResetColor();
+                Console.Write(")\n");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+
+            Console.Write("Armor\t: ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.Write(player.armor);
+            Console.ResetColor();
+            if (player.increaseInArmor != 0)
+            {
+                Console.Write(" (");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("+");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write(player.increaseInArmor);
+                Console.ResetColor();
+                Console.Write(")\n");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+
+            Console.Write("Health\t: ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.Write(player.currentHealth);
+            Console.ResetColor();
+            Console.Write(" / ");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write(player.maxHealth);
+            Console.ResetColor();
+            Console.WriteLine();
+
+            Console.Write("Gold\t: ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.Write(player.gold);
+            Console.ResetColor();
+            Console.Write(" G\n");
+
+            Console.Write("경험치\t: ");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write(player.currentExp);
+            Console.ResetColor();
+            Console.Write(" / ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(player.levelUpExp);
+            Console.ResetColor();
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("0. 나가기 ");
+            NextActionMessage();
+            string select = Console.ReadLine();
+
+            if (select != "0")
+            {
+                Console.Clear();
+                WrongInput();
+                StateMenu();
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.ResetColor();
+                GameStart();
+            }
+        }
+        #endregion
+
 
         #region 행동 선택
         void SetNextAction(int minValue, int maxValue)
