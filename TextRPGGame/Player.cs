@@ -31,7 +31,7 @@ namespace TextRPGGame
             {
                 int damageVariance = (int)Math.Ceiling(Attack * 0.1);
 
-                int finalDamage = new Random().Next(Attack - damageVariance, Attack + damageVariance);
+                int finalDamage = new Random().Next(Attack - damageVariance, Attack + damageVariance + 1);
                 return finalDamage;
             }
         }
