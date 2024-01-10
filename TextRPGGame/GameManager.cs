@@ -34,7 +34,7 @@ namespace TextRPGGame
 
         public GameManager()
         {
-            
+            player = new Player("Chad", "전사", 10, 5, 100);
         }
 
         public void GameStart()
@@ -50,10 +50,22 @@ namespace TextRPGGame
             switch (action)
             {
                 case 1:
+                    ShowStatus();
                     break;
                 case 2:
+                    
                     break;
             }
+        }
+
+        void ShowStatus()
+        {
+            Console.WriteLine("캐릭터의 정보가 표시 됩니다.");
+
+            player.ShowStatus();
+
+            Console.WriteLine("0. 나가기");
+            SetNextAction(1, 2);
         }
 
         #region 행동 선택
