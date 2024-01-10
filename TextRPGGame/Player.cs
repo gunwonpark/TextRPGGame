@@ -14,6 +14,16 @@ namespace TextRPGGame
         public string Name { get; set; }
         public string Class { get; set; }
         public int Attack { get; set; }
+        public bool IsDead
+        {
+            get
+            {
+                if (Hp <= 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
         public int FinalAttack
         {
             get
@@ -36,6 +46,10 @@ namespace TextRPGGame
             Defense = _defense;
             MaxHp = _hp;
             Hp = _hp;
+        }
+        public void Attacked(int damage)
+        {
+            Hp -= damage;
         }
         public void ShowStatus()
         {

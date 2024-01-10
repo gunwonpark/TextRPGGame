@@ -13,7 +13,7 @@ namespace TextRPGGame
         public string Name { get; set; }
         public int Level { get; set; }
         public int Hp { get; set; }
-        public int ATK { get; set; }
+        public int Attack { get; set; }
         public bool IsDead 
         {
             get
@@ -24,18 +24,19 @@ namespace TextRPGGame
                     return false;
             } 
         }
-        public Monster(string _name, int _level, int _hp, int _atk)
+        public Monster(string _name, int _level, int _hp, int _attack)
         {
             Name = _name;
             Level = _level;
             Hp = _hp;
-            ATK = _atk;
+            Attack = _attack;
         }
 
         public void ShowStatus()
         {
             if (IsDead)
             {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine($"Lv.{Level} {Name}  Dead");
                 Console.ResetColor();
             }

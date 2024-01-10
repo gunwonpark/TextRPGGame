@@ -184,11 +184,11 @@ namespace TextRPGGame
                 int damage = player.FinalAttack;
                 selectedMonster.Attacked(damage);
 
-                BattleResultMessage(selectedMonster, damage);
+                PlayerAttackResultMessage(selectedMonster, damage);
             }
         }
 
-        void BattleResultMessage(Monster monster, int damage)
+        void PlayerAttackResultMessage(Monster monster, int damage)
         {
             Console.Clear();
             Utill.WriteOrangeText("Battle!!\n");
@@ -225,7 +225,45 @@ namespace TextRPGGame
             }
         }
 
-        
+        void MonsterAttack()
+        {
+            foreach(Monster monster in monsters)
+            {
+                if(monster.IsDead == false)
+                {
+                    player.Attacked(monster.Attack);
+                    MonsterAttackResultMessage(monster, monster.Attack);
+                }
+            }
+        }
+
+        void MonsterAttackResultMessage(Monster monster, int damage)
+        {
+            Console.Clear();
+            Utill.WriteOrangeText("Battle!!\n");
+            Console.WriteLine();
+
+            // 플레이어 공격 표시
+            Console.WriteLine($"{monster.Name}의 공격!");
+            Console.Write("Lv.");
+            Utill.WriteRedText($"{player.Level} ");
+            Console.Write($"{player.Name}을(를) 맞췄습니다. [데미지 : ");
+            Utill.WriteRedText($"{damage}");
+            Console.WriteLine("]\n");
+
+            // 공격 결과 표시
+            Console.Write("Lv.");
+            Utill.WriteRedText($"{player.Level} ");
+            Console.WriteLine($"{player.Name}");
+            Console.Write("Hp ");
+            Utill.WriteRedText($"{player.Hp + damage} ");
+            Console.WriteLine($"-> {(player.IsDead ? "Dead" : player.Hp)}\n");
+
+            Utill.WriteRedText("0. ");
+            Console.WriteLine("다음");
+
+            SetNextAction(0, 0);
+        }
 
         #region 행동 선택
         void SetNextAction(int minValue, int maxValue)
