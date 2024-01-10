@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +10,9 @@ namespace TextRPGGame
     // 게임의 전반적인 관리
     // 1. 게임 시작
     // 2. 행동 선택
-    // 3.
+    // 3. 
     class GameManager
-    {
+    { 
         #region GameManager
         // 싱글톤 방식으로 하나의 GameManager만 구현한다.
         // GameManager은 곳곳에서 불러올 수가 있다.
@@ -29,16 +30,17 @@ namespace TextRPGGame
         }
         #endregion
 
-        public Player player;
+        public static Player _player;
         public int action;
 
         public GameManager()
         {
-            
+            GameDataSetting();
         }
 
         public void GameStart()
         {
+            Console.Clear();
             Console.WriteLine("00던전에 오신 것을 환영합니다");
             Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
 
@@ -50,20 +52,15 @@ namespace TextRPGGame
             switch (action)
             {
                 case 1:
-                    Dungeon();
+                    Player.ShowStatus();
                     break;
                 case 2:
                     break;
             }
         }
 
-        private void Dungeon()
-        {
-            throw new NotImplementedException();
-        }
-
         #region 행동 선택
-        void SetNextAction(int minValue, int maxValue)
+        public void SetNextAction(int minValue, int maxValue)
         {
             Console.WriteLine("\n원하는 행동을 입력해 주세요");
             while (IsInValidAction(minValue, maxValue) == false) { Console.WriteLine("잘못된 입력입니다 다시 선택해 주세요"); }
@@ -78,5 +75,9 @@ namespace TextRPGGame
             return true;
         }
         #endregion
+        public static void GameDataSetting()
+        {
+            _player = new Player("chad", "전사", 1, 10, 5, 100, 1500);
+        }
     }
 }
