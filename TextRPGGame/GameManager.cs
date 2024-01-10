@@ -30,7 +30,7 @@ namespace TextRPGGame
         #endregion
 
         public Player player;
-        BattleManager battleManager;
+        public BattleManager battleManager;
         
         public int action;
 

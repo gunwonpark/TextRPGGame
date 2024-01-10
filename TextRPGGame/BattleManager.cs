@@ -19,74 +19,105 @@ namespace TextRPGGame
 
 		public void BattleMenu()
 		{
-			Console.WriteLine();
-            Console.WriteLine();
-			DarkMagentaText("Battle!!");
-            Console.WriteLine();
-            Console.WriteLine();
-            for (int i = 0; i < monsters.Length; i++)
-			{
-                if (monsters[i].death)
+            if (CheckAliveMonsters() && !player.death)
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                DarkMagentaText("Battle!!");
+                Console.WriteLine();
+                Console.WriteLine();
+                for (int i = 0; i < monsters.Length; i++)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                }
+                    if (monsters[i].death)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    }
 
+                    Console.Write("LV. ");
+                    Console.Write(monsters[i].level + " ");
+                    Console.Write(monsters[i].name + "\n");
+                    if (monsters[i].death)
+                    {
+                        Console.Write("\tDead");
+                    }
+                    else
+                    {
+                        Console.Write("\tHP ");
+                        RedText(monsters[i].currentHealth.ToString());
+                        YellowText(" / ");
+                        DarkRedText(monsters[i].maxHealth.ToString());
+                    }
+                    Console.WriteLine("");
+                    Console.WriteLine("");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("[ 내정보 ]");
                 Console.Write("LV. ");
-				Console.Write(monsters[i].level+" ");
-				Console.Write(monsters[i].name + "\n");
-                if (monsters[i].death)
+                DarkBlueText(player.level.ToString() + " ");
+                Console.WriteLine();
+                Console.Write("Class : ");
+                DarkRedText(player.clas + " ");
+                Console.WriteLine();
+                Console.Write("HP ");
+                RedText(player.currentHealth.ToString());
+                DarkYellowText(" / ");
+                DarkRedText(player.maxHealth.ToString());
+                Console.WriteLine();
+                Console.Write("MP ");
+                BlueText(player.currentMana.ToString());
+                DarkYellowText(" / ");
+                DarkBlueText(player.maxMana.ToString());
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("1. 일반 공격");
+                Console.WriteLine("2. 스킬 공격");
+                Console.WriteLine();
+                Console.WriteLine();
+
+
+                NextActionMessage();
+                string select = Console.ReadLine();
+                if (int.TryParse(select, out int num) && num != 0 && num <= 2)
                 {
-                    Console.Write("\tDead");
+                    if (num == 1)
+                    {
+                        Console.Clear();
+                        BattleAttackMenu();
+                    }
+                    if (num == 2)
+                    {
+                        Console.Clear();
+                        BattleSkillAttackMenu();
+                        Console.Clear();
+                        BattleMenu();
+                        //스킬
+                    }
+
                 }
                 else
                 {
-                    Console.Write("\tHP ");
-                    RedText(monsters[i].currentHealth.ToString());
-                    YellowText(" / ");
-                    DarkRedText(monsters[i].maxHealth.ToString());
-                }
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.ResetColor();
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("[ 내정보 ]");
-			Console.Write("LV. ");
-			DarkBlueText(player.level.ToString()+" ");
-            Console.WriteLine();
-            Console.Write("Class : ");
-			DarkRedText(player.clas +" ");
-			Console.WriteLine();
-            Console.Write("HP ");
-			RedText(player.currentHealth.ToString());
-			DarkYellowText(" / ");
-			DarkRedText(player.maxHealth.ToString());
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("1. 공격");
-            Console.WriteLine();
-            Console.WriteLine();
-
-
-            NextActionMessage();
-            string select = Console.ReadLine();
-            if (int.TryParse(select, out int num))
-            {
-                if (num == 1)
-                {
                     Console.Clear();
-                    BattleAttackMenu();
+                    WrongInput();
+                    BattleMenu();
                 }
 
             }
             else
             {
-                Console.Clear();
-                WrongInput();
-                BattleMenu();
+                if (player.death)
+                {
+                    Console.Clear();
+                    BattleResultLose();
+                }
+                else
+                {
+                    //Monster all clear
+                    Console.Clear();
+                    BattleResultVictory();
+                }
             }
-
 
         }
 
@@ -213,7 +244,108 @@ namespace TextRPGGame
             
         }//
 
-        void BattleDisplayResult_Player(Monster target)
+        void BattleSkillAttackMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            DarkMagentaText("Battle!!");
+            Console.WriteLine();
+            Console.WriteLine();
+            for (int i = 0; i < monsters.Length; i++)
+            {
+                if (monsters[i].death)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                }
+
+                Console.Write("LV. ");
+                Console.Write(monsters[i].level + " ");
+                Console.Write(monsters[i].name + "\n");
+                if (monsters[i].death)
+                {
+                    Console.Write("\tDead");
+                }
+                else
+                {
+                    Console.Write("\tHP ");
+                    RedText(monsters[i].currentHealth.ToString());
+                    YellowText(" / ");
+                    DarkRedText(monsters[i].maxHealth.ToString());
+                }
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.ResetColor();
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("[ 내정보 ]");
+            Console.Write("LV. ");
+            DarkBlueText(player.level.ToString() + " ");
+            Console.WriteLine();
+            Console.Write("Class : ");
+            DarkRedText(player.clas + " ");
+            Console.WriteLine();
+            Console.Write("HP ");
+            RedText(player.currentHealth.ToString());
+            DarkYellowText(" / ");
+            DarkRedText(player.maxHealth.ToString());
+            Console.WriteLine();
+            Console.Write("MP ");
+            BlueText(player.currentMana.ToString());
+            DarkYellowText(" / ");
+            DarkBlueText(player.maxMana.ToString());
+            Console.WriteLine();
+            Console.WriteLine();
+            for (int i = 0; i < player.skills.Length; i++)
+            {
+                Console.Write(i + 1+". ");
+                Console.Write(player.skills[i].skillName);
+                YellowText(" - ");
+                DarkBlueText("MP ");
+                BlueText(player.skills[i].mana.ToString());
+                Console.WriteLine();
+                Console.WriteLine("\t"+player.skills[i].skillInfo);
+            }
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+            Console.WriteLine();
+            NextActionMessage();
+            string select = Console.ReadLine();
+            if(int.TryParse(select,out int num) && num < player.skills.Length)
+            {
+                if(num == 0)
+                {
+                    Console.Clear();
+                    BattleMenu();
+                }
+                else if(num == 1)//arpha
+                {
+                    Console.Clear();
+                    player.SkillActive_AlphaStrike(monsters);
+                    BattleDisplayResult_Mosters();
+                    Console.Clear();
+                    BattleMenu();
+
+
+                }
+                else if (num == 2)//double
+                {
+                    Console.Clear();
+                }
+            }
+            else
+            {
+                Console.Clear();
+                WrongInput();
+                BattleMenu();
+            }
+
+
+
+        }
+
+        public void BattleDisplayResult_Player(Monster target)
         {
             int monsterCurrentHp = target.currentHealth;
             target.TakeDamage(player.attackDamge);
@@ -332,6 +464,7 @@ namespace TextRPGGame
         }
 
 
+
         void BattleResultVictory()
         {
             Console.WriteLine();
@@ -370,7 +503,7 @@ namespace TextRPGGame
         }
 
 
-        bool CheckAliveMonsters()
+         bool CheckAliveMonsters()
         {
             for (int i = 0; i < monsters.Length; i++)
             {
