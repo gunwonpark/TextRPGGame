@@ -39,7 +39,7 @@ namespace TextRPGGame
         {
             player = new Player();
             player.Init();
-            battleManager = new BattleManager(player);
+            
         }
 
         public void GameStart()
@@ -58,6 +58,7 @@ namespace TextRPGGame
                     break;
                 case 2:
                     Console.Clear();
+                    battleManager = new BattleManager(player);
                     battleManager.BattleMenu();
                     break;
             

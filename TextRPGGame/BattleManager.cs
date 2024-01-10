@@ -285,57 +285,50 @@ namespace TextRPGGame
 
         void BattleDisplayResult_Mosters()
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            DarkMagentaText("Battle!!");
-            Console.WriteLine();
-            RedText("몬스터가 공격을 시작합니다.");
-            Console.WriteLine();
-
-            for (int i = 0; i< monsters.Length; i++)
+            if (CheckAliveMonsters())
             {
-                if (!monsters[i].death && !player.death)
+                Console.WriteLine();
+                Console.WriteLine();
+                DarkMagentaText("Battle!!");
+                Console.WriteLine();
+                RedText("몬스터가 공격을 시작합니다.");
+                Console.WriteLine();
+
+                for (int i = 0; i < monsters.Length; i++)
                 {
-                    int playerCurrentHp = player.currentHealth;
-                    player.TakeDamage(monsters[i].damage);
+                    if (!monsters[i].death && !player.death)
+                    {
+                        int playerCurrentHp = player.currentHealth;
+                        player.TakeDamage(monsters[i].damage);
 
-                    Console.WriteLine();
-                    YellowText("' ");
-                    Console.Write(monsters[i].name + " 의 공격!");
-                    YellowText("' \n");
-                    Console.Write("LV. ");
-                    Console.Write(monsters[i].level + " ");
-                    Console.Write(monsters[i].name+"\n");
-                    Console.Write($"\t{monsters[i].attackSkill} ! [데미지 : ");
-                    MagentaText((playerCurrentHp - player.currentHealth).ToString());
-                    Console.Write(" ]");
+                        Console.WriteLine();
+                        YellowText("' ");
+                        Console.Write(monsters[i].name + " 의 공격!");
+                        YellowText("' \n");
+                        Console.Write("LV. ");
+                        Console.Write(monsters[i].level + " ");
+                        Console.Write(monsters[i].name + "\n");
+                        Console.Write($"\t{monsters[i].attackSkill} ! [데미지 : ");
+                        MagentaText((playerCurrentHp - player.currentHealth).ToString());
+                        Console.Write(" ]");
 
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine(player.playerName);
-                    Console.Write("\t HP ");
-                    DarkRedText(playerCurrentHp.ToString());
-                    YellowText(" -> ");
-                    RedText(player.currentHealth.ToString());
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    GreenText("Please press Enter");
-                    Console.ReadLine();
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine(player.playerName);
+                        Console.Write("\t HP ");
+                        DarkRedText(playerCurrentHp.ToString());
+                        YellowText(" -> ");
+                        RedText(player.currentHealth.ToString());
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        GreenText("Please press Enter");
+                        Console.ReadLine();
 
-                    YellowText("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+                        YellowText("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+                    }
                 }
-            }
 
-            if (!player.death)
-            {
-                Console.WriteLine();
-                Console.WriteLine();
-                GreenText("Please press Enter");
-                Console.ReadLine();
-            }
-            
-            
-            
+            }     
         }
 
 
@@ -355,6 +348,10 @@ namespace TextRPGGame
             Console.WriteLine();
             NextActionMessage();
             Console.ReadLine();
+
+            Console.Clear();
+            Console.ResetColor();
+
             GameManager.Instance.GameStart();
         }
 
