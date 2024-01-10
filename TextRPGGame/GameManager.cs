@@ -106,8 +106,12 @@ namespace TextRPGGame
 
             // 플레이어 정보 표시
             Console.WriteLine("\n[내정보]");
-            Console.WriteLine($"Lv.{player.Level} {player.Name} ({player.Class})");
-            Console.WriteLine($"HP {player.MaxHp}/{player.Hp}\n");
+            Console.Write($"Lv. ");
+            Utill.WriteRedText($"{player.Level}");
+            Console.WriteLine($" {player.Name} ({player.Class})");
+            Console.Write($"HP ");
+            Utill.WriteRedText($"{player.MaxHp}");
+            Utill.WriteRedText($"/{player.Hp}\n\n");
 
             Utill.WriteRedText("1. ");
             Console.WriteLine("공격");
@@ -151,8 +155,12 @@ namespace TextRPGGame
 
                 // 플레이어 정보 표시
                 Console.WriteLine("\n[내정보]");
-                Console.WriteLine($"Lv.{player.Level} {player.Name} ({player.Class})");
-                Console.WriteLine($"HP {player.MaxHp}/{player.Hp}\n");
+                Console.Write($"Lv. ");
+                Utill.WriteRedText($"{player.Level}");
+                Console.WriteLine($" {player.Name} ({player.Class})");
+                Console.Write($"HP ");
+                Utill.WriteRedText($"{player.MaxHp}");
+                Utill.WriteRedText($"/{player.Hp}\n\n");
 
                 Utill.WriteRedText("0. ");
                 Console.WriteLine("취소");
@@ -165,17 +173,59 @@ namespace TextRPGGame
                     return;
                 }
 
+                // 몬스터 선택
                 Monster selectedMonster = monsters[action - 1];
-                selectedMonster.Attacked(player.Attack);
+                while(selectedMonster.IsDead)
+                {
+                    Console.WriteLine("이미 죽은 몬스터 입니다");
+                    SetNextAction(0, monsters.Count);
+                    selectedMonster = monsters[action - 1];
+                }
+                int damage = player.FinalAttack;
+                selectedMonster.Attacked(damage);
 
-                BattleResultMessage(selectedMonster);
+                BattleResultMessage(selectedMonster, damage);
             }
         }
 
-        void BattleResultMessage(Monster monster)
+        void BattleResultMessage(Monster monster, int damage)
         {
-            
+            Console.Clear();
+            Utill.WriteOrangeText("Battle!!\n");
+            Console.WriteLine();
+
+            // 플레이어 공격 표시
+            Console.WriteLine($"{player.Name}의 공격!");
+            Console.Write("Lv.");
+            Utill.WriteRedText($"{monster.Level} ");
+            Console.Write($"{monster.Name}을(를) 맞췄습니다. [데미지 : ");
+            Utill.WriteRedText($"{damage}");
+            Console.WriteLine("]\n");
+
+            // 공격 결과 표시
+            Console.Write("Lv.");
+            Utill.WriteRedText($"{monster.Level} ");
+            Console.WriteLine($"{monster.Name}");
+            Console.Write("Hp ");
+            Utill.WriteRedText($"{monster.Hp + damage} ");
+            Console.WriteLine($"-> {(monster.IsDead ? "Dead" : monster.Hp)}\n");
+
+            Utill.WriteRedText("0. ");
+            Console.WriteLine("다음");
+
+            SetNextAction(0, 0);
+
+            switch (action)
+            {
+                case 0:
+                    MonsterAttack();
+                    break;
+                default:
+                    break;
+            }
         }
+
+        
 
         #region 행동 선택
         void SetNextAction(int minValue, int maxValue)

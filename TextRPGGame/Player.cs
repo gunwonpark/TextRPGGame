@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TextRPGGame
 {
@@ -10,12 +11,22 @@ namespace TextRPGGame
     {
         // 스텟
         public int Level { get; set; } = 1;
-        public string Name { get; set; } = "Chad";
-        public string Class { get; set; } = "전사";
-        public int Attack { get; set; } = 10;
-        public int Defense { get; set; } = 5;
-        public int MaxHp { get; set; } = 100;
-        public int Hp { get; set; } = 100;
+        public string Name { get; set; }
+        public string Class { get; set; }
+        public int Attack { get; set; }
+        public int FinalAttack
+        {
+            get
+            {
+                int damageVariance = (int)Math.Ceiling(Attack * 0.1);
+
+                int finalDamage = new Random().Next(Attack - damageVariance, Attack + damageVariance);
+                return finalDamage;
+            }
+        }
+        public int Defense { get; set; }
+        public int MaxHp { get; set; }
+        public int Hp { get; set; }
         public int Gold { get; set; } = 1500;
         public Player(string _name, string _class, int _attack, int _defense, int _hp)
         {

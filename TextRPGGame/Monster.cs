@@ -53,11 +53,7 @@ namespace TextRPGGame
 
         public void Attacked(int damage)
         {
-            int damageVariance = (int)Math.Ceiling(damage * 0.1);
-            
-            int finalDamage = new Random().Next(damage - damageVariance, damage + damageVariance);
-
-            Hp -= finalDamage;
+            Hp -= damage;
         }
     }
 }
