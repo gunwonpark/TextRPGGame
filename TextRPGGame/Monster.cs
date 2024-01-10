@@ -10,9 +10,21 @@ namespace TextRPGGame
     class Monster
     {
         // 스텟
+        int hp;
         public string Name { get; set; }
         public int Level { get; set; }
-        public int Hp { get; set; }
+        public int MaxHp { get; set; }
+        public int Hp
+        {
+            get { return hp; }
+            set
+            {
+                hp = value;
+                if (hp < 0) hp = 0;
+                if (value > MaxHp) hp = MaxHp;
+
+            }
+        }
         public int Attack { get; set; }
         public bool IsDead 
         {
@@ -28,10 +40,16 @@ namespace TextRPGGame
         {
             Name = _name;
             Level = _level;
-            Hp = _hp;
+            MaxHp = _hp;
+            hp = _hp;
             Attack = _attack;
         }
 
+        public Monster DeepCopy()
+        {
+            Monster newMonster = new Monster(Name, Level, MaxHp, Attack);
+            return newMonster;
+        }
         public void ShowStatus()
         {
             if (IsDead)
