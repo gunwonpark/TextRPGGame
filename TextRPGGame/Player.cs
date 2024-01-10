@@ -14,6 +14,7 @@ namespace TextRPGGame
         public string Class { get; set; } = "전사";
         public int Attack { get; set; } = 10;
         public int Defense { get; set; } = 5;
+        public int MaxHp { get; set; } = 100;
         public int Hp { get; set; } = 100;
         public int Gold { get; set; } = 1500;
         public Player(string _name, string _class, int _attack, int _defense, int _hp)
@@ -22,16 +23,28 @@ namespace TextRPGGame
             Class = _class;
             Attack = _attack;
             Defense = _defense;
+            MaxHp = _hp;
             Hp = _hp;
         }
         public void ShowStatus()
         {
-            Console.WriteLine($"Lv. {Level:D2}\n");
-            Console.WriteLine($"{Name} ( {Class} )");
-            Console.WriteLine($"공격력 : {Attack}");
-            Console.WriteLine($"방어력 : {Defense}");
-            Console.WriteLine($"체 력 : {Hp}");
-            Console.WriteLine($"Gold : {Gold} G\n");
+            Console.Write($"Lv. ");
+            Utill.WriteRedText("{Level:D2}\n");
+
+            Console.Write($"{Name} ( {Class} )\n");            
+
+            Console.Write("공격력 : ");
+            Utill.WriteRedText($"{Attack}");
+
+            Console.Write($"방어력 : ");
+            Utill.WriteRedText($"{Defense}");
+
+            Console.Write($"체 력 : ");
+            Utill.WriteRedText($"{Hp}\n");
+
+            Console.Write($"Gold : ");
+            Utill.WriteRedText($"{Gold}");
+            Console.Write($" G\n");
         }
     }
 }

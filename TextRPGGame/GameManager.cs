@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TextRPGGame
@@ -38,10 +39,11 @@ namespace TextRPGGame
 
         public GameManager()
         {
-            Random random = new Random();
+            random = new Random();
+
             player = new Player("Chad", "전사", 10, 5, 100);
 
-            List<Monster> monsters = new List<Monster>
+            monsters = new List<Monster>
             {
                 new Monster("미니언", 2, 15, 5),
                 new Monster("공허충", 3, 10, 9),
@@ -53,22 +55,28 @@ namespace TextRPGGame
 
         public void GameStart()
         {
-            Console.WriteLine("00던전에 오신 것을 환영합니다");
-            Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
-
-            Console.WriteLine("1. 상태 보기");
-            Console.WriteLine("2. 전투 시작");
-            // 원하는 행동 선택
-            SetNextAction(1, 2);
-
-            switch (action)
+            while (true)
             {
-                case 1:
-                    ShowStatus();
-                    break;
-                case 2:
-                    StartBattle();
-                    break;
+                Console.Clear();
+                Console.WriteLine("00던전에 오신 것을 환영합니다");
+                Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
+                Utill.WriteRedText("1. ");
+                Console.WriteLine("상태 보기");
+                Utill.WriteRedText("2. ");
+                Console.WriteLine("전투 시작");
+                // 원하는 행동 선택
+                SetNextAction(1, 2);
+
+                switch (action)
+                {
+                    case 1:
+                        ShowStatus();
+                        break;
+                    case 2:
+                        SpawnMonster();
+                        StartBattle();
+                        break;
+                }
             }
         }
 
@@ -79,22 +87,21 @@ namespace TextRPGGame
 
             player.ShowStatus();
 
-            Console.WriteLine("0. 나가기");
+            Utill.WriteRedText("0. ");
+            Console.WriteLine("나가기");
             SetNextAction(0, 0);
         }
 
         void StartBattle()
         {
             Console.Clear();
-
-            SpawnMonster();
-
-            Console.WriteLine("Battle!!");
+            Utill.WriteOrangeText("Battle!!\n");
+            Console.WriteLine();
 
             // 몬스터 정보 표시
-            foreach (Monster monster in spawnedMonsters)
+            for (int i = 0; i < monsters.Count; i++)
             {
-                monster.ShowStatus();
+                monsters[i].ShowStatus();
             }
 
             // 플레이어 정보 표시
@@ -102,15 +109,15 @@ namespace TextRPGGame
             Console.WriteLine($"Lv.{player.Level} {player.Name} ({player.Class})");
             Console.WriteLine($"HP {player.MaxHp}/{player.Hp}\n");
 
-            Console.WriteLine("1. 공격");
-            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+            Utill.WriteRedText("1. ");
+            Console.WriteLine("공격");
 
             SetNextAction(1, 1);
 
             switch (action)
             {
                 case 1:
-                    PlayerAttack();
+                    Battle();
                     break;
             }
         }
@@ -124,10 +131,52 @@ namespace TextRPGGame
                 spawnedMonsters.Add(monsters[monsterIndex]);
             }
         }
-        void PlayerAttack()
+        void Battle()
         {
+            while (true)
+            {
+                Console.Clear();
+                Utill.WriteOrangeText("Battle!!\n");
+                Console.WriteLine();
 
+                // 몬스터 정보 표시
+                for (int i = 0; i < monsters.Count; i++)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    if (monsters[i].IsDead)
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write($"{i + 1} ");
+                    monsters[i].ShowStatus();
+                }
+
+                // 플레이어 정보 표시
+                Console.WriteLine("\n[내정보]");
+                Console.WriteLine($"Lv.{player.Level} {player.Name} ({player.Class})");
+                Console.WriteLine($"HP {player.MaxHp}/{player.Hp}\n");
+
+                Utill.WriteRedText("0. ");
+                Console.WriteLine("취소");
+
+                SetNextAction(0, monsters.Count);
+
+                if (action == 0)
+                {
+                    StartBattle();
+                    return;
+                }
+
+                Monster selectedMonster = monsters[action - 1];
+                selectedMonster.Attacked(player.Attack);
+
+                BattleResultMessage(selectedMonster);
+            }
         }
+
+        void BattleResultMessage(Monster monster)
+        {
+            
+        }
+
         #region 행동 선택
         void SetNextAction(int minValue, int maxValue)
         {

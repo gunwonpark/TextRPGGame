@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,18 +12,52 @@ namespace TextRPGGame
         // 스텟
         public string Name { get; set; }
         public int Level { get; set; }
-        public int HP { get; set; }
+        public int Hp { get; set; }
         public int ATK { get; set; }
+        public bool IsDead 
+        {
+            get
+            {
+                if (Hp <= 0)
+                    return true;
+                else
+                    return false;
+            } 
+        }
         public Monster(string _name, int _level, int _hp, int _atk)
         {
             Name = _name;
             Level = _level;
-            HP = _hp;
+            Hp = _hp;
             ATK = _atk;
         }
+
         public void ShowStatus()
         {
-            Console.WriteLine($"Lv.{Level} {Name}  HP {HP}");
+            if (IsDead)
+            {
+                Console.WriteLine($"Lv.{Level} {Name}  Dead");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ResetColor();
+                Console.Write($"Lv.");
+                Utill.WriteRedText($"{Level} ");
+                Console.Write($"{Name} ");
+                Console.Write("Hp ");
+                Utill.WriteRedText($"{Hp}");
+                Console.WriteLine();
+            }
+        }
+
+        public void Attacked(int damage)
+        {
+            int damageVariance = (int)Math.Ceiling(damage * 0.1);
+            
+            int finalDamage = new Random().Next(damage - damageVariance, damage + damageVariance);
+
+            Hp -= finalDamage;
         }
     }
 }
