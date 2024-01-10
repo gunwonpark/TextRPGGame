@@ -30,12 +30,26 @@ namespace TextRPGGame
         #endregion
 
         public Player player;
+        public List<Monster> monsters;
+        public List<Monster> spawnedMonsters = new List<Monster>();
         public int action;
+
+        private Random random;
 
         public GameManager()
         {
+            Random random = new Random();
             player = new Player("Chad", "전사", 10, 5, 100);
+
+            List<Monster> monsters = new List<Monster>
+            {
+                new Monster("미니언", 2, 15, 5),
+                new Monster("공허충", 3, 10, 9),
+                new Monster("대포미니언", 5, 25, 8)
+            };
+
         }
+
 
         public void GameStart()
         {
@@ -53,21 +67,67 @@ namespace TextRPGGame
                     ShowStatus();
                     break;
                 case 2:
-                    
+                    StartBattle();
                     break;
             }
         }
 
         void ShowStatus()
         {
+            Console.Clear();
             Console.WriteLine("캐릭터의 정보가 표시 됩니다.");
 
             player.ShowStatus();
 
             Console.WriteLine("0. 나가기");
-            SetNextAction(1, 2);
+            SetNextAction(0, 0);
         }
 
+        void StartBattle()
+        {
+            Console.Clear();
+
+            SpawnMonster();
+
+            Console.WriteLine("Battle!!");
+
+            // 몬스터 정보 표시
+            foreach (Monster monster in spawnedMonsters)
+            {
+                monster.ShowStatus();
+            }
+
+            // 플레이어 정보 표시
+            Console.WriteLine("\n[내정보]");
+            Console.WriteLine($"Lv.{player.Level} {player.Name} ({player.Class})");
+            Console.WriteLine($"HP {player.MaxHp}/{player.Hp}\n");
+
+            Console.WriteLine("1. 공격");
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+
+            SetNextAction(1, 1);
+
+            switch (action)
+            {
+                case 1:
+                    PlayerAttack();
+                    break;
+            }
+        }
+
+        void SpawnMonster()
+        {
+            int monsterCount = random.Next(1, 5);
+            for (int i = 0; i < monsterCount; i++)
+            {
+                int monsterIndex = random.Next(monsters.Count);
+                spawnedMonsters.Add(monsters[monsterIndex]);
+            }
+        }
+        void PlayerAttack()
+        {
+
+        }
         #region 행동 선택
         void SetNextAction(int minValue, int maxValue)
         {
