@@ -37,7 +37,9 @@ namespace TextRPGGame
 
         public GameManager()
         {
-            battleManager = new BattleManager();
+            player = new Player();
+            player.Init();
+            battleManager = new BattleManager(player);
         }
 
         public void GameStart()
@@ -60,6 +62,9 @@ namespace TextRPGGame
                     break;
             
             }
+
+
+
         }
 
         #region 행동 선택

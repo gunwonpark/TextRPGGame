@@ -4,7 +4,7 @@ namespace TextRPGGame
 	public class SpawnManager
 	{
 		Random random = new Random();
-        Monster[] monsters = { new Monster("미니언", 10, 5), new Monster("대포 미니언", 20, 10), new Monster("공허충", 7, 9) }; 
+        Monster[] monsters = { new Monster("미니언", 10, 5,"몽둥이질",10), new Monster("대포 미니언", 20, 10,"돌 던지기",15), new Monster("공허충", 7, 9,"침 뱉기",8) }; 
 
 		public Monster[] GeneratorMonsters()
 		{
