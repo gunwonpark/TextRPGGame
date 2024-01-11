@@ -96,117 +96,117 @@ namespace TextRPGGame
         }
 
 
-        #region Skill Alpha Strike ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+        #region Skill----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
-        public void SkillActive_AlphaStrike(Monster[] monsters)
+        public void SkillActive1(Monster[] monsters)
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            DarkMagentaText("Battle!!");
-            Console.WriteLine();
-            Console.WriteLine();
-            for (int i = 0; i < monsters.Length; i++)
+            if (skills[0].mana > currentMana)
             {
-                DarkCyanText((i + 1).ToString());
-                CyanText(" - ");
-                if (monsters[i].death)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                }
-                Console.Write("LV. ");
-                Console.Write(monsters[i].level + " ");
-                Console.Write(monsters[i].name + "\n");
-                if (monsters[i].death)
-                {
-                    Console.Write("\tDead");
-                }
-                else
-                {
-                    Console.Write("\tHP ");
-                    RedText(monsters[i].currentHealth.ToString());
-                    YellowText(" / ");
-                    DarkRedText(monsters[i].maxHealth.ToString());
-                }
-
-                Console.WriteLine("");
-                Console.WriteLine("");
-                Console.ResetColor();
+                Console.Clear();
+                RedText("마나가 부족합니다!");
+                Console.WriteLine();
+                GameManager.Instance.battleManager.BattleSkillAttackMenu();
             }
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("[ 내정보] ");
-            Console.Write("LV. ");
-            DarkBlueText(level.ToString() + " ");
-            Console.WriteLine();
-            Console.Write("Class : ");
-            DarkRedText(clas + " ");
-            Console.WriteLine();
-            Console.Write("HP ");
-            RedText(currentHealth.ToString());
-            DarkYellowText(" / ");
-            DarkRedText(maxHealth.ToString());
-            Console.WriteLine();
-            Console.Write("MP ");
-            BlueText(currentMana.ToString());
-            DarkYellowText(" / ");
-            DarkBlueText(maxMana.ToString());
-            Console.WriteLine();
-            Console.Write("EXP ");
-            BlueText(currentExp.ToString());
-            DarkYellowText(" / ");
-            DarkBlueText(levelUpExp.ToString());
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("공격할 몬스터를 정해주세요.");
-            Console.WriteLine();
-            Console.WriteLine("0. 공격 취소");
-            Console.WriteLine();
-            Console.WriteLine();
-            NextActionMessage();
-            string select = Console.ReadLine();
-            if(int.TryParse(select,out int num) && num-1 < monsters.Length)
+            else
             {
-                if(num != 0)
+                Console.WriteLine();
+                Console.WriteLine();
+                DarkMagentaText("Battle!!");
+                Console.WriteLine();
+                Console.WriteLine();
+                for (int i = 0; i < monsters.Length; i++)
                 {
-                    Console.Clear();
-                    if (skills[0].mana >= currentMana)
+                    DarkCyanText((i + 1).ToString());
+                    CyanText(" - ");
+                    if (monsters[i].death)
                     {
-                        Console.Clear();
-                        RedText("마나가 부족 합니다!");
-                        Console.WriteLine();
-                        SkillActive_AlphaStrike(monsters);
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    }
+                    Console.Write("LV. ");
+                    Console.Write(monsters[i].level + " ");
+                    Console.Write(monsters[i].name + "\n");
+                    if (monsters[i].death)
+                    {
+                        Console.Write("\tDead");
                     }
                     else
+                    {
+                        Console.Write("\tHP ");
+                        RedText(monsters[i].currentHealth.ToString());
+                        YellowText(" / ");
+                        DarkRedText(monsters[i].maxHealth.ToString());
+                    }
+
+                    Console.WriteLine("");
+                    Console.WriteLine("");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("[ 내정보] ");
+                Console.Write("LV. ");
+                DarkBlueText(level.ToString() + " ");
+                Console.WriteLine();
+                Console.Write("Class : ");
+                DarkRedText(clas + " ");
+                Console.WriteLine();
+                Console.Write("HP ");
+                RedText(currentHealth.ToString());
+                DarkYellowText(" / ");
+                DarkRedText(maxHealth.ToString());
+                Console.WriteLine();
+                Console.Write("MP ");
+                BlueText(currentMana.ToString());
+                DarkYellowText(" / ");
+                DarkBlueText(maxMana.ToString());
+                Console.WriteLine();
+                Console.Write("EXP ");
+                BlueText(currentExp.ToString());
+                DarkYellowText(" / ");
+                DarkBlueText(levelUpExp.ToString());
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("공격할 몬스터를 정해주세요.");
+                Console.WriteLine();
+                Console.WriteLine("0. 공격 취소");
+                Console.WriteLine();
+                Console.WriteLine();
+                NextActionMessage();
+                string select = Console.ReadLine();
+                if (int.TryParse(select, out int num) && num - 1 < monsters.Length)
+                {
+                    if (num != 0)
                     {
                         if (monsters[num - 1].death)
                         {
                             Console.Clear();
                             RedText("선택한 몬스터는 이미 죽었습니다.");
-                            SkillActive_AlphaStrike(monsters);
+                            SkillActive1(monsters);
                         }
                         else
                         {
-                         BattleDisplay_AlphaResult_Player(monsters[num - 1]);
+                            Console.Clear();
+                            BattleDisplaySkill1(monsters[num - 1]);
                         }
                     }
-
+                    else
+                    {
+                        Console.Clear();
+                        GameManager.Instance.battleManager.BattleSkillAttackMenu();
+                    }
                 }
                 else
                 {
                     Console.Clear();
-                    GameManager.Instance.battleManager.BattleSkillAttackMenu();
+                    WrongInput();
+                    SkillActive1(monsters);
                 }
             }
-            else
-            {
-                Console.Clear();
-                WrongInput();
-                SkillActive_AlphaStrike(monsters);
-            }
+            
 
-        }
+        } // 스킬 1 실행
 
-        public void BattleDisplay_AlphaResult_Player(Monster target)
+        public void BattleDisplaySkill1(Monster target)
         {
             currentMana -= skills[0].mana;
             int monsterCurrentHp = target.currentHealth;
@@ -246,7 +246,6 @@ namespace TextRPGGame
                 DarkRedText(target.currentHealth.ToString());
             }
 
-
             Console.WriteLine();
             Console.WriteLine();
 
@@ -277,10 +276,149 @@ namespace TextRPGGame
             RunningTimeText(3);
             Console.Clear();
 
-        }
+        } //스킬 1 결과
 
+        public void SkillActive2(Monster[] monsters)
+        {
+            if (skills[1].mana > currentMana)
+            {
+                Console.Clear();
+                RedText("마나가 부족합니다.");
+                GameManager.Instance.battleManager.BattleSkillAttackMenu();
+            }
+            else
+            {
+                List<Monster> attackMonsterList = MultyAttack(2,monsters);
+                currentMana -= skills[1].mana;
+                Console.WriteLine();
+                Console.WriteLine();
+                DarkMagentaText("Battle!!");
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.Write(playerName + " 의 ");
+                CyanText(skills[1].skillName);
+                Console.Write("\n\t광역 스킬 공격!\n");
+                Console.WriteLine();
+
+                foreach(Monster mon in attackMonsterList)
+                {
+                    int monsterCurrentHp = mon.currentHealth;
+
+                    mon.TakeDamage(attackDamge * skills[1].increseDamage);
+                    Console.WriteLine();
+                    Console.Write("LV. ");
+                    Console.Write(mon.level + " ");
+                    Console.Write(mon.name);
+                    Console.Write(" 을(를) 맞췄습니다. [데미지 : ");
+                    MagentaText((monsterCurrentHp - mon.currentHealth).ToString());
+                    Console.Write(" ]");
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.Write("LV. ");
+                    Console.Write(mon.level + " ");
+                    Console.Write(mon.name);
+                    Console.WriteLine();
+                    Console.Write("HP ");
+                    RedText(monsterCurrentHp.ToString());
+                    YellowText(" -> ");
+
+                    if (mon.currentHealth <= 0)
+                    {
+                        Console.Write("Dead");
+                    }
+                    else
+                    {
+                        DarkRedText(mon.currentHealth.ToString());
+                    }
+
+                    if (mon.death)
+                    {
+                        float currentExp = this.currentExp;
+                        int currentMaxHp = this.maxHealth;
+                        Console.WriteLine();
+                        Console.WriteLine();
+
+                        Console.WriteLine("Reward");
+                        if (currentExp + mon.rewardExp >= levelUpExp)
+                        {
+                            GainExperience(mon.rewardExp);
+                            GreenText("Level Up!!\n");
+                            YellowText("모든 체력과 마나가 회복되었습니다.");
+
+                        }
+                        else
+                        {
+                            GainExperience(mon.rewardExp);
+                            Console.WriteLine("EXP");
+                            DarkGreenText(currentExp.ToString());
+                            YellowText(" -> ");
+                            GreenText(this.currentExp.ToString());
+                            Console.WriteLine();
+                        }
+                    }
+                    Console.WriteLine();
+                    YellowText("--------------------------------------------------");
+                    Thread.Sleep(500);
+                }
+
+                Console.WriteLine();
+                GreenText("Please press Enter");
+                Console.ReadLine();
+                Console.Clear();
+            }
+        } //스킬 2
         #endregion
 
+
+        List<Monster> MultyAttack(int attackAmount, Monster[] monsters)
+        {
+            List<Monster> attackMonsterList = new List<Monster>();
+            int monsterCount = AliveMonsterCount(monsters);
+
+            int i = 0;
+
+            if (monsterCount < attackAmount)
+            {
+                foreach(Monster mon in monsters)
+                {
+                    if (!mon.death)
+                    {
+                        attackMonsterList.Add(mon);
+                    }
+                    
+                }
+            }
+            else
+            {
+                while (i < attackAmount)
+                {
+                    int randomIdx = new Random().Next(0, monsters.Length);
+
+                    if (!monsters[randomIdx].death && !attackMonsterList.Contains(monsters[randomIdx]))
+                    {
+                        attackMonsterList.Add(monsters[randomIdx]);
+                        i++;
+                    }
+
+                }
+            }
+
+            return attackMonsterList;
+           
+        } //랜덤으로 공격할 몬스터 리스트 반환
+
+        int AliveMonsterCount(Monster[] monsters)
+        {
+            int i = 0;
+            foreach(Monster mon in monsters)
+            {
+                if (!mon.death)
+                {
+                    i++;
+                }
+            }
+            return i;
+        } // 현재 살아있는 몬스터 수 반환
 
         //Recovery
 

@@ -8,15 +8,15 @@ namespace TextRPGGame
 
 		public Monster[] GeneratorMonsters()
 		{
-			int randomNum = random.Next(1, 6);
+			int randomNum = random.Next(1, 6);//spawn monster amount
 			Monster[] newMonsters = new Monster[randomNum];
 
 			for(int i = 0; i < newMonsters.Length; i++)
 			{
-				int ranIdx = new Random().Next(0,monsters.Length);
+				int ranIdx = new Random().Next(0,monsters.Length); //random monster level
 				newMonsters[i] = monsters[ranIdx].Clone();
 				newMonsters[i].SetMonsterState();
-
+				
 			}
 
 			return newMonsters;

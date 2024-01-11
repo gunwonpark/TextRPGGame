@@ -356,7 +356,7 @@ namespace TextRPGGame
             Console.WriteLine();
             NextActionMessage();
             string select = Console.ReadLine();
-            if(int.TryParse(select,out int num) && num < player.skills.Length)
+            if(int.TryParse(select,out int num) && num-1 < player.skills.Length)
             {
                 if(num == 0)
                 {
@@ -366,7 +366,7 @@ namespace TextRPGGame
                 else if(num == 1)//arpha
                 {
                     Console.Clear();
-                    player.SkillActive_AlphaStrike(monsters);
+                    player.SkillActive1(monsters);
                     BattleDisplayResult_Mosters();
                     Console.Clear();
                     BattleMenu();
@@ -376,6 +376,10 @@ namespace TextRPGGame
                 else if (num == 2)//double
                 {
                     Console.Clear();
+                    player.SkillActive2(monsters);
+                    BattleDisplayResult_Mosters();
+                    Console.Clear();
+                    BattleMenu();
                 }
             }
             else
