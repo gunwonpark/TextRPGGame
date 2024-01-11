@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TextRPGGame
@@ -30,40 +31,75 @@ namespace TextRPGGame
         #endregion
 
         public Player player;
+        public List<Monster> monsters;
         public int action;
+
+        private Random random;
 
         public GameManager()
         {
-            
+            random = new Random();
+
+            player = new Player("Chad", "전사", 10, 5, 100);
+
+            monsters = new List<Monster>
+            {
+                new Monster("미니언", 2, 10, 5),
+                new Monster("공허충", 3, 10, 5),
+                new Monster("대포미니언", 5, 10, 5)
+            };
+
         }
 
         public void GameStart()
         {
-            Console.WriteLine("00던전에 오신 것을 환영합니다");
-            Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
-
-            Console.WriteLine("1. 상태 보기");
-            Console.WriteLine("2. 전투 시작");
-            // 원하는 행동 선택
-            SetNextAction(1, 2);
-
-            switch (action)
+            while (true)
             {
-                case 1:
-                    Dungeon();
-                    break;
-                case 2:
-                    break;
+                Console.Clear();
+                Console.WriteLine("00던전에 오신 것을 환영합니다");
+                Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
+                Utill.WriteRedText("1. ");
+                Console.WriteLine("상태 보기");
+                Utill.WriteRedText("2. ");
+                Console.WriteLine("전투 시작");
+                // 원하는 행동 선택
+                SetNextAction(1, 2);
+
+                switch (action)
+                {
+                    case 1:
+                        ShowStatus();
+                        break;
+                    case 2:
+                        StartBattle();
+                        break;
+                }
             }
         }
 
-        private void Dungeon()
+        void ShowStatus()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("캐릭터의 정보가 표시 됩니다.");
+
+            player.ShowStatus();
+
+            Utill.WriteRedText("0. ");
+            Console.WriteLine("나가기");
+            SetNextAction(0, 0);
         }
 
+        void StartBattle()
+        {
+            BattleManager battleManager = new BattleManager();
+            battleManager.StartBattle();
+        }
+
+        
+        
+
         #region 행동 선택
-        void SetNextAction(int minValue, int maxValue)
+        public void SetNextAction(int minValue, int maxValue)
         {
             Console.WriteLine("\n원하는 행동을 입력해 주세요");
             while (IsInValidAction(minValue, maxValue) == false) { Console.WriteLine("잘못된 입력입니다 다시 선택해 주세요"); }
