@@ -56,6 +56,12 @@ namespace TextRPGGame
             Console.Write(str);
             Console.ResetColor();
         }
+        public void DarkGreenText(string str)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write(str);
+            Console.ResetColor();
+        }
         public void DarkMagentaText(string str)
         {
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
@@ -92,7 +98,7 @@ namespace TextRPGGame
         {
             Console.WriteLine();
             Console.WriteLine("원하시는 행동을 선택해 주세요.");
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(">> ");
         }
 

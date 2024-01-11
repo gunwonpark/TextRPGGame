@@ -9,12 +9,40 @@ namespace TextRPGGame
 		SpawnManager spawnManager;
 		Player player;
 
-		public BattleManager(Player _player)
+        int playerStartLevel;
+        int playerStartHp;
+        int playerStartMaxHp;
+        int playerStartMana;
+        int playerStartMaxMana;
+        float playerStartExp;
+        int playerStartGold;
+        float playerStartAttackDamage;
+        int playerStartArmor;
+
+
+        public BattleManager(Player _player)
 		{
 			spawnManager = new SpawnManager();
 			monsters = spawnManager.GeneratorMonsters();
 			player = _player;
+            Set_PlayerStartState();
 		}
+
+
+        void Set_PlayerStartState()
+        {
+            playerStartLevel = player.level;
+            playerStartHp = player.currentHealth;
+            playerStartMaxHp = player.maxHealth;
+            playerStartMana = player.currentMana;
+            playerStartMaxMana = player.maxMana;
+            playerStartExp = player.currentExp;
+            playerStartGold = player.gold;
+            playerStartAttackDamage = player.attackDamge;
+            playerStartArmor = player.armor;
+
+        }
+
 
 
 		public void BattleMenu()
@@ -70,6 +98,11 @@ namespace TextRPGGame
                 DarkYellowText(" / ");
                 DarkBlueText(player.maxMana.ToString());
                 Console.WriteLine();
+                Console.Write("EXP ");
+                GreenText(player.currentExp.ToString());
+                DarkYellowText(" / ");
+                DarkGreenText(player.levelUpExp.ToString());
+                Console.WriteLine();
                 Console.WriteLine();
                 Console.WriteLine("1. 일반 공격");
                 Console.WriteLine("2. 스킬 공격");
@@ -121,8 +154,8 @@ namespace TextRPGGame
 
         }
 
-
-		void BattleAttackMenu()
+        #region 기본 공격--------
+        void BattleAttackMenu()
 		{
             if (CheckAliveMonsters() && !player.death)
             {
@@ -171,6 +204,11 @@ namespace TextRPGGame
                 RedText(player.currentHealth.ToString());
                 DarkYellowText(" / ");
                 DarkRedText(player.maxHealth.ToString());
+                Console.WriteLine();
+                Console.Write("MP ");
+                BlueText(player.currentMana.ToString());
+                DarkYellowText(" / ");
+                DarkBlueText(player.maxMana.ToString());
                 Console.WriteLine();
                 Console.Write("EXP ");
                 BlueText(player.currentExp.ToString());
@@ -243,8 +281,9 @@ namespace TextRPGGame
             }
             
         }//
+        #endregion
 
-        void BattleSkillAttackMenu()
+        public void BattleSkillAttackMenu()
         {
             Console.WriteLine();
             Console.WriteLine();
@@ -295,6 +334,11 @@ namespace TextRPGGame
             DarkYellowText(" / ");
             DarkBlueText(player.maxMana.ToString());
             Console.WriteLine();
+            Console.Write("EXP ");
+            BlueText(player.currentExp.ToString());
+            DarkYellowText(" / ");
+            DarkBlueText(player.levelUpExp.ToString());
+            Console.WriteLine();
             Console.WriteLine();
             for (int i = 0; i < player.skills.Length; i++)
             {
@@ -343,7 +387,9 @@ namespace TextRPGGame
 
 
 
-        }
+        }//Skill Attack
+
+        //------------------------------------------------------------------------------Result
 
         public void BattleDisplayResult_Player(Monster target)
         {
@@ -392,20 +438,18 @@ namespace TextRPGGame
                 if(player.currentExp + target.rewardExp >= player.levelUpExp)
                 {
                     player.GainExperience(target.rewardExp);
+                    Console.WriteLine();
                     GreenText("Level Up!!\n");
-                    Console.Write("HP ");
-                    DarkRedText(currentMaxHp.ToString());
-                    YellowText(" -> ");
-                    RedText(player.maxHealth.ToString());
+                    YellowText("모든 체력과 마나가 회복되었습니다.");
 
                 }
                 else
                 {
                     player.GainExperience(target.rewardExp);
                     Console.WriteLine("EXP");
-                    DarkBlueText(currentExp.ToString());
+                    DarkGreenText(currentExp.ToString());
                     YellowText(" -> ");
-                    BlueText(player.currentExp.ToString());
+                    GreenText(player.currentExp.ToString());
                     Console.WriteLine();
                 }
             }
@@ -463,8 +507,6 @@ namespace TextRPGGame
             }     
         }
 
-
-
         void BattleResultVictory()
         {
             Console.WriteLine();
@@ -476,6 +518,64 @@ namespace TextRPGGame
             Console.WriteLine();
             Console.WriteLine($"던전에서 {monsters.Length}마리를 잡았습니다.");
             Console.WriteLine();
+            Console.WriteLine();
+
+            if(player.level != playerStartLevel)
+            {
+                Console.Write("LV. ");
+                Console.Write(playerStartLevel);
+                YellowText(" -> ");
+                DarkGreenText(player.level.ToString());
+                Console.WriteLine();
+                Console.WriteLine();
+
+                Console.Write("최대 체력. ");
+                Console.Write(playerStartMaxHp);
+                YellowText(" -> ");
+                DarkRedText(player.maxHealth.ToString());
+                Console.WriteLine();
+
+                Console.Write("최대 마나 ");
+                Console.Write(playerStartMana);
+                YellowText(" -> ");
+                DarkBlueText(player.maxMana.ToString());
+                Console.WriteLine();
+
+                Console.Write("Damage ");
+                Console.Write(playerStartAttackDamage);
+                YellowText(" -> ");
+                DarkRedText(player.attackDamge.ToString());
+                Console.WriteLine();
+
+                Console.Write("Armor ");
+                Console.Write(playerStartArmor);
+                YellowText(" -> ");
+                DarkBlueText(player.armor.ToString());
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.Write("HP. ");
+                Console.Write(playerStartHp);
+                YellowText(" -> ");
+                DarkRedText(player.currentHealth.ToString());
+                Console.WriteLine();
+
+                Console.Write("MP. ");
+                Console.Write(playerStartMana);
+                YellowText(" -> ");
+                DarkBlueText(player.currentMana.ToString());
+                Console.WriteLine();
+
+                Console.Write("EXP. ");
+                Console.Write(playerStartExp);
+                YellowText(" -> ");
+                DarkGreenText(player.currentExp.ToString());
+                Console.WriteLine();
+            }
+            
+
+ 
             Console.WriteLine();
             Console.WriteLine("0. 다음");
             Console.WriteLine();
@@ -501,9 +601,9 @@ namespace TextRPGGame
             Console.WriteLine();
            
         }
+        //------------------------------------------------------------------------------Result
 
-
-         bool CheckAliveMonsters()
+        bool CheckAliveMonsters()
         {
             for (int i = 0; i < monsters.Length; i++)
             {

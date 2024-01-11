@@ -178,13 +178,23 @@ namespace TextRPGGame
                     }
                     else
                     {
-                        BattleDisplay_AlphaResult_Player(monsters[num - 1]);
+                        if (monsters[num - 1].death)
+                        {
+                            Console.Clear();
+                            RedText("선택한 몬스터는 이미 죽었습니다.");
+                            SkillActive_AlphaStrike(monsters);
+                        }
+                        else
+                        {
+                         BattleDisplay_AlphaResult_Player(monsters[num - 1]);
+                        }
                     }
 
                 }
                 else
                 {
                     Console.Clear();
+                    GameManager.Instance.battleManager.BattleSkillAttackMenu();
                 }
             }
             else
@@ -250,19 +260,16 @@ namespace TextRPGGame
                 {
                     GainExperience(target.rewardExp);
                     GreenText("Level Up!!\n");
-                    Console.Write("HP ");
-                    DarkRedText(currentMaxHp.ToString());
-                    YellowText(" -> ");
-                    RedText(maxHealth.ToString());
+                    YellowText("모든 체력과 마나가 회복되었습니다.");
 
                 }
                 else
                 {
                     GainExperience(target.rewardExp);
                     Console.WriteLine("EXP");
-                    DarkBlueText(currentExp.ToString());
+                    DarkGreenText(currentExp.ToString());
                     YellowText(" -> ");
-                    BlueText(this.currentExp.ToString());
+                    GreenText(this.currentExp.ToString());
                     Console.WriteLine();
                 }
             }
@@ -273,7 +280,31 @@ namespace TextRPGGame
         }
 
         #endregion
+
+
+        //Recovery
+
+        public void RecoveryHealth(int recoveryAmount)
+        {
+            currentHealth += recoveryAmount;
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+        }
+        public void RecoveryMana(int recoveryAmount)
+        {
+            currentMana += recoveryAmount;
+            if (currentMana > maxMana)
+            {
+                currentMana = maxMana;
+            }
+        }
+
     }
+
+    
+
 
 
     public class Skill

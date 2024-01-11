@@ -152,6 +152,12 @@ namespace TextRPGGame
             Console.ResetColor();
             Console.WriteLine();
 
+            Console.Write("Mana\t: ");
+            DarkBlueText(player.currentMana.ToString());
+            Console.Write(" / ");
+            BlueText(player.maxMana.ToString());
+            Console.WriteLine();
+
             Console.Write("Gold\t: ");
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.Write(player.gold);
