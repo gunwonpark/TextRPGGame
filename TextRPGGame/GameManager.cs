@@ -40,7 +40,7 @@ namespace TextRPGGame
         {
             random = new Random();
             potion = new Potion();
-            player = new Player("", "전사", 10, 5, 100);
+            player = new Player("", Player.ClassType.None, 10, 5, 100);
 
             monsters = new List<Monster>
             {
@@ -53,6 +53,9 @@ namespace TextRPGGame
 
         public void GameStart()
         {
+            Utill.PrintStartLogo();
+            SetName();
+            ChooseClass(player);
             while (true)
             {
                 Console.Clear();
@@ -82,8 +85,8 @@ namespace TextRPGGame
                 }
             }
         }
-
-        public void SetName()
+        
+        public void SetName() // 캐릭터 이름 추가 기능
         {
             Console.Clear();
             Console.WriteLine("스파르타 게임");
@@ -92,6 +95,32 @@ namespace TextRPGGame
             Console.Clear();
             Console.WriteLine("당신의 이름은 " + player.Name + "입니다.");
             Console.ReadKey();
+        }
+        static Player.ClassType ChooseClass(Player player)
+        {
+            Console.Clear();
+            Console.WriteLine("직업을 선택하세요");
+            Console.WriteLine("[1] 전사");
+            Console.WriteLine("[2] 궁수");
+            Console.WriteLine("[3] 마법사");
+
+            Player.ClassType choice = Player.ClassType.None;
+            string input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    choice = Player.ClassType.전사;
+                    break;
+                case "2":
+                    choice = Player.ClassType.궁수;
+                    break;
+                case "3":
+                    choice = Player.ClassType.마법사;
+                    break;
+            }
+            player.Class = choice;
+            return choice;
         }
 
         void ShowStatus()

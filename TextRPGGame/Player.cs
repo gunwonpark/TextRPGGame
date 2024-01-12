@@ -13,7 +13,7 @@ namespace TextRPGGame
         int hp;
         public int Level { get; set; } = 1;
         public string Name { get; set; }
-        public string Class { get; set; }
+        public ClassType Class { get; set; }
         public int Attack { get; set; }
         public bool IsDead
         {
@@ -49,7 +49,7 @@ namespace TextRPGGame
             }
         }
         public int Gold { get; set; } = 1500;
-        public Player(string _name, string _class, int _attack, int _defense, int _hp)
+        public Player(string _name, ClassType _class, int _attack, int _defense, int _hp)
         {
             Name = _name;
             Class = _class;
@@ -82,6 +82,12 @@ namespace TextRPGGame
             Utill.WriteRedText($"{Gold}");
             Console.WriteLine($" G\n");
         }
-
+        public enum ClassType
+        {
+            None = 0,
+            전사 = 1,
+            궁수 = 2,
+            마법사 = 3
+        }
     }
 }
