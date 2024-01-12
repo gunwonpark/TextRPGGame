@@ -30,6 +30,15 @@ namespace TextRPGGame
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine($"포션을 사용하면 체력을 {hpAmount} 회복할 수 있습니다. (남은 포션 : {hpPotionCount})");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("[내정보]");
+            Console.Write("HP ");
+            Utill.WriteRedText(GameManager.Instance.player.Hp.ToString());
+            Console.Write(" / ");
+            Utill.WriteRedText(GameManager.Instance.player.MaxHp.ToString());
+            Console.WriteLine();
+            Console.WriteLine();
 
             Console.WriteLine("1. 사용하기");
             Console.WriteLine("2. 나가기");
