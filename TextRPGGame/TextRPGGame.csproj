@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Quest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Quest\" />
+  </ItemGroup>
 </Project>

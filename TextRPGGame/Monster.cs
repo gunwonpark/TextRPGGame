@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TextRPGGame
 {
-    class Monster
+    public class Monster
     {
         // 스텟
         int hp;

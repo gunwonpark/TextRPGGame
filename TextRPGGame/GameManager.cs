@@ -35,13 +35,13 @@ namespace TextRPGGame
         public int action;
         public Potion potion;
         private Random random;
-
+        public QuestBoard questBoard;
         public GameManager()
         {
             random = new Random();
             potion = new Potion();
             player = new Player("", Player.ClassType.None, 10, 5, 100);
-
+            questBoard = new QuestBoard();
             monsters = new List<Monster>
             {
                 new Monster("미니언", 2, 10, 5),
@@ -67,8 +67,13 @@ namespace TextRPGGame
                 Console.WriteLine("전투 시작");
                 Utill.WriteRedText("3. ");
                 Console.WriteLine("회복 아이템");
+
+                Utill.WriteRedText("4. ");
+                Console.WriteLine("퀘스트");
+
+
                 // 원하는 행동 선택
-                SetNextAction(1, 3);
+                SetNextAction(1, 4);
 
                 switch (action)
                 {
@@ -81,6 +86,10 @@ namespace TextRPGGame
                     case 3:
                         Console.Clear();
                         potion.PotionManu();
+                        break;
+                    case 4:
+                        Console.Clear();
+                        questBoard.QuestBoardManu();
                         break;
                 }
             }
@@ -159,6 +168,6 @@ namespace TextRPGGame
 
             return true;
         }
-        #endregion
-    }
+    #endregion
+}
 }
