@@ -116,6 +116,12 @@ namespace TextRPGGame
                     selectedMonster = monsters[GameManager.Instance.action - 1];
                 }
                 int damage = player.FinalAttack;
+
+                if(selectedMonster.Hp - damage <= 0 && !selectedMonster.IsDead)
+                {
+                    GameManager.Instance.player.slainMonsters.Add(selectedMonster);
+                }
+
                 selectedMonster.Attacked(damage);
 
                 PlayerAttackResultMessage(selectedMonster, damage);

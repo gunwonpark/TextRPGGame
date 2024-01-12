@@ -21,12 +21,13 @@ namespace TextRPGGame.Quest
 
 
 		public virtual void Condition() { }
-        public virtual void ShowProgress() { }
+        public virtual void ShowQuestInfo() { }
+		public virtual void Reset() { }
 
 
-        public void Clear()
+        public virtual void Clear()
 		{
-			questState = QuestState.FINISH;
+			questState = QuestState.CLEAR;
 		}
 
 

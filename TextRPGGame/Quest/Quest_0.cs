@@ -3,8 +3,8 @@ namespace TextRPGGame.Quest
 {
 	public class Quest_0 : Quest
 	{
-		int clearCondition;
-		int current;
+		int clearCondition = 5;
+		int current = 0;
 		string target;
 
 		public Quest_0()
@@ -20,38 +20,58 @@ namespace TextRPGGame.Quest
 			CheckCondition();
         }
 
-        public override void ShowProgress()
+        public override void ShowQuestInfo()
         {
-            base.ShowProgress();
-			Console.Write($" -  {target}");
-			Console.Write(clearCondition);
-			Console.Write("마리 처치 ");
+            base.ShowQuestInfo();
+			Console.Write($" -  {target} ");
+			Utill.WriteRedText(clearCondition.ToString());
+			Console.Write(" 마리 처치 ");
 			if(questState == QuestState.PROGRESS)
 			{
 				Console.WriteLine($"{current} / {clearCondition}");
 			}
 			
         }
+        public override void Reset()
+        {
+            base.Reset();
+			current = 0;
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+            GameManager.Instance.player.slainMonsters.RemoveAll(monster => monster.Name == target);
+
+
+        }
 
         void CheckCondition()
 		{
-			List<Monster> slainMonsters = GameManager.Instance.player.slainMonsters;
-			int count = 0;
-
-			foreach(Monster monster in slainMonsters)
+			if(GameManager.Instance.player.slainMonsters.Count > 0)
 			{
-				if(monster.Name == target)
-				{
-					count++;
-				}
-			}
-			current = Math.Max(current, count);
+			    List<Monster> slainMonsters = GameManager.Instance.player.slainMonsters;
+                int count = 0;
 
-			if(current >= clearCondition)
-			{
-				Clear();
-			}
+                foreach (Monster monster in slainMonsters)
+                {
+                    if (monster.Name == target)
+                    {
+                        count++;
+                    }
+                }
+                current = Math.Max(current, count);
+
+                if (current >= clearCondition)
+                {
+                    questState = QuestState.FINISH;
+                }
+            }
+			
 		}
+
+
+		
     }
 
 	

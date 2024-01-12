@@ -30,7 +30,7 @@ namespace TextRPGGame
         {
             get
             {
-                if (Hp <= 0)
+                if (Hp <= 0)  
                     return true;
                 else
                     return false;
