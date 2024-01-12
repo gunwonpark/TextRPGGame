@@ -82,5 +82,6 @@ namespace TextRPGGame
             Utill.WriteRedText($"{Gold}");
             Console.WriteLine($" G\n");
         }
+
     }
 }

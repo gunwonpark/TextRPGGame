@@ -40,7 +40,7 @@ namespace TextRPGGame
         {
             random = new Random();
             potion = new Potion();
-            player = new Player("Chad", "전사", 10, 5, 100);
+            player = new Player("", "전사", 10, 5, 100);
 
             monsters = new List<Monster>
             {
@@ -81,6 +81,17 @@ namespace TextRPGGame
                         break;
                 }
             }
+        }
+
+        public void SetName()
+        {
+            Console.Clear();
+            Console.WriteLine("스파르타 게임");
+            Console.Write("이름 : ");
+            player.Name = Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("당신의 이름은 " + player.Name + "입니다.");
+            Console.ReadKey();
         }
 
         void ShowStatus()
