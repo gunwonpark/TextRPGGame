@@ -10,7 +10,7 @@ namespace TextRPGGame
     // 게임의 전반적인 관리
     // 1. 게임 시작
     // 2. 행동 선택
-    // 3.
+
     class GameManager
     {
         #region GameManager
@@ -40,7 +40,8 @@ namespace TextRPGGame
         {
             random = new Random();
             potion = new Potion();
-            player = new Player("", Player.ClassType.None, 10, 5, 100);
+            player = new Player("", Player.ClassType.None);
+            
 
             monsters = new List<Monster>
             {
@@ -53,9 +54,6 @@ namespace TextRPGGame
 
         public void GameStart()
         {
-            Utill.PrintStartLogo();
-            SetName();
-            ChooseClass(player);
             while (true)
             {
                 Console.Clear();
@@ -96,7 +94,7 @@ namespace TextRPGGame
             Console.WriteLine("당신의 이름은 " + player.Name + "입니다.");
             Console.ReadKey();
         }
-        static Player.ClassType ChooseClass(Player player)
+        public void ChooseClass()
         {
             Console.Clear();
             Console.WriteLine("직업을 선택하세요");
@@ -120,7 +118,6 @@ namespace TextRPGGame
                     break;
             }
             player.Class = choice;
-            return choice;
         }
 
         void ShowStatus()

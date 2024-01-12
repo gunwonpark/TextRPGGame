@@ -49,21 +49,66 @@ namespace TextRPGGame
             }
         }
         public int Gold { get; set; } = 1500;
-        public Player(string _name, ClassType _class, int _attack, int _defense, int _hp)
+        public Player(string _name, ClassType _class)
         {
             Name = _name;
             Class = _class;
-            Attack = _attack;
-            Defense = _defense;
-            MaxHp = _hp;
-            hp = _hp;
+            
+            // 클래스에 기반한 기본 스탯 및 스킬 설정
+            InitializeClassStats();
+            InitializeClassSkills();
         }
+
+        private void InitializeClassStats()
+        {
+            switch (Class)
+            {
+                case ClassType.전사: // 전사
+                    Attack = 15;
+                    Defense = 10;
+                    MaxHp = 120;
+                    break;
+                case ClassType.궁수: // 궁수
+                    Attack = 10;
+                    Defense = 8;
+                    MaxHp = 100;
+                    break;
+                case ClassType.마법사: // 마법사
+                    Attack = 12;
+                    Defense = 6;
+                    MaxHp = 90;
+                    break;    
+            }
+            // 초기 HP를 최대치로 설정
+            Hp = MaxHp;
+        }
+
+        private void InitializeClassSkills() 
+        {
+            switch (Class)
+            {
+                case ClassType.전사:
+                    // 전사 스킬 추가
+                    break;
+                case ClassType.궁수:
+                    // 궁수 스킬 추가
+                    break;
+                case ClassType.마법사:
+                    // 마법사스킬 추가
+                    break;
+            }
+        }
+
         public void Attacked(int damage)
         {
             Hp -= damage;
         }
         public void ShowStatus()
         {
+            if (Attack == 0 || Defense == 0 || MaxHp == 0)
+            {
+                InitializeClassStats();
+            }
             Console.Write($"Lv. ");
             Utill.WriteRedText($"{Level:D2}\n");
 
