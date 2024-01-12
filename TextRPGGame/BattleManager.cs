@@ -77,6 +77,8 @@ namespace TextRPGGame
                 if (deadMonsterCount == monsters.Count)
                 {
                     Victory(deadMonsterCount);
+                    // 높은 던전으로 이동
+                    GameManager.Instance.stage.Level++;
                     return;
                 }
                 // 내 체력이 0이되면 게임종료
@@ -189,6 +191,12 @@ namespace TextRPGGame
             Console.Write("Hp ");
             Utill.WriteRedText($"{monster.Hp + damage} ");
             Console.WriteLine($"-> {(monster.IsDead ? "Dead" : monster.Hp)}\n");
+
+            // 몬스터가 죽었으면 경험치 획득
+            if (monster.IsDead)
+            {
+                player.GainExp(100);
+            }
 
             Utill.WriteRedText("0. ");
             Console.WriteLine("다음");
