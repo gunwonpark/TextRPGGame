@@ -8,49 +8,81 @@ namespace TextRPGGame
 {
     class Player
     {
-        Random rand = new Random();
         public string Name { get; }
         public string Job { get; }
-        public int Level { get; }
+        public int Level { get; set; } =1;
         public int Gold { get; set; }
         public int MaxHp { get; set; }
-        public int Atk { get; }
-        public int Def { get; }
-        public int CurrentHP { get; private set; }
-        public bool IsDead => CurrentHP <= 0;
+        int hp;
+        public int HP
+        {
+            get { return hp; } // 현재 체력 값을 가져온다
+            set
+            {
+                hp = value; // 속성에 새로운 값으로 설정
+                //만약 체력이 0보다 작으면 0으로 고정
+                if (hp < 0) hp = 0;
+                //만약 체력이 최대 체력보다 초과하면 최대 체력으로 고정
+                if (value > MaxHp) hp = MaxHp;
+
+            }
+        }
+        public int Attack { get; }
+        public int Defense { get; }
+        public int FinalAttack
+        {
+            get // 몬스터의 최종 공격력 반환
+            {
+                int damageVariance = (int)Math.Ceiling(Attack * 0.1); //공격력의 10%범위 내의 편차를 저장
+                // finalDamage에는 편차를 적용한 최종 공격력 계산.
+                int finalDamage = new Random().Next(Attack - damageVariance, Attack + damageVariance + 1); 
+                return finalDamage;
+            }
+        }
+        public void Attacked(int damage) //받은 데미지만큰 체력 감소
+        {
+            HP -= damage;
+        }
+        public bool IsDead
+        {
+            get
+            {
+                if (HP <= 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
 
         // 스텟
-        public Player(string name, string job, int level, int atk, int def, int maxHp, int gold)
+        public Player(string name, string job, int level, int atk, int def, int hp, int gold)
         {
             Name = name;
             Job = job;
             Level = level;
             Gold = gold;
-            MaxHp = maxHp;
-            Atk = atk;
-            Def = def;
-            CurrentHP = maxHp;
+            MaxHp = hp;
+            Attack = atk;
+            Defense = def;
+            HP = hp;
             
         }
-        // 포션
-        public int potion = 5;
-        public int mods = 0;
-
+        
         // 플레이어 스테이터스 보여주기
         public static void ShowStatus()
         {
             Console.Clear();
 
-            ShowHighLighterText("■상태 보기■");
+            Utill.ShowHighLighterText("■상태 보기■");
             Console.WriteLine("캐릭터의 정보가 표기됩니다.");
 
-            PrintWithHightlights("Lv.", GameManager._player.Level.ToString("00"));
-            Console.WriteLine("\n{0} ({1})", GameManager._player.Name, GameManager._player.Job);
+            Utill.PrintWithHightlights("Lv.", GameManager.Instance._player.Level.ToString("00"));
+            Console.WriteLine("\n{0} ({1})", GameManager.Instance._player.Name, GameManager.Instance._player.Job);
 
-            PrintWithHightlights("공격력 :", GameManager._player.Atk.ToString());
-            PrintWithHightlights("방어력 :", GameManager._player.Def.ToString());
-            PrintWithHightlights("체력 :", GameManager._player.CurrentHP.ToString());
-            PrintWithHightlights("골드 :", GameManager._player.Gold.ToString());
+            Utill.PrintWithHightlights("공격력 :", GameManager.Instance._player.Attack.ToString());
+            Utill.PrintWithHightlights("방어력 :", GameManager.Instance._player.Defense.ToString());
+            Utill.PrintWithHightlights("체력 :", GameManager.Instance._player.HP.ToString());
+            Utill.PrintWithHightlights("골드 :", GameManager.Instance._player.Gold.ToString());
             Console.WriteLine("\n0. 뒤로가기");
             Console.WriteLine("");
             GameManager.Instance.SetNextAction(0, 0);
@@ -61,40 +93,5 @@ namespace TextRPGGame
                     break;
             }
         }
-        public static void ShowHighLighterText(string text)
-        {
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(text);
-            Console.ResetColor();
-        }
-        public static void PrintWithHightlights(string s1, string s2, string s3 = "")
-        {
-            Console.Write(s1);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(s2);
-            Console.ResetColor();
-            Console.WriteLine(s3);
-        }
-
-        public void TakeDamage(int damage)
-        {
-            // Decrease player's health when taking damage
-            CurrentHP -= damage;
-
-            // Ensure health doesn't go below 0
-            if (CurrentHP < 0)
-                CurrentHP = 0;
-        }
-
-        
-
-        // Additional method to calculate actual damage (considering randomness or modifiers)
-        private int CalculateActualDamage(int damage)
-        {
-            // Adjust this method based on your game's logic for calculating actual damage
-            // For example, consider adding randomness or other factors
-            return damage;
-        }
-
     }
 }

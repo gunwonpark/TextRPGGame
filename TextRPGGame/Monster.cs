@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,34 +11,72 @@ namespace TextRPGGame
     class Monster
     {
         public static Random rand = new Random();
+        int hp;
         public string Name { get; }
         public int Level { get; }
-        public int HP { get; set; }
-        public int Atk { get; }
+        public int HP
+        {
+            get { return hp; }
+            set
+            { 
+                hp = value; 
+                if (hp < 0) hp = 0;
+                if (value > MaxHp) hp = MaxHp;
+            }
+        }
+        public int Attack { get; }
+        public int MaxHp { get; set; }
 
-        public bool IsDead => HP <= 0;
+        public bool IsDead
+        {
+            get
+            {
+                if (HP <= 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
 
-        public Monster(string name, int level, int hp, int atk)
+        public Monster(string name, int level, int _hp, int atk)
         {
             Name = name;
             Level = level;
-            HP = hp;
-            Atk = atk;
+            hp = _hp;
+            MaxHp = _hp;
+            Attack = atk;
+        }
+        public Monster DeepCopy()
+        {
+            // 현재 몬스터의 속성을 사용하여 새로운 몬스터 객체를 생성합니다.
+            Monster newMonster = new Monster(Name, Level, MaxHp, Attack);
+            // 새로운 몬스터 객체를 반환합니다.
+            return newMonster;
         }
 
-        public int TakeDamage(int damage)
+        public void ShowStatus()
         {
-            if (!IsDead)
+            if (IsDead)
             {
-                int actualDamage = Math.Max(1, (int)Math.Ceiling(damage * (rand.Next(9, 12) / 10.0)));
-                HP -= actualDamage;
-                if (HP < 0)
-                {
-                    HP = 0;
-                }
-                return damage;
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"Lv.{Level} {Name}  Dead");
+                Console.ResetColor();
             }
-            return 0;
+            else
+            {
+                Console.ResetColor();
+                Console.Write($"Lv.");
+                Utill.WriteRedText($"{Level} ");
+                Console.Write($"{Name} ");
+                Console.Write("Hp ");
+                Utill.WriteRedText($"{HP}");
+                Console.WriteLine();
+            }
+        }
+
+        public void Attacked(int damage)
+        {
+            HP -= damage;
         }
     }
 }
