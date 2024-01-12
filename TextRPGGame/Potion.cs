@@ -80,7 +80,6 @@ namespace TextRPGGame
                     break;
                 case "2":
                     Console.Clear();
-                    GameManager.Instance.GameStart();
                     break;
                 default:
                     Console.Clear();

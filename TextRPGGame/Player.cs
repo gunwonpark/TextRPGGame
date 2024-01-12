@@ -15,7 +15,8 @@ namespace TextRPGGame
         public string Name { get; set; }
         public ClassType Class { get; set; }
         public int Attack { get; set; }
-        public List<Monster> slainMonsters = new List<Monster>();
+        public List<Monster> slainMonsters;
+
         public bool IsDead
         {
             get
@@ -58,7 +59,10 @@ namespace TextRPGGame
             Defense = _defense;
             MaxHp = _hp;
             hp = _hp;
+            slainMonsters = new List<Monster>();
         }
+
+
         public void Attacked(int damage)
         {
             Hp -= damage;

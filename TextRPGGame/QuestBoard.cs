@@ -26,6 +26,13 @@ public class QuestBoard
             Utill.WriteRedText((i + 1).ToString());
             Console.WriteLine($". {quests[i].questName}");
         }
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine("원하시는 행동을 입력해 주세요.");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write(">> ");
+        Console.ResetColor();
+        string action = Console.ReadLine();
 
 
     }
