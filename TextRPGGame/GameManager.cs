@@ -33,13 +33,13 @@ namespace TextRPGGame
         public Player player;
         public List<Monster> monsters;
         public int action;
-
+        public Potion potion;
         private Random random;
 
         public GameManager()
         {
             random = new Random();
-
+            potion = new Potion();
             player = new Player("Chad", "전사", 10, 5, 100);
 
             monsters = new List<Monster>
@@ -62,8 +62,10 @@ namespace TextRPGGame
                 Console.WriteLine("상태 보기");
                 Utill.WriteRedText("2. ");
                 Console.WriteLine("전투 시작");
+                Utill.WriteRedText("3. ");
+                Console.WriteLine("회복 아이템");
                 // 원하는 행동 선택
-                SetNextAction(1, 2);
+                SetNextAction(1, 3);
 
                 switch (action)
                 {
@@ -72,6 +74,10 @@ namespace TextRPGGame
                         break;
                     case 2:
                         StartBattle();
+                        break;
+                    case 3:
+                        Console.Clear();
+                        potion.PotionManu();
                         break;
                 }
             }
