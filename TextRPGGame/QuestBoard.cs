@@ -28,17 +28,26 @@ public class QuestBoard
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
-            Utill.WriteRedText((i + 1).ToString());
+            Console.Write(i + 1);
             Console.Write($". {quests[i].questName}");
-            if (quests[i].questState == QuestState.PROGRESS)
+
+            switch (quests[i].questState)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(" (진행중) ");
-                Console.ResetColor();
-            }else if(quests[i].questState == QuestState.CLEAR)
-            {
-                Console.Write(" (완료) ");
+                case QuestState.PROGRESS:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(" (진행중) ");
+                    Console.ResetColor();
+                    break;
+                case QuestState.FINISH:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(" (보상 받기) ");
+                    Console.ResetColor();
+                    break;
+                case QuestState.CLEAR:
+                    Console.Write(" (완료) ");
+                    break;
             }
+            Console.ResetColor();
         }
         Console.WriteLine();
         Console.WriteLine();
@@ -77,7 +86,7 @@ public class QuestBoard
     {
         Console.WriteLine();
         Console.WriteLine();
-        Utill.WriteRedText("Quest");
+        Utill.WriteRedText("Quest ");
         if (quest.questState == QuestState.CLEAR)
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -85,18 +94,24 @@ public class QuestBoard
         Console.WriteLine();
         Console.WriteLine();
         Console.Write(quest.questName);
-        if (quest.questState == QuestState.PROGRESS)
+
+        switch (quest.questState)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(" (진행중) ");
-            Console.ResetColor();
-        }else if(quest.questState == QuestState.CLEAR)
-        {
-            Console.Write("완료");
+            case QuestState.PROGRESS:
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(" (진행중) ");
+                Console.ResetColor();
+                break;
+            case QuestState.CLEAR:
+                Console.Write(" (완료) ");
+                break;
         }
         Console.WriteLine();
         Console.WriteLine();
-        Console.WriteLine(quest.questInfo);
+        if(quest.questState != QuestState.CLEAR)
+        {
+            Console.WriteLine(quest.questInfo);
+        }
         Console.WriteLine();
         quest.ShowQuestInfo();
         Console.WriteLine();
