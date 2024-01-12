@@ -15,6 +15,7 @@ namespace TextRPGGame
         public string Name { get; set; }
         public ClassType Class { get; set; }
         public int Attack { get; set; }
+        public List<Monster> slainMonsters = new List<Monster>();
         public bool IsDead
         {
             get
