@@ -36,19 +36,14 @@ namespace TextRPGGame
         public Potion potion;
         private Random random;
         public QuestBoard questBoard;
+        public Stage stage;
         public GameManager()
         {
             random = new Random();
             potion = new Potion();
             player = new Player("", Player.ClassType.None, 10, 5, 100);
             questBoard = new QuestBoard();
-            monsters = new List<Monster>
-            {
-                new Monster("미니언", 2, 10, 5),
-                new Monster("공허충", 3, 10, 5),
-                new Monster("대포미니언", 5, 10, 5)
-            };
-
+            stage = new Stage();
         }
 
         public void GameStart()
@@ -146,6 +141,7 @@ namespace TextRPGGame
 
         void StartBattle()
         {
+            monsters = stage.CreateMonster();
             BattleManager battleManager = new BattleManager();
             battleManager.StartBattle();
         }
