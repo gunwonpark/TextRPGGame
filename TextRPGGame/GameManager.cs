@@ -36,6 +36,7 @@ namespace TextRPGGame
         public Potion potion;
         private Random random;
         public QuestBoard questBoard;
+
         public Stage stage;
         public GameManager()
         {

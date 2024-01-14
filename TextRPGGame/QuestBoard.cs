@@ -5,12 +5,15 @@ using TextRPGGame;
 public class QuestBoard
 {
 
-    List<Quest> quests = new List<Quest>();
+    List<Quest> quests;
 
     public QuestBoard()
     {
+        quests = new List<Quest>();
         Quest_0 quest_0 = new Quest_0();
+        Quest_1 quest_1 = new Quest_1();
         quests.Add(quest_0);
+        quests.Add(quest_1);
     }
 
     public void QuestBoardManu()
@@ -24,6 +27,10 @@ public class QuestBoard
 
         for (int i = 0; i < quests.Count; i++)
         {
+            if (quests[i].requireLevel <= GameManager.Instance.player.Level && quests[i].questState == QuestState.NOT_REQUIRE_ACHIEVED)
+            {
+                quests[i].questState = QuestState.REQUIRE_ACHIEVED;
+            }
             if (quests[i].questState == QuestState.CLEAR)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -46,8 +53,16 @@ public class QuestBoard
                 case QuestState.CLEAR:
                     Console.Write(" (완료) ");
                     break;
+                case QuestState.REQUIRE_ACHIEVED:
+                    Utill.WriteGreenText(" (수행 가능) ");
+                    break;
+                case QuestState.NOT_REQUIRE_ACHIEVED:
+                    Utill.WriteRedText(" (수행 불가) ");
+                    Console.Write($" 필요 수행 레벨 - ( {quests[i].requireLevel} )");
+                    break;
             }
             Console.ResetColor();
+            Console.WriteLine();
         }
         Console.WriteLine();
         Console.WriteLine();
@@ -67,7 +82,16 @@ public class QuestBoard
             else
             {
                 Console.Clear();
-                QuestBoard_QuestInfo(quests[num - 1]);
+                if (quests[num-1].requireLevel <= GameManager.Instance.player.Level)
+                {
+                    QuestBoard_QuestInfo(quests[num - 1]);
+                }
+                else
+                {
+                    Console.WriteLine("현재 수행할 수 없는 퀘스트 입니다.");
+                    QuestBoardManu();
+                }
+
             }
            
         }
@@ -94,7 +118,7 @@ public class QuestBoard
         Console.WriteLine();
         Console.WriteLine();
         Console.Write(quest.questName);
-
+        Console.Write($" [필요 수행 레벨 - {quest.requireLevel} ]");
         switch (quest.questState)
         {
             case QuestState.PROGRESS:
@@ -106,6 +130,7 @@ public class QuestBoard
                 Console.Write(" (완료) ");
                 break;
         }
+
         Console.WriteLine();
         Console.WriteLine();
         if(quest.questState != QuestState.CLEAR)
@@ -120,7 +145,7 @@ public class QuestBoard
         Console.WriteLine();
         switch (quest.questState)
         {
-            case QuestState.NONE :
+            case QuestState.REQUIRE_ACHIEVED :
                 Console.WriteLine("1. 수락");
                 Console.WriteLine("2. 거절");
                 break;
@@ -147,33 +172,58 @@ public class QuestBoard
             case "1":
                 if(quest.questState == QuestState.PROGRESS)
                 {
-                    quest.questState = QuestState.NONE;
+                    quest.questState = QuestState.REQUIRE_ACHIEVED;
                     quest.Reset();
                     Console.Clear();
                     QuestBoard_QuestInfo(quest);
                 }
-                else
+                else if(quest.questState == QuestState.REQUIRE_ACHIEVED)
                 {
                     Console.Clear();
                     //플레이어 퀘스트 리스트에 추가
                     quest.questState = QuestState.PROGRESS;
                     QuestBoard_QuestInfo(quest);
                 }
+                else
+                {
+                    Console.Clear();
+                    Utill.WriteRedText("잘못된 입력");
+                    QuestBoard_QuestInfo(quest);
+                }
                 break;
             case "2":
-                Console.Clear();
-                QuestBoardManu();
+                if (quest.questState == QuestState.PROGRESS)
+                {
+                    Console.Clear();
+                    QuestBoardManu();
+                }
+                else if(quest.questState == QuestState.REQUIRE_ACHIEVED)
+                {
+                    Console.Clear();
+                    QuestBoardManu();
+                }
+                else
+                {
+                    Console.Clear();
+                    Utill.WriteRedText("잘못된 입력");
+                    QuestBoard_QuestInfo(quest);
+                }
                 break;
             case "0":
                 if(quest.questState == QuestState.FINISH)
                 {
                     quest.Clear();
-                    GameManager.Instance.player.Gold += quest.rewardGold;
                     //플레이어 보상 수령
-                }
-                Console.ResetColor();
+                    Console.ResetColor();
                     Console.Clear();
                     QuestBoardManu();
+                }
+                else
+                {
+                    Console.Clear();
+                    QuestBoardManu();
+                }
+               
                 break;
             default:
                 Console.Clear();
@@ -190,7 +240,7 @@ public class QuestBoard
         {
             if (quest.questState == QuestState.PROGRESS)
             {
-             quest.Condition();
+             quest.CheckCondition();
             }
         }
     }
