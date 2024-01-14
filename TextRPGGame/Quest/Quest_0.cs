@@ -26,7 +26,7 @@ namespace TextRPGGame.Quest
 			Console.Write(" 마리 처치 ");
 			if(questState == QuestState.PROGRESS)
 			{
-				Console.WriteLine($"{current} / {clearCondition}");
+				Console.Write($"{current} / {clearCondition}");
 			}
 			
         }

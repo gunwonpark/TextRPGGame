@@ -25,10 +25,14 @@ namespace TextRPGGame.Quest
         public override void ShowQuestInfo()
         {
             base.ShowQuestInfo();
-            Console.Write(" Level ");
+            Console.Write("Level ");
             Utill.WriteRedText(targetLevel.ToString());
             Console.Write(" 달성하기 ");
-            Console.WriteLine($"{GameManager.Instance.player.Level} / {targetLevel}");
+            if(questState == QuestState.PROGRESS)
+            {
+            Console.Write($" {GameManager.Instance.player.Level} / {targetLevel}");
+
+            }
 
         }
         public override void Clear()

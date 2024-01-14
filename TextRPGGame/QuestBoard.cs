@@ -140,6 +140,7 @@ public class QuestBoard
         Console.WriteLine();
         quest.ShowQuestInfo();
         Console.WriteLine();
+        Console.WriteLine();
         Console.WriteLine("보상");
         Console.WriteLine(quest.rewardGold +"G");
         Console.WriteLine();
