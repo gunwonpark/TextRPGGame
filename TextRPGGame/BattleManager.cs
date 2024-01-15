@@ -230,6 +230,8 @@ namespace TextRPGGame
             Console.Write($"HP ");
             Utill.WriteRedText($"{player.MaxHp}");
             Utill.WriteRedText($"/{player.Hp}\n\n");
+            GameManager.Instance.potion.BattleRewardPotion(monsters);
+            Console.WriteLine();
 
             Utill.WriteRedText("0. ");
             Console.WriteLine("다음");

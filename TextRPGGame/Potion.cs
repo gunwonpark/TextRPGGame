@@ -91,9 +91,22 @@ namespace TextRPGGame
         }
 
 
-        public void PotionChoiceManu()
+      public void BattleRewardPotion(List<Monster> monsters)
         {
+            int len = monsters.Count;
+            int rewoardAmount = 0;
+            for (int i = 0; i < len; i++)
+            {
+                int percent = new Random().Next(0, 101);
+                if(percent <= 60)
+                {
+                    rewoardAmount++;
+                }
+            }
 
+            hpPotionCount += rewoardAmount;
+            
+            Console.Write($"Hp 회복 포션 x{rewoardAmount} 획득\n");
         }
     }
 }

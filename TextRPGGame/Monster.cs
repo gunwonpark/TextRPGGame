@@ -74,5 +74,7 @@ namespace TextRPGGame
         {
             Hp -= damage;
         }
+
+
     }
 }
