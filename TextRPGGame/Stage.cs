@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TextRPGGame
@@ -10,8 +11,8 @@ namespace TextRPGGame
     class Stage
     {
         public int Level { get; set; } = 1;
-        
         private List<Monster> monsters;
+        [NonSerialized]
         public BossMonster boss;
         public Stage() {}
         public List<Monster> CreateMonster() 

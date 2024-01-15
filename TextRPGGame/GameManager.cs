@@ -50,13 +50,33 @@ namespace TextRPGGame
         public void GameStart()
         {
             Utill.PrintStartLogo();
-            SetName();
-            ChooseClass(player);
+            Console.Clear();
+            Utill.WriteRedText("1. ");
+            Console.WriteLine("새로 시작");
+            Utill.WriteRedText("2. ");
+            Console.WriteLine("이어 하기");
+            // 원하는 행동 선택
+            SetNextAction(0, 4);
+            switch (action)
+            {
+                case 1:
+                    SetName();
+                    ChooseClass(player);
+                    break;
+                case 2:
+                    player = DataManager.LoadPlayerData();
+                    stage = DataManager.LoadStageData();
+                    break;
+            }
+            
+
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine("00던전에 오신 것을 환영합니다");
                 Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
+                Utill.WriteRedText("0. ");
+                Console.WriteLine("게임 종료 및 저장");
                 Utill.WriteRedText("1. ");
                 Console.WriteLine("상태 보기");
                 Utill.WriteRedText("2. ");
@@ -69,10 +89,13 @@ namespace TextRPGGame
 
 
                 // 원하는 행동 선택
-                SetNextAction(1, 4);
+                SetNextAction(0, 4);
 
                 switch (action)
                 {
+                    case 0:
+                        SaveAndQuit();
+                        return;
                     case 1:
                         ShowStatus();
                         break;
@@ -90,7 +113,15 @@ namespace TextRPGGame
                 }
             }
         }
-        
+        void Init()
+        {
+
+        }
+        void SaveAndQuit()
+        {
+            // bin/Debug/net6.0폴더 안에 생성
+            DataManager.SaveData();
+        }
         public void SetName() // 캐릭터 이름 추가 기능
         {
             Console.Clear();

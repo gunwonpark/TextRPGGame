@@ -19,12 +19,12 @@ namespace TextRPGGame
         }
         public static void SavePlayerData()
         {
-            Console.WriteLine("데이터 저장중");
+            Console.WriteLine("player데이터 저장중");
             try
             {
                 string json = JsonConvert.SerializeObject(GameManager.Instance.player, Formatting.Indented);
                 File.WriteAllText($"{playerDataPath}", json);
-                Console.WriteLine("Data saved successfully.");
+                Console.WriteLine("Data saved successfully.\n");
             }
             catch (Exception ex)
             {
@@ -44,24 +44,24 @@ namespace TextRPGGame
                 else
                 {
                     Console.WriteLine("저장된 파일 없음");
-                    return new Player("Chad", ClassType.전사, 10, 5, 100);
+                    return new Player("???????", ClassType.전사, 10, 5, 100);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error Load data: {ex.Message}");
-                return new Player("Chad", ClassType.전사, 10, 5, 100);
+                return new Player("???????", ClassType.전사, 10, 5, 100);
             }
         }
 
         public static void SaveStageData()
         {
-            Console.WriteLine("데이터 저장중");
+            Console.WriteLine("stage 데이터 저장중");
             try
             {
                 string json = JsonConvert.SerializeObject(GameManager.Instance.stage, Formatting.Indented);
                 File.WriteAllText($"{stageDataPath}", json);
-                Console.WriteLine("Data saved successfully.");
+                Console.WriteLine("Data saved successfully.\n");
             }
             catch (Exception ex)
             {
@@ -72,9 +72,9 @@ namespace TextRPGGame
         {
             try
             {
-                if (File.Exists($"{playerDataPath}"))
+                if (File.Exists($"{stageDataPath}"))
                 {
-                    string json = File.ReadAllText($"{playerDataPath}");
+                    string json = File.ReadAllText($"{stageDataPath}");
                     Console.WriteLine("데이터 복구중");
                     return JsonConvert.DeserializeObject<Stage>(json);
                 }
