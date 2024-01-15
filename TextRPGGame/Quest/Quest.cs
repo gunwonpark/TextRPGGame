@@ -42,7 +42,8 @@ namespace TextRPGGame.Quest
             Console.WriteLine();
             Console.WriteLine();
 			Console.Write(questName);
-			Utill.WriteGreenText("퀘스트 보상!");
+            Console.WriteLine();
+            Utill.WriteGreenText("퀘스트 보상!");
             Console.WriteLine();
 			Console.WriteLine($"{rewardGold} G");
             Console.WriteLine();

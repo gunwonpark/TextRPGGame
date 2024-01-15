@@ -9,7 +9,7 @@ namespace TextRPGGame.Quest
 
         public Quest_2()
         {
-            SetQuest(0, "마을을 위협하는 스켈레톤 처치", 10500);
+            SetQuest(0, "마을을 위협하는 스켈레톤 처치", 1500);
             target = "스켈레톤";
             questInfo = "이봐! 마을 근처에 스켈레톤들이 너무 많아졌다고 생각하지 않나?\n마을주민들의 안전을 위해서라도 저것들 수를 좀 줄여야 한다고!\n모험가인 자네가 좀 처치해주게!";
             requireLevel = 2;
