@@ -7,4 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Quest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Quest\" />
+  </ItemGroup>
 </Project>

@@ -35,20 +35,16 @@ namespace TextRPGGame
         public int action;
         public Potion potion;
         private Random random;
+        public QuestBoard questBoard;
 
+        public Stage stage;
         public GameManager()
         {
             random = new Random();
             potion = new Potion();
             player = new Player("", Player.ClassType.None, 10, 5, 100);
-
-            monsters = new List<Monster>
-            {
-                new Monster("미니언", 2, 10, 5),
-                new Monster("공허충", 3, 10, 5),
-                new Monster("대포미니언", 5, 10, 5)
-            };
-
+            questBoard = new QuestBoard();
+            stage = new Stage();
         }
 
         public void GameStart()
@@ -64,11 +60,16 @@ namespace TextRPGGame
                 Utill.WriteRedText("1. ");
                 Console.WriteLine("상태 보기");
                 Utill.WriteRedText("2. ");
-                Console.WriteLine("전투 시작");
+                Console.WriteLine($"전투 시작 ({stage.Level}층)");
                 Utill.WriteRedText("3. ");
                 Console.WriteLine("회복 아이템");
+
+                Utill.WriteRedText("4. ");
+                Console.WriteLine("퀘스트");
+
+
                 // 원하는 행동 선택
-                SetNextAction(1, 3);
+                SetNextAction(1, 4);
 
                 switch (action)
                 {
@@ -81,6 +82,10 @@ namespace TextRPGGame
                     case 3:
                         Console.Clear();
                         potion.PotionManu();
+                        break;
+                    case 4:
+                        Console.Clear();
+                        questBoard.QuestBoardManu();
                         break;
                 }
             }
@@ -137,6 +142,7 @@ namespace TextRPGGame
 
         void StartBattle()
         {
+            monsters = stage.CreateMonster();
             BattleManager battleManager = new BattleManager();
             battleManager.StartBattle();
         }
@@ -159,6 +165,6 @@ namespace TextRPGGame
 
             return true;
         }
-        #endregion
-    }
+    #endregion
+}
 }
