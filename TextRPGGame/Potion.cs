@@ -93,20 +93,26 @@ namespace TextRPGGame
 
       public void BattleRewardPotion(List<Monster> monsters)
         {
+            Random random = new Random();
             int len = monsters.Count;
             int rewoardAmount = 0;
             for (int i = 0; i < len; i++)
             {
-                int percent = new Random().Next(0, 101);
+                int percent = random.Next(0, 101);
                 if(percent <= 60)
                 {
-                    rewoardAmount++;
+                    int amount = random.Next(1, 3);
+                    rewoardAmount+=amount;
                 }
             }
 
             hpPotionCount += rewoardAmount;
-            
+
+            if(rewoardAmount > 0)
+            {
             Console.Write($"Hp 회복 포션 x{rewoardAmount} 획득\n");
+            }
+            
         }
     }
 }
