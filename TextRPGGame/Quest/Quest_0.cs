@@ -3,9 +3,8 @@ namespace TextRPGGame.Quest
 {
 	public class Quest_0 : Quest
 	{
-		int clearCondition = 2;
+		int clearCondition = 5;
 		int current = 0;
-		string target;
 
         public Quest_0()
 		{
@@ -52,35 +51,23 @@ namespace TextRPGGame.Quest
             GameManager.Instance.player.Gold += rewardGold;
             GameManager.Instance.player.slainMonsters.RemoveAll(monster => monster.Name == target);
 
-
         }
-        public override void CheckCondition()
+
+
+        public override void CheckCondition(string name)
         {
             base.CheckCondition();
-
-            if (GameManager.Instance.player.slainMonsters.Count > 0)
+            if (name.Contains(target))
             {
-                List<Monster> slainMonsters = GameManager.Instance.player.slainMonsters;
-                int count = 0;
-
-                foreach (Monster monster in slainMonsters)
-                {
-                    if (monster.Name.Contains(target))
-                    {
-                        count++;
-                    }
-                }
-                current = Math.Max(current, count);
-
-                if (current >= clearCondition)
-                {
-                    questState = QuestState.FINISH;
-                }
+                current++;
             }
 
+            if(current >= clearCondition)
+            {
+                questState = QuestState.FINISH;
+            }
         }
 
-        
     }
 
 	

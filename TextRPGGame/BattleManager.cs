@@ -164,10 +164,10 @@ namespace TextRPGGame
                 }
                 int damage = player.FinalAttack;
 
-                if(selectedMonster.Hp - damage <= 0 && !selectedMonster.IsDead)
-                {
-                    GameManager.Instance.player.slainMonsters.Add(selectedMonster);
-                }
+                //if(selectedMonster.Hp - damage <= 0 && !selectedMonster.IsDead)
+                //{
+                //    GameManager.Instance.player.slainMonsters.Add(selectedMonster);
+                //}
 
                 selectedMonster.Attacked(damage);
 
@@ -234,10 +234,10 @@ namespace TextRPGGame
                 
                 int damage = player.FinalAttack;
 
-                if (bossMonster.Hp - damage <= 0 && !bossMonster.IsDead)
-                {
-                    GameManager.Instance.player.slainMonsters.Add(bossMonster);
-                }
+                //if (bossMonster.Hp - damage <= 0 && !bossMonster.IsDead)
+                //{
+                //    GameManager.Instance.player.slainMonsters.Add(bossMonster);
+                //}
 
                 bossMonster.Attacked(damage);
 

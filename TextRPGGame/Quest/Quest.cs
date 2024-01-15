@@ -12,7 +12,8 @@ namespace TextRPGGame.Quest
 
 	public class Quest
 	{
-		
+		public Action action;
+		public string target = "";
 		public int id;
 		public int requireLevel;
         public string questName = "";
@@ -25,10 +26,11 @@ namespace TextRPGGame.Quest
 		public virtual void ShowQuestInfo() { }
 		public virtual void Reset() { }
 		public virtual void CheckCondition() { }
+        public virtual void CheckCondition(string name) { }
 
 
 
-		public virtual void Clear()
+        public virtual void Clear()
 		{
 			questState = QuestState.CLEAR;
 			ClearInfo();

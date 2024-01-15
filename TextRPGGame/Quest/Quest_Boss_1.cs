@@ -5,7 +5,7 @@ namespace TextRPGGame.Quest
 	{
         int clearCondition = 1;
         int current = 0;
-        string target;
+        
 
         public Quest_Boss_1()
         {
@@ -50,31 +50,20 @@ namespace TextRPGGame.Quest
 
 
         }
-        public override void CheckCondition()
+        public override void CheckCondition(string name)
         {
             base.CheckCondition();
-
-            if (GameManager.Instance.player.slainMonsters.Count > 0)
+            if (name.Contains(target))
             {
-                List<Monster> slainMonsters = GameManager.Instance.player.slainMonsters;
-                int count = 0;
-
-                foreach (Monster monster in slainMonsters)
-                {
-                    if (monster.Name.Contains(target))
-                    {
-                        count++;
-                    }
-                }
-                current = Math.Max(current, count);
-
-                if (current >= clearCondition)
-                {
-                    questState = QuestState.FINISH;
-                }
+                current++;
             }
 
+            if (current >= clearCondition)
+            {
+                questState = QuestState.FINISH;
+            }
         }
+        
     }
 }
 

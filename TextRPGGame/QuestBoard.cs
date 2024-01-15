@@ -251,6 +251,22 @@ public class QuestBoard
             }
         }
     }
+
+
+    public void Check_MonsterQuest(string name)
+    {
+        if(quests.Count > 0)
+        {
+            foreach (Quest quest in quests)
+            {
+                if (quest.questState == QuestState.PROGRESS && quest.target != "")
+                {
+                    quest.CheckCondition(name);
+                }
+            }
+        }
+       
+    }
 }
 
 
