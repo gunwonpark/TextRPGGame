@@ -104,6 +104,9 @@ namespace TextRPGGame
             Console.Write($"체 력 : ");
             Utill.WriteRedText($"{Hp}\n");
 
+            Console.Write($"마 나 : ");
+            Utill.WriteRedText($"{Mp}\n");
+
             Console.Write($"Gold : ");
             Utill.WriteRedText($"{Gold}");
             Console.WriteLine($" G\n");

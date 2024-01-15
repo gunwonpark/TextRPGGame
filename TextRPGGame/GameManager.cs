@@ -80,6 +80,7 @@ namespace TextRPGGame
             MainScene();
         }
 
+        // 메인 씬 활성화
         public void MainScene()
         {
             while (true)

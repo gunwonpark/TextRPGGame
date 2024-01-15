@@ -19,7 +19,7 @@ namespace TextRPGGame
         public BattleManager()
         {
             player = GameManager.Instance.player;
-            SpawnMonster();
+            //SpawnMonster();
         }
         public void StartBattle()
         {
@@ -49,6 +49,7 @@ namespace TextRPGGame
                     Victory(deadMonsterCount);
                     // 높은 던전으로 이동
                     GameManager.Instance.stage.Level++;
+                    // 메인 씬 활성화
                     GameManager.Instance.MainScene();
                     return;
                 }
@@ -56,6 +57,7 @@ namespace TextRPGGame
                 if (player.IsDead)
                 {
                     Lose();
+                    // 메인 씬 활성화
                     GameManager.Instance.MainScene();
                     return;
                 }
@@ -225,8 +227,6 @@ namespace TextRPGGame
 
                 if (GameManager.Instance.action == 0)
                 {
-                    // 확인해보기
-                    //StartBattle();
                     return;
                 }
 
@@ -247,6 +247,10 @@ namespace TextRPGGame
         void Victory(int deadMonsterCount, bool isBossRoom = false)
         {
             Console.Clear();
+
+            // 전투 종료시 Mp 10 회복
+            player.Mp += 10;
+
             Utill.WriteOrangeText("Battle!! - Result\n");
             Console.WriteLine();
 
@@ -271,13 +275,16 @@ namespace TextRPGGame
             Console.WriteLine($" {player.Name} ({player.Class})");
             Console.Write($"HP ");
             Utill.WriteRedText($"{player.MaxHp}");
-            Utill.WriteRedText($"/{player.Hp}\n\n");
+            Utill.WriteRedText($"/{player.Hp}\n");
             Console.Write($"MP ");
             Utill.WriteRedText($"{player.MaxMp}");
             Utill.WriteRedText($"/{player.Mp}\n\n");
 
             GameManager.Instance.potion.BattleRewardPotion(monsters);
             Console.WriteLine();
+
+            // 몬스터 리스트 초기화
+            monsters.Clear();
 
             Utill.WriteRedText("0. ");
             Console.WriteLine("다음");
@@ -288,6 +295,10 @@ namespace TextRPGGame
         void Lose()
         {
             Console.Clear();
+
+            // 전투 종료시 Mp 10 회복
+            player.Mp += 10;
+
             Utill.WriteOrangeText("Battle!! - Result\n");
             Console.WriteLine();
 
@@ -300,10 +311,13 @@ namespace TextRPGGame
             Console.WriteLine($" {player.Name} ({player.Class})");
             Console.Write($"HP ");
             Utill.WriteRedText($"{player.MaxHp}");
-                Utill.WriteRedText($"/{player.Hp}\n");
-                Console.Write($"MP ");
-                Utill.WriteRedText($"{player.MaxMp}");
-                Utill.WriteRedText($"/{player.Mp}\n\n");
+            Utill.WriteRedText($"/{player.Hp}\n");
+            Console.Write($"MP ");
+            Utill.WriteRedText($"{player.MaxMp}");
+            Utill.WriteRedText($"/{player.Mp}\n\n");
+
+            // 몬스터 리스트 초기화
+            monsters.Clear();
 
             Utill.WriteRedText("0. ");
             Console.WriteLine("다음");
