@@ -11,9 +11,15 @@ public class QuestBoard
     {
         quests = new List<Quest>();
         Quest_0 quest_0 = new Quest_0();
+        Quest_Boss_0 quest_Boss_0 = new Quest_Boss_0();
         Quest_1 quest_1 = new Quest_1();
+        Quest_2 quest_2 = new Quest_2();
+        Quest_Boss_1 quest_Boss_1 = new Quest_Boss_1();
         quests.Add(quest_0);
+        quests.Add(quest_Boss_0);
         quests.Add(quest_1);
+        quests.Add(quest_2);
+        quests.Add(quest_Boss_1);
     }
 
     public void QuestBoardManu()
