@@ -16,6 +16,7 @@ namespace TextRPGGame
         public string Name { get; set; }
         public ClassType Class { get; set; }
         public int Attack { get; set; }
+        [NonSerialized]
         public List<Monster> slainMonsters;
 
         public int Exp { get; set; }

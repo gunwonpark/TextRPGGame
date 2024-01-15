@@ -74,6 +74,8 @@ namespace TextRPGGame
                 Utill.WriteRedText($"{player.MaxMp}");
                 Utill.WriteRedText($"/{player.Mp}\n\n");
 
+                Utill.WriteRedText("0. ");
+                Console.WriteLine("도망 가기");
                 Utill.WriteRedText("1. ");
                 Console.WriteLine("공격");
                 Utill.WriteRedText("2. ");
@@ -84,13 +86,17 @@ namespace TextRPGGame
             {
                 Utill.WriteRedText("3. ");
                 Console.WriteLine("보스룸 입장");
-                GameManager.Instance.SetNextAction(1, 3);
+                GameManager.Instance.SetNextAction(0, 3);
             }
             else
-                GameManager.Instance.SetNextAction(1, 2);
+                GameManager.Instance.SetNextAction(0, 2);
 
                 switch (GameManager.Instance.action)
                 {
+                    case 0:
+                        // 도망가기
+                        Run();
+                        return;
                     // 1. 공격
                     case 1:
                         Battle();
@@ -107,6 +113,10 @@ namespace TextRPGGame
             }
         }
 
+        void Run()
+        {
+            monsters.Clear();
+        }
         void StartSkill()
         {
             SkillManager skillManager = new SkillManager();
@@ -286,6 +296,8 @@ namespace TextRPGGame
             // 몬스터 리스트 초기화
             monsters.Clear();
 
+            monsters.Clear();
+
             Utill.WriteRedText("0. ");
             Console.WriteLine("다음");
 
@@ -321,6 +333,8 @@ namespace TextRPGGame
 
             Utill.WriteRedText("0. ");
             Console.WriteLine("다음");
+
+            monsters.Clear();
 
             GameManager.Instance.SetNextAction(0, 0);
         }
