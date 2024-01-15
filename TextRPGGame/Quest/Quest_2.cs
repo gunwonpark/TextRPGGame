@@ -22,8 +22,16 @@ namespace TextRPGGame.Quest
         {
             base.ShowQuestInfo();
             Console.Write($" -  {target} ");
-            Utill.WriteRedText(clearCondition.ToString());
-            Console.Write(" 마리 처치 ");
+            if (questState == QuestState.CLEAR)
+            {
+                Console.Write(" - Clear -");
+            }
+            else
+            {
+                Utill.WriteRedText(clearCondition.ToString());
+                Console.Write(" 마리 처치 ");
+            }
+
             if (questState == QuestState.PROGRESS)
             {
                 Console.Write($"{current} / {clearCondition}");
