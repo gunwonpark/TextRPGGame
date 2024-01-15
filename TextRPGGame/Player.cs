@@ -16,6 +16,7 @@ namespace TextRPGGame
         public string Name { get; set; }
         public ClassType Class { get; set; }
         public int Attack { get; set; }
+        [NonSerialized]
         public List<Monster> slainMonsters;
 
         public int Exp { get; set; }
@@ -64,17 +65,44 @@ namespace TextRPGGame
             }
         }
         public int Gold { get; set; } = 1500;
-        public Player(string _name, ClassType _class, int _attack, int _defense, int _hp, int _mp)
+        public Player(string _name, ClassType _class)
         {
             Name = _name;
             Class = _class;
-            Attack = _attack;
-            Defense = _defense;
-            MaxHp = _hp;
-            hp = _hp;
             slainMonsters = new List<Monster>();
-            MaxMp = _mp;
-            mp = _mp;
+        }
+        public void InitializeClassStats()
+        {
+
+            switch (Class)
+            {
+                case ClassType.전사:
+                    Attack = 8;
+                    Defense = 10;
+                    MaxHp = 120;
+                    MaxMp = 50;
+                    break;
+                case ClassType.궁수:
+                    Attack = 10;
+                    Defense = 8;
+                    MaxHp = 100;
+                    MaxMp = 70;
+                    break;
+                case ClassType.마법사:
+                    Attack = 12;
+                    Defense = 6;
+                    MaxHp = 90;
+                    MaxMp = 120;
+                    break;
+                default:
+                    Attack = 8;
+                    Defense = 8;
+                    MaxHp = 80;
+                    MaxMp = 80;
+                    break;
+            }
+            // 초기 HP를 최대치로 설정
+            Hp = MaxHp;
         }
 
 
@@ -103,6 +131,9 @@ namespace TextRPGGame
 
             Console.Write($"체 력 : ");
             Utill.WriteRedText($"{Hp}\n");
+
+            Console.Write($"마 나 : ");
+            Utill.WriteRedText($"{Mp}\n");
 
             Console.Write($"Gold : ");
             Utill.WriteRedText($"{Gold}");

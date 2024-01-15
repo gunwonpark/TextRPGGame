@@ -43,7 +43,7 @@ namespace TextRPGGame
         {
             random = new Random();
             potion = new Potion();
-            player = new Player("", Player.ClassType.None, 10, 5, 100, 50);
+            player = new Player("", Player.ClassType.None);
             questBoard = new QuestBoard();
             stage = new Stage();
 
@@ -80,6 +80,7 @@ namespace TextRPGGame
             MainScene();
         }
 
+        // 메인 씬 활성화
         public void MainScene()
         {
             while (true)
@@ -168,6 +169,7 @@ namespace TextRPGGame
                     break;
             }
             player.Class = choice;
+            player.InitializeClassStats();
             return choice;
         }
 
