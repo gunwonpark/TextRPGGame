@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace TextRPGGame
 {
-    public class Utill
+    public static class Utill
     {
         public static void WriteRedText(string text)
         {
@@ -39,10 +36,38 @@ namespace TextRPGGame
             Console.ResetColor();
         }
 
+        public static string FormatNumber(this int number)
+        {
+            if (number == 0) return "";
+            return number > 0 ? $"(+{number})" : $"({number})";
+        }
 
+        public class ItemJsonConverter : JsonConverter
+        {
+            public override bool CanConvert(Type objectType)
+            {
+                return objectType == typeof(Item);
+            }
 
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                JObject item = JObject.Load(reader);
+                ItemType itemType = item["Type"].ToObject<ItemType>();
+                switch (itemType)
+                {
+                    case ItemType.Weapon:
+                        return item.ToObject<Weapon>();
+                    case ItemType.Shield:
+                        return item.ToObject<Shield>();
+                }
+                return null;
+            }
 
-
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                serializer.Serialize(writer, value);
+            }
+        }
 
         public static void PrintStartLogo()
         {

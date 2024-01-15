@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Numerics;
-using System.Text.Json.Serialization;
 using static TextRPGGame.Player;
 
 
@@ -22,7 +20,10 @@ namespace TextRPGGame
             Console.WriteLine("player데이터 저장중");
             try
             {
-                string json = JsonConvert.SerializeObject(GameManager.Instance.player, Formatting.Indented);
+                string json = JsonConvert.SerializeObject(GameManager.Instance.player, Formatting.Indented, new JsonSerializerSettings
+                {
+                    Converters = new List<JsonConverter> { new Utill.ItemJsonConverter() }
+                });
                 File.WriteAllText($"{playerDataPath}", json);
                 Console.WriteLine("Data saved successfully.\n");
             }
@@ -39,7 +40,10 @@ namespace TextRPGGame
                 {
                     string json = File.ReadAllText($"{playerDataPath}");
                     Console.WriteLine("데이터 복구중");
-                    return JsonConvert.DeserializeObject<Player>(json);
+                    return JsonConvert.DeserializeObject<Player>(json, new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new Utill.ItemJsonConverter() }
+                    });
                 }
                 else
                 {

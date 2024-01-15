@@ -66,6 +66,8 @@ namespace TextRPGGame
         public int Gold { get; set; } = 1500;
         public int EquipmentAttack { get; set; }
         public int EquipmentDefense { get; set; }
+
+        public List<Item> inventory;
         public Weapon equippedWeapon = null;
         public Shield equippedShield = null;
         public Player(string _name, ClassType _class)
@@ -73,6 +75,13 @@ namespace TextRPGGame
             Name = _name;
             Class = _class;
             slainMonsters = new List<Monster>();
+
+            // 인벤토리 test용
+            inventory = new List<Item>()
+            {
+                new Weapon("초보자 칼", "초보자에게 걸맞은 칼이다", 3, 200),
+                new Shield("초보자 방패", "초보자에게 걸맞은 방패이다", 2, 200)
+            };
         }
         public void InitializeClassStats()
         {
@@ -128,11 +137,10 @@ namespace TextRPGGame
             Console.Write($"{Name} ( {Class} )\n");            
 
             Console.Write("공격력 : ");
-            Utill.WriteRedText($"{Attack}\n");
+            Utill.WriteRedText($"{Attack} {EquipmentAttack.FormatNumber()}\n");
 
             Console.Write($"방어력 : ");
-            Utill.WriteRedText($"{Defense}\n");
-
+            Utill.WriteRedText($"{Defense} {EquipmentDefense.FormatNumber()}\n");
             Console.Write($"체 력 : ");
             Utill.WriteRedText($"{Hp}\n");
 
@@ -142,6 +150,16 @@ namespace TextRPGGame
             Console.Write($"Gold : ");
             Utill.WriteRedText($"{Gold}");
             Console.WriteLine($" G\n");
+        }
+        public void ShowInventroy()
+        {
+
+            Console.WriteLine("[아이템 목록]\n");
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                Utill.WriteRedText($"{i + 1} ");
+                inventory[i].ItemInfo();
+            }
         }
         public enum ClassType
         {

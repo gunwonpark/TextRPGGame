@@ -35,13 +35,11 @@ namespace TextRPGGame
         public int action;
         public List<Skill> skills;
         public Potion potion;
-        private Random random;
         public QuestBoard questBoard;
 
         public Stage stage;
         public GameManager()
         {
-            random = new Random();
             potion = new Potion();
             player = new Player("", Player.ClassType.None);
             questBoard = new QuestBoard();
@@ -126,10 +124,6 @@ namespace TextRPGGame
                 }
             }
         }
-        void Init()
-        {
-
-        }
         void SaveAndQuit()
         {
             // bin/Debug/net6.0폴더 안에 생성
@@ -188,9 +182,48 @@ namespace TextRPGGame
 
             Utill.WriteRedText("0. ");
             Console.WriteLine("나가기");
-            SetNextAction(0, 0);
-        }
 
+            Utill.WriteRedText("1. ");
+            Console.WriteLine("장비 관리");
+
+            SetNextAction(0, 1);
+            switch (action)
+            {
+                case 0:
+                    break;
+                case 1:
+                    EquipmentManager();
+                    break;
+            }
+        }
+        void EquipmentManager()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("\n장착하고 싶은 아이템은 선택하세요\n");
+
+                player.ShowInventroy();
+
+                Console.WriteLine("0. 나가기");
+
+                SetNextAction(0, player.inventory.Count);
+
+                if (action == 0) break;
+
+                // 아이템 장착
+                EquipItem(action - 1);
+            }
+        }
+        void EquipItem(int itemNumber)
+        {
+            IEquipable equipableItem = (IEquipable)player.inventory[itemNumber];
+
+            if (equipableItem.IsEquiped)
+                equipableItem.UnEquip(player);
+            else
+                equipableItem.Equip(player);            
+        }
         void StartBattle()
         {
             monsters = stage.CreateMonster();
