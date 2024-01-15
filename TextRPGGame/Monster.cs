@@ -30,8 +30,11 @@ namespace TextRPGGame
         {
             get
             {
-                if (Hp <= 0)  
+                if (Hp <= 0)
+                {
+                    GameManager.Instance.questBoard.Check_MonsterQuest(Name);
                     return true;
+                } 
                 else
                     return false;
             } 
