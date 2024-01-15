@@ -26,6 +26,12 @@ namespace TextRPGGame
             Console.Write($"{text}");
             Console.ResetColor();
         }
+        public static void WriteDarkBlueText(string text)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write($"{text}");
+            Console.ResetColor();
+        }
         public static void WriteGreenText(string text)
         {
             Console.ForegroundColor = ConsoleColor.Green;

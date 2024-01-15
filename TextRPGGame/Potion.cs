@@ -17,8 +17,8 @@ namespace TextRPGGame
 		{
             hpPotionCount = 3;
             hpAmount = 30;
-            //mpPotionCount = 3;
-            //mpAmount = 30;
+            mpPotionCount = 3;
+            mpAmount = 20;
         }
 
 
@@ -29,7 +29,9 @@ namespace TextRPGGame
             Utill.WriteOrangeText("회복\n");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine($"포션을 사용하면 체력을 {hpAmount} 회복할 수 있습니다. (남은 포션 : {hpPotionCount})");
+            Console.WriteLine($"포션을 사용하면 체력 / 마나를 회복할 수 있습니다.");
+            Console.WriteLine($" (HP 포션 : {hpPotionCount}) ");
+            Console.WriteLine($" (MP 포션 : {mpPotionCount}) ");
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("[내정보]");
@@ -38,10 +40,16 @@ namespace TextRPGGame
             Console.Write(" / ");
             Utill.WriteRedText(GameManager.Instance.player.MaxHp.ToString());
             Console.WriteLine();
+            Console.Write("MP ");
+            Utill.WriteDarkBlueText(GameManager.Instance.player.Mp.ToString());
+            Console.Write(" / ");
+            Utill.WriteBlueText(GameManager.Instance.player.MaxMp.ToString());
+            Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine("1. 사용하기");
-            Console.WriteLine("2. 나가기");
+            Console.WriteLine("1. HP 포션 사용하기");
+            Console.WriteLine("2. MP 포션 사용하기");
+            Console.WriteLine("0. 나가기");
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("원하시는 행동을 입력해 주세요.");
@@ -79,6 +87,32 @@ namespace TextRPGGame
                     }
                     break;
                 case "2":
+                    if (mpPotionCount > 0)
+                    {
+                        if (GameManager.Instance.player.Mp == GameManager.Instance.player.MaxMp)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("이미 마나가 꽉 차있습니다");
+                            PotionManu();
+                        }
+                        else
+                        {
+                            mpPotionCount--;
+                            GameManager.Instance.player.Mp += mpAmount;
+                            Console.Clear();
+                            Console.WriteLine("회복을 완료했습니다.");
+                            PotionManu();
+                        }
+
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("포션이 부족합니다.");
+                        PotionManu();
+                    }
+                    break;
+                case "0":
                     Console.Clear();
                     break;
                 default:
@@ -95,24 +129,35 @@ namespace TextRPGGame
         {
             Random random = new Random();
             int len = monsters.Count;
-            int rewoardAmount = 0;
+            int rewoardHpAmount = 0;
+            int rewoardMpAmount = 0;
             for (int i = 0; i < len; i++)
             {
-                int percent = random.Next(0, 101);
-                if(percent <= 60)
+                int hPpercent = random.Next(0, 101);
+                int mPpercent = random.Next(0, 101);
+                if (hPpercent <= 60)
                 {
                     int amount = random.Next(1, 3);
-                    rewoardAmount+=amount;
+                    rewoardHpAmount+=amount;
+                }
+                if (mPpercent <= 40)
+                {
+                    int amount = random.Next(1, 3);
+                    rewoardMpAmount += amount;
                 }
             }
 
-            hpPotionCount += rewoardAmount;
+            hpPotionCount += rewoardHpAmount;
+            mpPotionCount += rewoardMpAmount;
 
-            if(rewoardAmount > 0)
+            if(rewoardHpAmount > 0)
             {
-            Console.Write($"Hp 회복 포션 x{rewoardAmount} 획득\n");
+                Console.Write($"Hp 포션 x{rewoardHpAmount} 획득\n");
             }
-            
+            if(rewoardMpAmount > 0)
+            {
+                Console.Write($"Mp 포션 x{rewoardMpAmount} 획득\n");
+            }
         }
     }
 }
