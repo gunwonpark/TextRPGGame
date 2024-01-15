@@ -44,13 +44,13 @@ namespace TextRPGGame
                 else
                 {
                     Console.WriteLine("저장된 파일 없음");
-                    return new Player("???????", ClassType.전사, 10, 5, 100);
+                    return new Player("???????", ClassType.None);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error Load data: {ex.Message}");
-                return new Player("???????", ClassType.전사, 10, 5, 100);
+                return new Player("???????", ClassType.None);
             }
         }
 

@@ -42,7 +42,7 @@ namespace TextRPGGame
         {
             random = new Random();
             potion = new Potion();
-            player = new Player("", Player.ClassType.None, 10, 5, 100);
+            player = new Player("", Player.ClassType.None);
             questBoard = new QuestBoard();
             stage = new Stage();
         }
