@@ -60,7 +60,7 @@ namespace TextRPGGame
                 Utill.WriteRedText("1. ");
                 Console.WriteLine("상태 보기");
                 Utill.WriteRedText("2. ");
-                Console.WriteLine("전투 시작");
+                Console.WriteLine($"전투 시작 ({stage.Level}층)");
                 Utill.WriteRedText("3. ");
                 Console.WriteLine("회복 아이템");
 
