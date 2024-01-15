@@ -152,25 +152,31 @@ namespace TextRPGGame
             Console.WriteLine("[1] 전사");
             Console.WriteLine("[2] 궁수");
             Console.WriteLine("[3] 마법사");
-
             Player.ClassType choice = Player.ClassType.None;
-            string input = Console.ReadLine();
-
-            switch (input)
+            while (true)
             {
-                case "1":
-                    choice = Player.ClassType.전사;
-                    break;
-                case "2":
-                    choice = Player.ClassType.궁수;
-                    break;
-                case "3":
-                    choice = Player.ClassType.마법사;
-                    break;
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        choice = Player.ClassType.전사;
+                        break;
+                    case "2":
+                        choice = Player.ClassType.궁수;
+                        break;
+                    case "3":
+                        choice = Player.ClassType.마법사;
+                        break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        continue;
+                }
+
+                player.Class = choice;
+                player.InitializeClassStats();
+                return choice;
             }
-            player.Class = choice;
-            player.InitializeClassStats();
-            return choice;
         }
 
         void ShowStatus()
