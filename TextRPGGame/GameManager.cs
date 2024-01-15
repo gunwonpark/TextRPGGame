@@ -36,7 +36,7 @@ namespace TextRPGGame
         public List<Skill> skills;
         public Potion potion;
         public QuestBoard questBoard;
-
+        public Merchant merchant;
         public Stage stage;
         public GameManager()
         {
@@ -44,7 +44,7 @@ namespace TextRPGGame
             player = new Player("", Player.ClassType.None);
             questBoard = new QuestBoard();
             stage = new Stage();
-
+            merchant = new Merchant();
             skills = new List<Skill>
             {
                 new Skill("알파 스트라이크", 10, 2, 1),
@@ -98,9 +98,11 @@ namespace TextRPGGame
                 Utill.WriteRedText("4. ");
                 Console.WriteLine("퀘스트");
 
+                Utill.WriteRedText("5. ");
+                Console.WriteLine("상점");
 
                 // 원하는 행동 선택
-                SetNextAction(0, 4);
+                SetNextAction(0, 5);
 
                 switch (action)
                 {
@@ -120,6 +122,10 @@ namespace TextRPGGame
                     case 4:
                         Console.Clear();
                         questBoard.QuestBoardManu();
+                        break;
+                    case 5:
+                        Console.Clear();
+                        merchant.MerchantMenu();
                         break;
                 }
             }

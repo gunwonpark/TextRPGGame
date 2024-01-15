@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -14,6 +15,12 @@ namespace TextRPGGame
         public ItemType Type => ItemType.Weapon;
         public int Price { get; set; }
         public virtual void ItemInfo() { }
+        public bool isSell;
+
+        public void IsSell()
+        {
+            isSell = !isSell;
+        }
     }
 
     interface IEquipable
@@ -79,6 +86,13 @@ namespace TextRPGGame
             string equipStatus = IsEquiped ? "[E] " : "";
             Console.WriteLine($"{equipStatus}{Name} | 공격력 {Attack} | {Description}"); 
         }
+
+        public Weapon Clone()
+        {
+            Weapon weapon = new Weapon(Name, Description, Attack, Price);
+            return weapon;
+        }
+
     }
     class Shield : Item, IEquipable
     {
@@ -132,6 +146,11 @@ namespace TextRPGGame
         {
             string equipStatus = IsEquiped ? "[E] " : "";
             Console.WriteLine($"{equipStatus}{Name} | 방어력 {Defense} | {Description}"); 
+        }
+        public Shield Clone()
+        {
+            Shield shield = new Shield(Name, Description, Defense, Price);
+            return shield;
         }
     }
     enum ItemType
