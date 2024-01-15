@@ -60,6 +60,7 @@ namespace TextRPGGame
                     break;
                 case "2":
                     Console.Clear();
+                    MerchantShieldMenu();
                     break;
                 case "3":
                     Console.Clear();
@@ -164,6 +165,98 @@ namespace TextRPGGame
                     Console.Clear();
                     WrongInput();
                     MerchantWeaponMenu();
+                    break;
+
+            }
+
+        }
+        void MerchantShieldMenu()
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("상점 - 아이템 구매");
+            Console.ResetColor();
+            Console.WriteLine();
+            Console.WriteLine("자네에게 맞는 장비를 골라 보시게.. 물론...꽁짜는 아닐세.");
+            Console.WriteLine();
+            Console.WriteLine("[보유 골드]");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(GameManager.Instance.player.Gold);
+            Console.ResetColor();
+            Console.WriteLine(" G");
+            Console.WriteLine();
+
+            Console.WriteLine("[아이탬 목록]");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("-----------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+            Console.WriteLine();
+
+            foreach (Shield item in shields)
+            {
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("- ");
+                Console.ResetColor();
+                Console.Write(item.Name + "\t");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("\t| ");
+                Console.ResetColor();
+
+                Console.Write("방어력 ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("+");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.Write(item.Defense);
+                Console.ResetColor();
+
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("\t| ");
+                Console.ResetColor();
+                Console.Write(item.Description);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(" | ");
+                Console.ResetColor();
+                if (item.isSell)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(" 구매 완료");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write(item.Price);
+                    Console.ResetColor();
+                    Console.Write(" G\n");
+                }
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("-----------------------------------------------------------------------------------------------------");
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Console.WriteLine("1.아이템 구매");
+            Console.WriteLine("0.나가기");
+            NextActionMessage();
+            string select = Console.ReadLine();
+            switch (select)
+            {
+                case "1":
+                    Console.Clear();
+                    MerchantShieldManagementMenu();
+                    break;
+                case "0":
+                    Console.Clear();
+                    MerchantMenu();
+                    break;
+                default:
+                    Console.Clear();
+                    WrongInput();
+                    MerchantShieldMenu();
                     break;
 
             }
@@ -287,7 +380,123 @@ namespace TextRPGGame
             }
 
         }
+        void MerchantShieldManagementMenu()
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("상점 - 아이템 구매");
+            Console.ResetColor();
+            Console.WriteLine();
+            Console.WriteLine("돈은 있는가.");
+            Console.WriteLine();
+            Console.WriteLine("[보유 골드]");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(GameManager.Instance.player.Gold);
+            Console.ResetColor();
+            Console.WriteLine(" G");
+            Console.WriteLine();
 
+            Console.WriteLine("[아이탬 목록]");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("-----------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+            Console.WriteLine();
+            int idx = 1;
+            foreach (Shield item in shields)
+            {
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"{idx}. ");
+                Console.ResetColor();
+                Console.Write(item.Name + "\t");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("\t| ");
+                Console.ResetColor();
+
+                Console.Write("방어력 ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("+");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.Write(item.Defense);
+                Console.ResetColor();
+
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("\t| ");
+                Console.ResetColor();
+                Console.Write(item.Description);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(" | ");
+                Console.ResetColor();
+                if (item.isSell)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(" 구매 완료");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write(item.Price);
+                    Console.ResetColor();
+                    Console.Write(" G\n");
+                }
+
+                idx++;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("-----------------------------------------------------------------------------------------------------");
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Console.WriteLine("0.나가기");
+            NextActionMessage();
+            string select = Console.ReadLine();
+            if (int.TryParse(select, out int number) && number - 1 < shields.Count && number > 0)
+            {
+                if (!shields[number - 1].isSell)
+                {
+                    if (GameManager.Instance.player.Gold < shields[number - 1].Price)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("돈이 부족합니다.");
+                        MerchantShieldManagementMenu();
+                    }
+                    else
+                    {
+                        shields[number - 1].IsSell();
+                        Shield shield = shields[number - 1].Clone();
+                        GameManager.Instance.player.Gold -= shields[number - 1].Price;
+                        GameManager.Instance.player.inventory.Add(shield);
+                        MerchantShieldManagementMenu();
+                    }
+
+                }
+                else
+                {
+                    Console.Clear();
+                    Utill.WriteRedText("이미 팔린 물품 입니다.\n");
+                    MerchantShieldManagementMenu();
+                }
+            }
+            else
+            {
+                if (number == 0)
+                {
+                    Console.Clear();
+                    MerchantShieldMenu();
+                }
+                else
+                {
+                    Console.Clear();
+                    WrongInput();
+                    MerchantShieldManagementMenu();
+                }
+
+            }
+
+        }
 
 
 
