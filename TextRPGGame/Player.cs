@@ -11,6 +11,7 @@ namespace TextRPGGame
     {
         // 스텟
         int hp;
+        int mp;
         public int Level { get; set; } = 1;
         public string Name { get; set; }
         public ClassType Class { get; set; }
@@ -51,8 +52,19 @@ namespace TextRPGGame
 
             }
         }
+        public int MaxMp { get; set; }
+        public int Mp
+        {
+            get { return mp; }
+            set
+            {
+                mp = value;
+                if (mp < 0) mp = 0;
+                if (value > MaxMp) mp = MaxMp;
+            }
+        }
         public int Gold { get; set; } = 1500;
-        public Player(string _name, ClassType _class, int _attack, int _defense, int _hp)
+        public Player(string _name, ClassType _class, int _attack, int _defense, int _hp, int _mp)
         {
             Name = _name;
             Class = _class;
@@ -61,6 +73,8 @@ namespace TextRPGGame
             MaxHp = _hp;
             hp = _hp;
             slainMonsters = new List<Monster>();
+            MaxMp = _mp;
+            mp = _mp;
         }
 
 
@@ -68,6 +82,12 @@ namespace TextRPGGame
         {
             Hp -= damage;
         }
+
+        public void UseSkill(int skillMp)
+        {
+            Mp -= skillMp;
+        }
+
         public void ShowStatus()
         {
             Console.Write($"Lv. ");

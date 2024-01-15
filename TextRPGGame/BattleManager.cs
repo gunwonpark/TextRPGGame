@@ -11,8 +11,10 @@ namespace TextRPGGame
 {
     internal class BattleManager
     {
+        public static BattleManager battleManager = new BattleManager();
+
         Player player;
-        List<Monster> monsters = new List<Monster>();
+        public List<Monster> monsters = new List<Monster>();
         Monster bossMonster = GameManager.Instance.stage.boss;
         public BattleManager()
         {
@@ -21,51 +23,7 @@ namespace TextRPGGame
         }
         public void StartBattle()
         {
-            Console.Clear();
-            Utill.WriteOrangeText("Battle!!\n");
-            Console.WriteLine();
-
-            // 몬스터 정보 표시
-            for (int i = 0; i < monsters.Count; i++)
-            {
-                monsters[i].ShowStatus();
-            }
-
-            // 플레이어 정보 표시
-            Console.WriteLine("\n[내정보]");
-            Console.Write($"Lv. ");
-            Utill.WriteRedText($"{player.Level}");
-            Console.WriteLine($" {player.Name} ({player.Class})");
-            Console.Write($"HP ");
-            Utill.WriteRedText($"{player.MaxHp}");
-            Utill.WriteRedText($"/{player.Hp}\n\n");
-
-            Utill.WriteRedText("1. ");
-            Console.WriteLine("공격");
-
-            // 특정 레벨 이상일 경우 보스룸 해금
-            if(player.Level >= bossMonster.Level - 6)
-            {
-                Utill.WriteRedText("2. ");
-                Console.WriteLine("보스룸 입장");
-                GameManager.Instance.SetNextAction(1, 2);
-            }
-            else
-                GameManager.Instance.SetNextAction(1, 1);
-
-            switch (GameManager.Instance.action)
-            {
-                case 1:
-                    Battle();
-                    break;
-                case 2:
-                    BossBattle();
-                    break;
-            }
-        }
-        void Battle()
-        {
-            while (true)
+            while(true)
             {
                 Console.Clear();
                 Utill.WriteOrangeText("Battle!!\n");
@@ -82,7 +40,6 @@ namespace TextRPGGame
                         deadMonsterCount++;
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                     }
-                    Console.Write($"{i + 1} ");
                     monsters[i].ShowStatus();
                 }
 
@@ -90,14 +47,19 @@ namespace TextRPGGame
                 if (deadMonsterCount == monsters.Count)
                 {
                     Victory(deadMonsterCount);
+                    // 높은 던전으로 이동
+                    GameManager.Instance.stage.Level++;
+                    GameManager.Instance.MainScene();
                     return;
                 }
                 // 내 체력이 0이되면 게임종료
                 if (player.IsDead)
                 {
                     Lose();
+                    GameManager.Instance.MainScene();
                     return;
                 }
+
                 // 플레이어 정보 표시
                 Console.WriteLine("\n[내정보]");
                 Console.Write($"Lv. ");
@@ -105,7 +67,81 @@ namespace TextRPGGame
                 Console.WriteLine($" {player.Name} ({player.Class})");
                 Console.Write($"HP ");
                 Utill.WriteRedText($"{player.MaxHp}");
-                Utill.WriteRedText($"/{player.Hp}\n\n");
+                Utill.WriteRedText($"/{player.Hp}\n");
+                Console.Write($"MP ");
+                Utill.WriteRedText($"{player.MaxMp}");
+                Utill.WriteRedText($"/{player.Mp}\n\n");
+
+                Utill.WriteRedText("1. ");
+                Console.WriteLine("공격");
+                Utill.WriteRedText("2. ");
+                Console.WriteLine("스킬");
+
+            // 특정 레벨 이상일 경우 보스룸 해금
+            if(player.Level >= bossMonster.Level - 6)
+            {
+                Utill.WriteRedText("3. ");
+                Console.WriteLine("보스룸 입장");
+                GameManager.Instance.SetNextAction(1, 3);
+            }
+            else
+                GameManager.Instance.SetNextAction(1, 2);
+
+                switch (GameManager.Instance.action)
+                {
+                    // 1. 공격
+                    case 1:
+                        Battle();
+                        break;
+                    // 2. 스킬
+                    case 2:
+                        StartSkill();
+                        break;
+                    // 3. 보스룸
+                    case 3:
+                        BossBattle();
+                        break;
+                }
+            }
+        }
+
+        void StartSkill()
+        {
+            SkillManager skillManager = new SkillManager();
+            skillManager.StartSkill();
+        }
+
+        void Battle()
+        {
+            //while (true)
+            {
+                Console.Clear();
+                Utill.WriteOrangeText("Battle!!\n");
+                Console.WriteLine();
+
+                // 몬스터 정보 표시
+                for (int i = 0; i < monsters.Count; i++)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    if (monsters[i].IsDead)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    }
+                    Console.Write($"{i + 1} ");
+                    monsters[i].ShowStatus();
+                }
+
+                // 플레이어 정보 표시
+                Console.WriteLine("\n[내정보]");
+                Console.Write($"Lv. ");
+                Utill.WriteRedText($"{player.Level}");
+                Console.WriteLine($" {player.Name} ({player.Class})");
+                Console.Write($"HP ");
+                Utill.WriteRedText($"{player.MaxHp}");
+                Utill.WriteRedText($"/{player.Hp}\n");
+                Console.Write($"MP ");
+                Utill.WriteRedText($"{player.MaxMp}");
+                Utill.WriteRedText($"/{player.Mp}\n\n");
 
                 Utill.WriteRedText("0. ");
                 Console.WriteLine("취소");
@@ -114,7 +150,8 @@ namespace TextRPGGame
 
                 if (GameManager.Instance.action == 0)
                 {
-                    return;
+                    StartBattle();
+                    //return;
                 }
 
                 // 몬스터 선택
@@ -174,7 +211,10 @@ namespace TextRPGGame
                 Console.WriteLine($" {player.Name} ({player.Class})");
                 Console.Write($"HP ");
                 Utill.WriteRedText($"{player.MaxHp}");
-                Utill.WriteRedText($"/{player.Hp}\n\n");
+                Utill.WriteRedText($"/{player.Hp}\n");
+                Console.Write($"MP ");
+                Utill.WriteRedText($"{player.MaxMp}");
+                Utill.WriteRedText($"/{player.Mp}\n\n");
 
                 Utill.WriteRedText("0. ");
                 Console.WriteLine("도망가기");
@@ -185,6 +225,8 @@ namespace TextRPGGame
 
                 if (GameManager.Instance.action == 0)
                 {
+                    // 확인해보기
+                    //StartBattle();
                     return;
                 }
 
@@ -230,6 +272,10 @@ namespace TextRPGGame
             Console.Write($"HP ");
             Utill.WriteRedText($"{player.MaxHp}");
             Utill.WriteRedText($"/{player.Hp}\n\n");
+            Console.Write($"MP ");
+            Utill.WriteRedText($"{player.MaxMp}");
+            Utill.WriteRedText($"/{player.Mp}\n\n");
+
             GameManager.Instance.potion.BattleRewardPotion(monsters);
             Console.WriteLine();
 
@@ -238,6 +284,7 @@ namespace TextRPGGame
 
             GameManager.Instance.SetNextAction(0, 0);
         }
+
         void Lose()
         {
             Console.Clear();
@@ -253,7 +300,10 @@ namespace TextRPGGame
             Console.WriteLine($" {player.Name} ({player.Class})");
             Console.Write($"HP ");
             Utill.WriteRedText($"{player.MaxHp}");
-            Utill.WriteRedText($"/{player.Hp}\n\n");
+                Utill.WriteRedText($"/{player.Hp}\n");
+                Console.Write($"MP ");
+                Utill.WriteRedText($"{player.MaxMp}");
+                Utill.WriteRedText($"/{player.Mp}\n\n");
 
             Utill.WriteRedText("0. ");
             Console.WriteLine("다음");
@@ -261,7 +311,7 @@ namespace TextRPGGame
             GameManager.Instance.SetNextAction(0, 0);
         }
 
-        void PlayerAttackResultMessage(Monster monster, int damage)
+        public void PlayerAttackResultMessage(Monster monster, int damage)
         {
             Console.Clear();
             Utill.WriteOrangeText("Battle!!\n");
@@ -316,7 +366,8 @@ namespace TextRPGGame
             player.Attacked(bossMonster.Attack);
             MonsterAttackResultMessage(bossMonster, bossMonster.Attack);
         }
-        void MonsterAttack()
+
+        public void MonsterAttack()
         {
             foreach (Monster monster in monsters)
             {
@@ -357,7 +408,7 @@ namespace TextRPGGame
 
             GameManager.Instance.SetNextAction(0, 0);
         }
-        void SpawnMonster()
+        public void SpawnMonster()
         {
             int monsterCount = new Random().Next(1, 5);
             for (int i = 0; i < monsterCount; i++)

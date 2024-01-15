@@ -33,6 +33,7 @@ namespace TextRPGGame
         public Player player;
         public List<Monster> monsters;
         public int action;
+        public List<Skill> skills;
         public Potion potion;
         private Random random;
         public QuestBoard questBoard;
@@ -42,14 +43,21 @@ namespace TextRPGGame
         {
             random = new Random();
             potion = new Potion();
-            player = new Player("", Player.ClassType.None, 10, 5, 100);
+            player = new Player("", Player.ClassType.None, 10, 5, 100, 50);
             questBoard = new QuestBoard();
             stage = new Stage();
+
+            skills = new List<Skill>
+            {
+                new Skill("알파 스트라이크", 10, 2, 1),
+                new Skill("더블 스트라이크", 15, 1.5f, 2)
+            };
         }
 
         public void GameStart()
         {
             Utill.PrintStartLogo();
+
             Console.Clear();
             Utill.WriteRedText("1. ");
             Console.WriteLine("새로 시작");
@@ -69,7 +77,11 @@ namespace TextRPGGame
                     break;
             }
             
+            MainScene();
+        }
 
+        public void MainScene()
+        {
             while (true)
             {
                 Console.Clear();
@@ -174,8 +186,10 @@ namespace TextRPGGame
         void StartBattle()
         {
             monsters = stage.CreateMonster();
-            BattleManager battleManager = new BattleManager();
-            battleManager.StartBattle();
+            //BattleManager battleManager = new BattleManager();
+            //battleManager.StartBattle();
+            BattleManager.battleManager.SpawnMonster();
+            BattleManager.battleManager.StartBattle();
         }
 
         
