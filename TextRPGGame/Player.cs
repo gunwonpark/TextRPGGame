@@ -18,7 +18,6 @@ namespace TextRPGGame
         public int Attack { get; set; }
         [NonSerialized]
         public List<Monster> slainMonsters;
-
         public int Exp { get; set; }
         public bool IsDead
         {
@@ -65,6 +64,10 @@ namespace TextRPGGame
             }
         }
         public int Gold { get; set; } = 1500;
+        public int EquipmentAttack { get; set; }
+        public int EquipmentDefense { get; set; }
+        public Weapon equippedWeapon = null;
+        public Shield equippedShield = null;
         public Player(string _name, ClassType _class)
         {
             Name = _name;
