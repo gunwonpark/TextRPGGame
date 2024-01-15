@@ -101,8 +101,9 @@ namespace TextRPGGame
                     MaxMp = 80;
                     break;
             }
-            // 초기 HP를 최대치로 설정
+            // 초기 HP, Mp를 최대치로 설정
             Hp = MaxHp;
+            Mp = MaxMp;
         }
 
 
