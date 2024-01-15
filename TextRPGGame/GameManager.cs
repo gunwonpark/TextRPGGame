@@ -156,6 +156,7 @@ namespace TextRPGGame
                     break;
             }
             player.Class = choice;
+            player.InitializeClassStats();
             return choice;
         }
 

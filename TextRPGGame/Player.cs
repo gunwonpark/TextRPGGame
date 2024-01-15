@@ -57,11 +57,11 @@ namespace TextRPGGame
             Name = _name;
             Class = _class;
 
-            InitializeClassStats();
+            // InitializeClassStats();
 
             slainMonsters = new List<Monster>();
         }
-        private void InitializeClassStats()
+        public void InitializeClassStats()
         {
 
             switch (Class)
