@@ -33,10 +33,10 @@ namespace TextRPGGame
 
     class Weapon : Item, IEquipable
     {
-        public string Name { get; set; }
+        //public string Name { get; set; }
         public string Description { get; set; }
         public ItemType Type => ItemType.Weapon;
-        public int Price { get; set; }
+        //public int Price { get; set; }
         public bool IsEquiped { get; set; }
         public int Attack { get; set; }
         public Weapon(string _name, string _description, int _attack, int _price)
@@ -96,10 +96,10 @@ namespace TextRPGGame
     }
     class Shield : Item, IEquipable
     {
-        public string Name { get; set; }
+        //public string Name { get; set; }
         public string Description { get; set; }
         public ItemType Type => ItemType.Shield;
-        public int Price { get; set; }
+        //public int Price { get; set; }
         public bool IsEquiped { get; set; }
         public int Defense { get; set; }
         public Shield(string _name, string _description, int _defense, int _price)

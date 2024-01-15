@@ -64,7 +64,7 @@ namespace TextRPGGame
                     break;
                 case "3":
                     Console.Clear();
-
+                    MerchantEquipSellManagement();
                     break;
                 case "0":
                     Console.Clear();
@@ -500,7 +500,140 @@ namespace TextRPGGame
 
 
 
+        void MerchantEquipSellManagement()
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("상점 - 아이템 판매");
+            Console.ResetColor();
+            Console.WriteLine();
+            Console.WriteLine("흠... 무엇을 팔텐가..");
+            Console.WriteLine();
+            Console.WriteLine("[보유 골드]");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(GameManager.Instance.player.Gold);
+            Console.ResetColor();
+            Console.WriteLine(" G");
+            Console.WriteLine();
+            Console.WriteLine("[아이탬 목록]");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("-----------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+            Console.WriteLine();
+            int idx = 1;
+            foreach (Item item in GameManager.Instance.player.inventory)
+            {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(idx + ". ");
+                    Console.ResetColor();
+                    Console.Write(item.Name + "\t");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("\t| ");
+                    Console.ResetColor();
 
+                    if (item is Weapon)
+                    {
+                        Weapon weapon =(Weapon)item;
+                        Console.Write("공격력 ");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("+");
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.Write(weapon.Attack);
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Shield shield = (Shield)item;
+                        Console.Write("방어력 ");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("+");
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.Write(shield.Defense);
+                        Console.ResetColor();
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("\t| ");
+                    Console.ResetColor();
+                    Console.Write(item.Description);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(" | ");
+                    Console.ResetColor();
+                    Console.Write("판매 금액 :");
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write(item.Price * 0.85f);
+                    Console.ResetColor();
+                    Console.Write(" G\n");
+
+                    idx++;
+
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.Write("-----------------------------------------------------------------------------------------------------");
+                    Console.ResetColor();
+                    Console.WriteLine();
+
+            }
+            Console.WriteLine();
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine();
+            NextActionMessage();
+            string select = Console.ReadLine();
+            if (int.TryParse(select, out int number) && number - 1 < GameManager.Instance.player.inventory.Count)
+            {
+                if (number != 0)
+                {
+                    if (GameManager.Instance.player.inventory[number-1] is Weapon)
+                    {
+                        Weapon weapon = (Weapon)GameManager.Instance.player.inventory[number - 1];
+                        if (weapon.IsEquiped)
+                        {
+                            weapon.UnEquip(GameManager.Instance.player);
+                            GameManager.Instance.player.Gold += (int)(GameManager.Instance.player.inventory[number - 1].Price * 0.85f);
+                            GameManager.Instance.player.inventory.RemoveAt(number - 1);
+                        }
+                        else
+                        {
+                            GameManager.Instance.player.Gold += (int)(GameManager.Instance.player.inventory[number - 1].Price * 0.85f);
+                            GameManager.Instance.player.inventory.RemoveAt(number - 1);
+                        }
+                        Console.Clear();
+                        MerchantEquipSellManagement();
+                    }
+                    else
+                    {
+                        Shield weapon = (Shield)GameManager.Instance.player.inventory[number - 1];
+                        if (weapon.IsEquiped)
+                        {
+                            weapon.UnEquip(GameManager.Instance.player);
+                            GameManager.Instance.player.Gold += (int)(GameManager.Instance.player.inventory[number - 1].Price * 0.85f);
+                            GameManager.Instance.player.inventory.RemoveAt(number - 1);
+                        }
+                        else
+                        {
+                            GameManager.Instance.player.Gold += (int)(GameManager.Instance.player.inventory[number - 1].Price * 0.85f);
+                            GameManager.Instance.player.inventory.RemoveAt(number - 1);
+                        }
+                        Console.Clear();
+                        MerchantEquipSellManagement();
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    MerchantMenu();
+                }
+
+            }
+            else
+            {
+                Console.Clear();
+                WrongInput();
+                MerchantEquipSellManagement();
+            }
+
+        }
 
 
 
