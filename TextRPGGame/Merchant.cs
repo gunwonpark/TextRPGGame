@@ -78,6 +78,7 @@ namespace TextRPGGame
 
         }
 
+        #region Menu
         void MerchantWeaponMenu()
         {
             Console.WriteLine();
@@ -262,7 +263,8 @@ namespace TextRPGGame
             }
 
         }
-
+        #endregion
+        #region Management
         void MerchantWeaponManagementMenu()
         {
             Console.WriteLine();
@@ -497,8 +499,7 @@ namespace TextRPGGame
             }
 
         }
-
-
+        #endregion
 
         void MerchantEquipSellManagement()
         {
