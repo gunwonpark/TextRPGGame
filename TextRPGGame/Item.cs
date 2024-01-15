@@ -13,10 +13,18 @@ namespace TextRPGGame
         public string Description { get; set; }
         public ItemType Type => ItemType.Weapon;
         public int Price { get; set; }
-        public bool IsEquiped { get; set; }
+        public virtual void ItemInfo() { }
     }
 
-    class Weapon : Item
+    interface IEquipable
+    {
+        public bool IsEquiped { get; set; }
+        public void Equip(Player player) { }
+        public void UnEquip(Player player) { }
+        public void UpdateStatus(Player player) { }
+    }
+
+    class Weapon : Item, IEquipable
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -66,13 +74,13 @@ namespace TextRPGGame
             }
 
         }
-        public string ItemInfo()
+        public override void ItemInfo()
         {
             string equipStatus = IsEquiped ? "[E] " : "";
-            return $"{equipStatus}{Name} | 공격력 {Attack} | {Description}";
+            Console.WriteLine($"{equipStatus}{Name} | 공격력 {Attack} | {Description}"); 
         }
     }
-    class Shield : Item
+    class Shield : Item, IEquipable
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -120,10 +128,10 @@ namespace TextRPGGame
                 player.EquipmentDefense -= this.Defense;
             }
         }
-        public string ItemInfo()
+        public override void ItemInfo()
         {
             string equipStatus = IsEquiped ? "[E] " : "";
-            return $"{equipStatus}{Name} | 방어력 {Defense} | {Description}";
+            Console.WriteLine($"{equipStatus}{Name} | 방어력 {Defense} | {Description}"); 
         }
     }
     enum ItemType
