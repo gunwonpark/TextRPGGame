@@ -1,4 +1,6 @@
-﻿namespace TextRPGGame
+﻿using System.Media;
+
+namespace TextRPGGame
 {
     class MainScene
     {

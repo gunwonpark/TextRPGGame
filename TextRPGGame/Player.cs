@@ -172,7 +172,7 @@ namespace TextRPGGame
             Console.Write($" G\n");
 
             Console.Write($"Exp : ");
-            Utill.WriteRedText($"{Exp}\n");          
+            Utill.WriteRedText($"{Exp}\n\n");          
         }
         public void ShowInventroy()
         {

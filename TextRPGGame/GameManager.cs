@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,6 +55,8 @@ namespace TextRPGGame
 
         public void GameStart()
         {
+            SoundPlayer soundPlayer = new SoundPlayer("../../../Sounds/StartMusic.wav");
+            soundPlayer.PlayLooping();
             Utill.PrintStartLogo();
 
             Console.Clear();
@@ -74,7 +77,7 @@ namespace TextRPGGame
                     stage = DataManager.LoadStageData();
                     break;
             }
-
+            soundPlayer.Stop();
             MainScene();
         }
 
