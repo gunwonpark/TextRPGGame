@@ -12,6 +12,7 @@ namespace TextRPGGame
         Player player;
         public List<Monster> monsters = new List<Monster>();
         public List<Skill> skills = new List<Skill>();
+        Monster bossMonster = BattleManager.battleManager.bossMonster;
 
         public SkillManager()
         {
@@ -24,21 +25,17 @@ namespace TextRPGGame
         }
 
         // 스킬창 활성화
-        public void StartSkill()
+        public void StartSkill(bool isBoss = false)
         {
-            Console.Clear();
-            Utill.WriteOrangeText("Battle!!\n");
-            Console.WriteLine();
-
-            // 몬스터 정보 표시
-            for (int i = 0; i < monsters.Count; i++)
+            // 보스 몬스터일 때
+            if (isBoss)
             {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                if (monsters[i].IsDead)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                }
-                monsters[i].ShowStatus();
+                PrintBossInfo();
+            }
+            // 보스 몬스터가 아닐 때
+            else
+            {
+                PrintMonsterInfo();
             }
 
             // 플레이어 정보 표시
@@ -68,8 +65,7 @@ namespace TextRPGGame
             {
                 // 0. 취소
                 case 0:
-                    BattleManager.battleManager.StartBattle();
-                    break;
+                    return;
                 // 스킬 선택시
                 default:
                     // MP가 부족할 경우
@@ -84,59 +80,120 @@ namespace TextRPGGame
                         return;
                     }
 
-                    SkillAttack(GameManager.Instance.action - 1);
+                    SkillAttack(GameManager.Instance.action - 1, isBoss);
                     break;
             }
         }
 
+        // 몬스터 정보 표시
+        private void PrintMonsterInfo()
+        {
+            Console.Clear();
+            Utill.WriteOrangeText("Battle!!\n");
+            Console.WriteLine();
+
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                if (monsters[i].IsDead)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                }
+                monsters[i].ShowStatus();
+            }
+        }
+
+        // 보스 몬스터 정보 표시
+        private void PrintBossInfo()
+        {
+            Console.Clear();
+            if (GameManager.Instance.stage.Level == 1) Utill.PrintSlimeKing();
+            else Utill.PrintSkeletonKing();
+            Utill.WriteOrangeText("Battle!!\n");
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            bossMonster.ShowStatus();
+        }
+
         // 스킬 공격
-        private void SkillAttack(int skill)
+        private void SkillAttack(int skill, bool isBoss = false)
         {
             // 스킬 공격 대상이 1명일 때
             if (skills[skill].AttackNum == 1)
             {
-                AttackedMonster(skill);
+                // 보스 몬스터일 때
+                if (isBoss)
+                {
+                    int damage = skills[skill].Attack;
+                    bossMonster.Attacked(damage);
+
+                    BattleManager.battleManager.PlayerAttackResultMessage(bossMonster, damage);
+                }
+                // 보스 몬스터가 아닐 때
+                else
+                {
+                    AttackedMonster(skill);
+                }
             }
-            // 스킬 공격 대상이 2명 이상일 때
+            // 스킬 공격 2번 이상일 때
             else
             {
-                // 선택될 몬스터 랜덤 선정
-                for (int i = 0; i < skills[skill].AttackNum; i++)
+                // 보스 몬스터일 때
+                if (isBoss)
                 {
-                    // 살아있는 몬스터 있는지 확인
-                    int deadMonsterCount = 0;
-                    for (int j = 0; j < monsters.Count; j++)
+                    for (int i = 0; i < skills[skill].AttackNum; i++)
                     {
-                        if (monsters[j].IsDead)
+                        if (!bossMonster.IsDead)
                         {
-                            deadMonsterCount++;
+                            int damage = skills[skill].Attack;
+
+                            PrintResultMessage(bossMonster, damage);
                         }
                     }
-                    if (deadMonsterCount == monsters.Count)
-                    {
-                        return;
-                    }
-
-                    Random random = new Random();
-                    int num = random.Next(0, monsters.Count);
-
-                    // 랜덤으로 선택된 몬스터가 죽었는지 확인
-                    while (monsters[num].IsDead)
-                    {
-                        num = random.Next(0, monsters.Count);
-                    }
-                    Monster selectedMonster = monsters[num];
-
-                    int damage = skills[skill].Attack;
-
-                    PrintResultMessage(selectedMonster, damage);
+                    BattleManager.battleManager.BossMonsterAttack();
                 }
+                // 보스 몬스터가 아닐 때
+                else
+                {
+                    // 선택될 몬스터 랜덤 선정
+                    for (int i = 0; i < skills[skill].AttackNum; i++)
+                    {
+                        // 살아있는 몬스터 있는지 확인
+                        int deadMonsterCount = 0;
+                        for (int j = 0; j < monsters.Count; j++)
+                        {
+                            if (monsters[j].IsDead)
+                            {
+                                deadMonsterCount++;
+                            }
+                        }
+                        if (deadMonsterCount == monsters.Count)
+                        {
+                            return;
+                        }
 
-                BattleManager.battleManager.MonsterAttack();
+                        Random random = new Random();
+                        int num = random.Next(0, monsters.Count);
+
+                        // 랜덤으로 선택된 몬스터가 죽었는지 확인
+                        while (monsters[num].IsDead)
+                        {
+                            num = random.Next(0, monsters.Count);
+                        }
+                        Monster selectedMonster = monsters[num];
+
+                        int damage = skills[skill].Attack;
+
+                        PrintResultMessage(selectedMonster, damage);
+                    }
+
+                    BattleManager.battleManager.MonsterAttack();
+                }
             }
         }
 
-        // 스킬 공격 대상 2명 이상일 때 공격 결과
+        // 스킬 공격 2번 이상일 때 공격 결과
         void PrintResultMessage(Monster monster, int damage)
         {
             Console.Clear();

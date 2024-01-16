@@ -16,7 +16,7 @@ namespace TextRPGGame
 
         Player player;
         public List<Monster> monsters = new List<Monster>();
-        Monster bossMonster = GameManager.Instance.stage.boss;
+        public Monster bossMonster = GameManager.Instance.stage.boss;
         public BattleManager()
         {
             player = GameManager.Instance.player;
@@ -113,10 +113,10 @@ namespace TextRPGGame
         {
             monsters.Clear();
         }
-        void StartSkill()
+        void StartSkill(bool isBoss = false)
         {
             SkillManager skillManager = new SkillManager();
-            skillManager.StartSkill();
+            skillManager.StartSkill(isBoss);
         }
 
         void Battle()
@@ -231,28 +231,41 @@ namespace TextRPGGame
                 Console.WriteLine("도망가기");
                 Utill.WriteRedText("1. ");
                 Console.WriteLine("공격");
+                Utill.WriteRedText("2. ");
+                Console.WriteLine("스킬");
 
-                GameManager.Instance.SetNextAction(0, 1);
+                GameManager.Instance.SetNextAction(0, 2);
 
                 if (GameManager.Instance.action == 0)
                 {
                     return;
                 }
 
-                int damage = player.FinalAttack;
-                // 공격 회피 확인
-                bool isCriticalHit = (damage > player.Attack * 1.5) ? true : false;
-
-                bossMonster.Attacked(damage);
-
-                // 공격 회피했을 때
-                if (damage == 0)
+                switch (GameManager.Instance.action)
                 {
-                    MissResultMessage(bossMonster);
-                }
-                else
-                {
-                    PlayerAttackResultMessage(bossMonster, damage, isCriticalHit);
+                    // 1. 공격
+                    case 1:
+                        int damage = player.FinalAttack;
+                        // 공격 회피 확인
+                        bool isCriticalHit = (damage > player.Attack * 1.5) ? true : false;
+
+                        bossMonster.Attacked(damage);
+
+                        // 공격 회피했을 때
+                        if (damage == 0)
+                        {
+                            MissResultMessage(bossMonster);
+                        }
+                        else
+                        {
+                            PlayerAttackResultMessage(bossMonster, damage, isCriticalHit);
+                        }
+                        break;
+                    // 2. 스킬
+                    case 2:
+                        bool isBoss = true;
+                        StartSkill(isBoss);
+                        break;
                 }
             }
         }
@@ -426,7 +439,7 @@ namespace TextRPGGame
             }
         }
 
-        void BossMonsterAttack()
+        public void BossMonsterAttack()
         {
             if (bossMonster.IsDead) return;
             player.Attacked(bossMonster.Attack);
