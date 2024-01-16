@@ -17,13 +17,15 @@ namespace TextRPGGame
 
         Player player;
         public List<Monster> monsters = new List<Monster>();
-        public Monster bossMonster = GameManager.Instance.stage.boss;
+        public BossMonster bossMonster;
+
         public BattleManager()
         {
             player = GameManager.Instance.player;
         }
         public void StartBattle()
         {
+            bossMonster = GameManager.Instance.stage.boss;
             while (true)
             {
                 Console.Clear();
@@ -45,8 +47,11 @@ namespace TextRPGGame
                 }
 
                 // 보스 몬스터 사망시 게임 종료
-                if (bossMonster.IsDead) return;
-                // 모든 몬스터가 죽었으면 게임종료
+                if (bossMonster.IsDead)
+                {
+                    return;
+                }
+                    // 모든 몬스터가 죽었으면 게임종료
                 if (deadMonsterCount == monsters.Count)
                 {
                     Victory(deadMonsterCount);
@@ -157,7 +162,6 @@ namespace TextRPGGame
 
             if (GameManager.Instance.action == 0)
             {
-                StartBattle();
                 return;
             }
 
@@ -316,8 +320,6 @@ namespace TextRPGGame
             Console.WriteLine();
 
             // 몬스터 리스트 초기화
-            monsters.Clear();
-
             monsters.Clear();
 
             Utill.WriteRedText("0. ");
