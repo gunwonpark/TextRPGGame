@@ -220,7 +220,7 @@ namespace TextRPGGame
             // 몬스터가 죽었으면 경험치 획득
             if (monster.IsDead)
             {
-                player.GainExp(100);
+                player.GainExp(100 * GameManager.Instance.stage.Level * 10);
             }
 
             Utill.WriteRedText("0. ");

@@ -14,8 +14,6 @@ namespace TextRPGGame
 			shields = new List<Shield>();
 			Init();
 		}
-
-
 		void Init()
 		{
 			Weapon item1 = new Weapon("철검", "단단한 철검", 5, 1000);
