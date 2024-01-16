@@ -33,9 +33,29 @@ namespace TextRPGGame
         {
             get
             {
+                // 최종 타격
+                int finalDamage;
+
+                // 공격 오차율 10%
                 int damageVariance = (int)Math.Ceiling(Attack * 0.1);
 
-                int finalDamage = new Random().Next(Attack - damageVariance, Attack + damageVariance + 1);
+                // 공격 관련 확률 구하기
+                Random random = new Random();
+                int isCriticalHit = random.Next(0, 20);
+                int isMiss = random.Next(0, 10);
+
+                // 10%의 확률로 공격 회피
+                if (isMiss < 1)
+                {
+                    finalDamage = 0;
+                }
+                // 90%의 확률로 공격
+                else
+                {
+                    // 15%의 확률로 치명타(160% 데미지), 85%의 확률로 일반공격(10% 오차 데미지)
+                    finalDamage = isCriticalHit < 3 ? (int)Math.Ceiling(Attack * 1.6) : new Random().Next(Attack - damageVariance, Attack + damageVariance + 1);
+                }
+
                 return finalDamage;
             }
         }
@@ -134,7 +154,7 @@ namespace TextRPGGame
             Console.Write($"Lv. ");
             Utill.WriteRedText($"{Level:D2}\n");
 
-            Console.Write($"{Name} ( {Class} )\n");            
+            Console.Write($"{Name} ( {Class} )\n");
 
             Console.Write("공격력 : ");
             Utill.WriteRedText($"{Attack} {EquipmentAttack.FormatNumber()}\n");
@@ -177,7 +197,7 @@ namespace TextRPGGame
 
         public bool CheckLevelUp()
         {
-            int requiredExp = Level * (Level + 1) * 5; 
+            int requiredExp = Level * (Level + 1) * 5;
             if (Exp >= requiredExp)
             {
                 Level++;
@@ -185,6 +205,8 @@ namespace TextRPGGame
                 Attack += 2; // 공격력 상승
                 Defense += 1; // 방어력 상승
                 MaxHp += 30;
+                Hp = MaxHp;
+                MaxHp += 15;
                 Hp = MaxHp;
                 LevelUpMessage();
                 return true;
@@ -196,6 +218,7 @@ namespace TextRPGGame
             Console.WriteLine("\n축하합니다 레벨업 하였습니다\n");
             Console.WriteLine($"레벨 : {Level - 1} -> {Level}");
             Console.WriteLine($"최대 체력 : {MaxHp - 30} -> {MaxHp}");
+            Console.WriteLine($"최대 마나 : {MaxMp - 15} -> {MaxMp}");
             Console.WriteLine($"공격력 : {Attack - 2} -> {Attack}");
             Console.WriteLine($"방어력 : {Defense - 1} -> {Defense}\n");
         }

@@ -10,7 +10,6 @@ namespace TextRPGGame
     internal class SkillManager
     {
         Player player;
-        //BattleManager battleManager;
         public List<Monster> monsters = new List<Monster>();
         public List<Skill> skills = new List<Skill>();
 
@@ -19,7 +18,6 @@ namespace TextRPGGame
             // GameManager에서 초기화한 플레이어 복사
             player = GameManager.Instance.player;
 
-            //battleManager = new BattleManager();
             // battleManager에서 생성한 전투할 몬스터 리스트 복사
             monsters = BattleManager.battleManager.monsters;
             // GameManager에서 초기화한 스킬 리스트 복사
@@ -33,34 +31,16 @@ namespace TextRPGGame
             Utill.WriteOrangeText("Battle!!\n");
             Console.WriteLine();
 
-            //int deadMonsterCount = 0;
-
             // 몬스터 정보 표시
             for (int i = 0; i < monsters.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 if (monsters[i].IsDead)
                 {
-                    //deadMonsterCount++;
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                 }
                 monsters[i].ShowStatus();
             }
-
-            //// 모든 몬스터가 죽었으면 게임종료
-            //if (deadMonsterCount == monsters.Count)
-            //{
-            //    BattleManager.battleManager.Victory(deadMonsterCount);
-            //    // 높은 던전으로 이동
-            //    GameManager.Instance.stage.Level++;
-            //    return;
-            //}
-            //// 내 체력이 0이되면 게임종료
-            //if (player.IsDead)
-            //{
-            //    BattleManager.battleManager.Lose();
-            //    return;
-            //}
 
             // 플레이어 정보 표시
             Console.WriteLine("\n[내정보]");
@@ -75,7 +55,7 @@ namespace TextRPGGame
             Utill.WriteRedText($"/{player.Mp}\n\n");
 
             // 스킬 정보 표시
-            for(int i = 0; i < skills.Count; i++)
+            for (int i = 0; i < skills.Count; i++)
             {
                 Utill.WriteRedText($"{i + 1}. ");
                 skills[i].ShowSkills();
@@ -138,15 +118,6 @@ namespace TextRPGGame
                     selectedMonster[i] = monsters[num];
                 }
                 int damage = skills[skill].Attack;
-
-                // !!!!!..퀘스트 부분인거 같은데 이 부분 필요한지 확인..!!!!!
-                for (int i = 0; i < selectedMonster.Length; i++)
-                {
-                    if (selectedMonster[i].Hp - damage <= 0 && !selectedMonster[i].IsDead)
-                    {
-                        GameManager.Instance.player.slainMonsters.Add(selectedMonster[i]);
-                    }
-                }
 
                 for (int i = 0; i < selectedMonster.Length; i++)
                 {
@@ -246,12 +217,6 @@ namespace TextRPGGame
                 selectedMonster = monsters[GameManager.Instance.action - 1];
             }
             int damage = skills[skill].Attack;
-
-            // !!!!!..퀘스트 부분인거 같은데 이 부분 필요한지 확인..!!!!!
-            if (selectedMonster.Hp - damage <= 0 && !selectedMonster.IsDead)
-            {
-                GameManager.Instance.player.slainMonsters.Add(selectedMonster);
-            }
 
             selectedMonster.Attacked(damage);
 

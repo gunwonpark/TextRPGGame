@@ -45,7 +45,7 @@ namespace TextRPGGame
             Console.Write("로 ");
             Utill.WriteRedText($"{AttackNum}");
             Console.Write("번 적을 "); // "명의 적을 "으로 했었으나 남은 몬스터가 1명일 때 스킬을 쓰는 것이 아까워서 수정함.
-            if (AttackNum> 1)
+            if (AttackNum > 1)
             {
                 Console.Write("랜덤으로 ");
             }

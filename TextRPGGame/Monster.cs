@@ -26,17 +26,17 @@ namespace TextRPGGame
             }
         }
         public int Attack { get; set; }
-        public bool IsDead 
+        public bool IsDead
         {
             get
             {
                 if (Hp <= 0)
                 {
                     return true;
-                } 
+                }
                 else
                     return false;
-            } 
+            }
         }
         public Monster(string _name, int _level, int _hp, int _attack)
         {
