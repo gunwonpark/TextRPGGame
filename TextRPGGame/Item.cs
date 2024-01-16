@@ -157,6 +157,7 @@ namespace TextRPGGame
     {
         Weapon,
         Shield,
+        Scroll,
         Utill
     }
 }

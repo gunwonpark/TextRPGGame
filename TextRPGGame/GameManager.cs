@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -148,8 +149,8 @@ namespace TextRPGGame
         static Player.ClassType ChooseClass(Player player)
         {
             Console.Clear();
-            Console.WriteLine("직업을 선택하세요");
-            Console.WriteLine("[1] 전사");
+            Console.WriteLine("당신의 직업을 선택하세요.");
+            Console.WriteLine("\n[1] 전사");
             Console.WriteLine("[2] 궁수");
             Console.WriteLine("[3] 마법사");
             Player.ClassType choice = Player.ClassType.None;
@@ -238,9 +239,7 @@ namespace TextRPGGame
             BattleManager.battleManager.SpawnMonster();
             BattleManager.battleManager.StartBattle();
         }
-
-
-
+        
 
         #region 행동 선택
         public void SetNextAction(int minValue, int maxValue)

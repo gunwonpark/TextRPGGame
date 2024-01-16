@@ -88,8 +88,8 @@ namespace TextRPGGame
         public int EquipmentDefense { get; set; }
 
         public List<Item> inventory;
-        public Weapon equippedWeapon = null;
-        public Shield equippedShield = null;
+        public Weapon equippedWeapon { get; set; }
+        public Shield equippedShield { get; set; }
         public Player(string _name, ClassType _class)
         {
             Name = _name;

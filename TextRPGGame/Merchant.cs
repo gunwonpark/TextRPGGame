@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using static System.Collections.Specialized.BitVector32;
 
 namespace TextRPGGame
 {
@@ -26,6 +27,8 @@ namespace TextRPGGame
             Shield item5 = new Shield("강인한자의 팬티","강한 의지가 담겨있다",15,2400);
             Shield item6 = new Shield("강철 갑옷","무겁지만 방어력이 높다",30,4000);
 
+
+
 			weapons.Add(item1);
             weapons.Add(item2);
             weapons.Add(item3);
@@ -47,6 +50,7 @@ namespace TextRPGGame
             Console.WriteLine("1. 무기 구매");
             Console.WriteLine("2. 방어구 구매");
             Console.WriteLine("3. 아이템 판매");
+            Console.WriteLine("4. 강화 주문서 구매");
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             NextActionMessage();
@@ -66,6 +70,10 @@ namespace TextRPGGame
                     Console.Clear();
                     MerchantEquipSellManagement();
                     break;
+                case "4":
+                    Console.Clear();
+                    BuyEnhancementOrders();
+                    break;
                 case "0":
                     Console.Clear();
                     break;
@@ -78,6 +86,89 @@ namespace TextRPGGame
 
         }
 
+        private void BuyEnhancementOrders()
+        {
+            Console.Clear();
+            Console.WriteLine("강화 주문서를 골라보세요!\n");
+            Console.WriteLine("\n[보유 골드]");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(GameManager.Instance.player.Gold);
+            Console.ResetColor();
+            Console.WriteLine(" G");
+            Console.WriteLine();
+
+            // 다양한 확률로 이용 가능한 주문을 표시
+            Console.WriteLine("1. 낮은 확률 강화 주문 (성공 확률 20%) - 500 골드");
+            Console.WriteLine("2. 중간 확률 강화 주문 (성공 확률 4%) - 1000 골드");
+            Console.WriteLine("3. 높은 확률 강화 주문 (성공 확률 60%) - 1500 골드");
+            Console.WriteLine("\n0. 나가기");
+            NextActionMessage();
+            string action = Console.ReadLine();
+
+            int orderCost = 0;
+            double successProbability = 0.0;
+
+            switch (action)
+            {
+                case "1":
+                    orderCost = 500;
+                    successProbability = 0.2;
+                    break;
+                case "2":
+                    orderCost = 1000;
+                    successProbability = 0.4;
+                    break;
+                case "3":
+                    orderCost = 1500;
+                    successProbability = 0.6;
+                    break;
+                case "0":
+                    Console.Clear();
+                    break;
+                default:
+                    Console.Clear();
+                    WrongInput();
+                    MerchantMenu();
+                    break;
+            }
+            if (GameManager.Instance.player.Gold < orderCost)
+            {
+                Console.Clear();
+                Console.WriteLine("골드가 모자란 듯 보이네.");
+                BuyEnhancementOrders();
+                return;
+            }
+            if (action != "0" && GameManager.Instance.player.Gold >= orderCost)
+            {
+                GameManager.Instance.player.Gold -= orderCost;
+                ProcessEnhancementOrder(successProbability);
+                Console.WriteLine($"{orderCost} G를 소모하여 강화하였습니다.");
+            }
+            else if (action != "0")
+            {
+                Console.WriteLine("골드가 모자랍니다.");
+            }
+        }
+
+        private void ProcessEnhancementOrder(double successProbability)
+        {
+            // 확률을 기반으로 강화가 성공했는지 확인합니다.
+            bool isEnhancementSuccessful = (new Random().NextDouble() <= successProbability);
+
+            if (isEnhancementSuccessful)
+            {
+                IEquipable equippedItem = GameManager.Instance.player.GetEquippedItem();
+                equippedItem.Enhance();
+
+                // 성공 메시지 또는 추가 정보를 표시합니다.
+                Console.WriteLine("강화 성공!");
+            }
+            else
+            {
+                // 실패 메시지 또는 추가 정보를 표시합니다.
+                Console.WriteLine("강화 실패.");
+            }
+        }
         #region Menu
         void MerchantWeaponMenu()
         {
