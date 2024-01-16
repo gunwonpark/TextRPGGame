@@ -113,7 +113,7 @@ namespace TextRPGGame
             {
                 case "1":
                     orderCost = 500;
-                    successProbability = 1.0;
+                    successProbability = 0.2;
                     break;
                 case "2":
                     orderCost = 1000;
@@ -171,7 +171,7 @@ namespace TextRPGGame
             }
             if(CanEnhance == 0)
             {
-                Console.WriteLine("장착중인 장비가 없습니다.");
+                Console.WriteLine("장착중인 장비가 없습니다.\n");
 
                 Utill.WriteRedText("0. ");
                 Console.WriteLine("다음 ");
