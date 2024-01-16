@@ -26,7 +26,7 @@ namespace TextRPGGame
             }
         }
         public int Attack { get; set; }
-        public bool IsDead 
+        public bool IsDead
         {
             get
             {
@@ -34,10 +34,10 @@ namespace TextRPGGame
                 {
                     GameManager.Instance.questBoard.Check_MonsterQuest(Name);
                     return true;
-                } 
+                }
                 else
                     return false;
-            } 
+            }
         }
         public Monster(string _name, int _level, int _hp, int _attack)
         {

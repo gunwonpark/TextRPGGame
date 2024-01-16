@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TextRPGGame
 {
@@ -19,11 +20,10 @@ namespace TextRPGGame
         public BattleManager()
         {
             player = GameManager.Instance.player;
-            //SpawnMonster();
         }
         public void StartBattle()
         {
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Utill.WriteOrangeText("Battle!!\n");
@@ -81,15 +81,15 @@ namespace TextRPGGame
                 Utill.WriteRedText("2. ");
                 Console.WriteLine("스킬");
 
-            // 특정 레벨 이상일 경우 보스룸 해금
-            if(player.Level >= bossMonster.Level - 6)
-            {
-                Utill.WriteRedText("3. ");
-                Console.WriteLine("보스룸 입장");
-                GameManager.Instance.SetNextAction(0, 3);
-            }
-            else
-                GameManager.Instance.SetNextAction(0, 2);
+                // 특정 레벨 이상일 경우 보스룸 해금
+                if (player.Level >= bossMonster.Level - 6)
+                {
+                    Utill.WriteRedText("3. ");
+                    Console.WriteLine("보스룸 입장");
+                    GameManager.Instance.SetNextAction(0, 3);
+                }
+                else
+                    GameManager.Instance.SetNextAction(0, 2);
 
                 switch (GameManager.Instance.action)
                 {
@@ -125,67 +125,69 @@ namespace TextRPGGame
 
         void Battle()
         {
-            //while (true)
+            Console.Clear();
+            Utill.WriteOrangeText("Battle!!\n");
+            Console.WriteLine();
+
+            // 몬스터 정보 표시
+            for (int i = 0; i < monsters.Count; i++)
             {
-                Console.Clear();
-                Utill.WriteOrangeText("Battle!!\n");
-                Console.WriteLine();
-
-                // 몬스터 정보 표시
-                for (int i = 0; i < monsters.Count; i++)
+                Console.ForegroundColor = ConsoleColor.Blue;
+                if (monsters[i].IsDead)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    if (monsters[i].IsDead)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                    }
-                    Console.Write($"{i + 1} ");
-                    monsters[i].ShowStatus();
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
                 }
+                Console.Write($"{i + 1} ");
+                monsters[i].ShowStatus();
+            }
 
-                // 플레이어 정보 표시
-                Console.WriteLine("\n[내정보]");
-                Console.Write($"Lv. ");
-                Utill.WriteRedText($"{player.Level}");
-                Console.WriteLine($" {player.Name} ({player.Class})");
-                Console.Write($"HP ");
-                Utill.WriteRedText($"{player.MaxHp}");
-                Utill.WriteRedText($"/{player.Hp}\n");
-                Console.Write($"MP ");
-                Utill.WriteRedText($"{player.MaxMp}");
-                Utill.WriteRedText($"/{player.Mp}\n\n");
+            // 플레이어 정보 표시
+            Console.WriteLine("\n[내정보]");
+            Console.Write($"Lv. ");
+            Utill.WriteRedText($"{player.Level}");
+            Console.WriteLine($" {player.Name} ({player.Class})");
+            Console.Write($"HP ");
+            Utill.WriteRedText($"{player.MaxHp}");
+            Utill.WriteRedText($"/{player.Hp}\n");
+            Console.Write($"MP ");
+            Utill.WriteRedText($"{player.MaxMp}");
+            Utill.WriteRedText($"/{player.Mp}\n\n");
 
-                Utill.WriteRedText("0. ");
-                Console.WriteLine("취소");
+            Utill.WriteRedText("0. ");
+            Console.WriteLine("취소");
 
+            GameManager.Instance.SetNextAction(0, monsters.Count);
+
+            if (GameManager.Instance.action == 0)
+            {
+                StartBattle();
+            }
+
+            // 몬스터 선택
+            Monster selectedMonster = monsters[GameManager.Instance.action - 1];
+            while (selectedMonster.IsDead)
+            {
+                Console.WriteLine("이미 죽은 몬스터 입니다");
                 GameManager.Instance.SetNextAction(0, monsters.Count);
+                selectedMonster = monsters[GameManager.Instance.action - 1];
+            }
+            int damage = player.FinalAttack;
+            // 공격 회피 확인
+            bool isCriticalHit = (damage > player.Attack * 1.5) ? true : false;
 
-                if (GameManager.Instance.action == 0)
-                {
-                    StartBattle();
-                    //return;
-                }
+            selectedMonster.Attacked(damage);
 
-                // 몬스터 선택
-                Monster selectedMonster = monsters[GameManager.Instance.action - 1];
-                while (selectedMonster.IsDead)
-                {
-                    Console.WriteLine("이미 죽은 몬스터 입니다");
-                    GameManager.Instance.SetNextAction(0, monsters.Count);
-                    selectedMonster = monsters[GameManager.Instance.action - 1];
-                }
-                int damage = player.FinalAttack;
-
-                //if(selectedMonster.Hp - damage <= 0 && !selectedMonster.IsDead)
-                //{
-                //    GameManager.Instance.player.slainMonsters.Add(selectedMonster);
-                //}
-
-                selectedMonster.Attacked(damage);
-
-                PlayerAttackResultMessage(selectedMonster, damage);
+            // 공격 회피했을 때
+            if (damage == 0)
+            {
+                MissResultMessage(selectedMonster);
+            }
+            else
+            {
+                PlayerAttackResultMessage(selectedMonster, damage, isCriticalHit);
             }
         }
+
         void BossBattle()
         {
             while (true)
@@ -214,8 +216,6 @@ namespace TextRPGGame
 
                 bossMonster.ShowStatus();
 
-                // 모든 몬스터가 죽었으면 게임종료
-               
                 // 플레이어 정보 표시
                 Console.WriteLine("\n[내정보]");
                 Console.Write($"Lv. ");
@@ -240,18 +240,21 @@ namespace TextRPGGame
                     return;
                 }
 
-                // 몬스터 선택
-                
                 int damage = player.FinalAttack;
-
-                //if (bossMonster.Hp - damage <= 0 && !bossMonster.IsDead)
-                //{
-                //    GameManager.Instance.player.slainMonsters.Add(bossMonster);
-                //}
+                // 공격 회피 확인
+                bool isCriticalHit = (damage > player.Attack * 1.5) ? true : false;
 
                 bossMonster.Attacked(damage);
 
-                PlayerAttackResultMessage(bossMonster, damage);
+                // 공격 회피했을 때
+                if (damage == 0)
+                {
+                    MissResultMessage(bossMonster);
+                }
+                else
+                {
+                    PlayerAttackResultMessage(bossMonster, damage, isCriticalHit);
+                }
             }
         }
         void Victory(int deadMonsterCount, bool isBossRoom = false)
@@ -277,7 +280,7 @@ namespace TextRPGGame
                 Utill.WriteRedText($"{deadMonsterCount}");
                 Console.WriteLine("마리를 잡았습니다.\n");
             }
-            
+
             // 플레이어 정보 표시
             Console.WriteLine("\n[내정보]");
             Console.Write($"Lv. ");
@@ -339,7 +342,7 @@ namespace TextRPGGame
             GameManager.Instance.SetNextAction(0, 0);
         }
 
-        public void PlayerAttackResultMessage(Monster monster, int damage)
+        public void PlayerAttackResultMessage(Monster monster, int damage, bool isCriticalHit = false)
         {
             Console.Clear();
             Utill.WriteOrangeText("Battle!!\n");
@@ -351,7 +354,7 @@ namespace TextRPGGame
             Utill.WriteRedText($"{monster.Level} ");
             Console.Write($"{monster.Name}을(를) 맞췄습니다. [데미지 : ");
             Utill.WriteRedText($"{damage}");
-            Console.WriteLine("]\n");
+            Console.WriteLine($"] {(isCriticalHit ? "- 치명타 공격!!" : "")}\n");
 
             // 공격 결과 표시
             Console.Write("Lv.");
@@ -375,7 +378,7 @@ namespace TextRPGGame
             switch (GameManager.Instance.action)
             {
                 case 0:
-                    if(monster is BossMonster)
+                    if (monster is BossMonster)
                     {
                         BossMonsterAttack();
                     }
@@ -388,6 +391,42 @@ namespace TextRPGGame
                     break;
             }
         }
+
+        // 공격 회피했을 때 메세지
+        private void MissResultMessage(Monster monster)
+        {
+            Console.Clear();
+            Utill.WriteOrangeText("Battle!!\n");
+            Console.WriteLine();
+
+            // 플레이어 공격 표시
+            Console.WriteLine($"{player.Name}의 공격!");
+            Console.Write("Lv.");
+            Utill.WriteRedText($"{monster.Level} ");
+            Console.WriteLine($"{monster.Name}을(를) 공격했지만 아무일도 일어나지 않았습니다.\n");
+
+            Utill.WriteRedText("0. ");
+            Console.WriteLine("다음");
+
+            GameManager.Instance.SetNextAction(0, 0);
+
+            switch (GameManager.Instance.action)
+            {
+                case 0:
+                    if (monster is BossMonster)
+                    {
+                        BossMonsterAttack();
+                    }
+                    else
+                    {
+                        MonsterAttack();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         void BossMonsterAttack()
         {
             if (bossMonster.IsDead) return;

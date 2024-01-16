@@ -74,7 +74,7 @@ namespace TextRPGGame
                     stage = DataManager.LoadStageData();
                     break;
             }
-            
+
             MainScene();
         }
 
@@ -228,7 +228,7 @@ namespace TextRPGGame
             if (equipableItem.IsEquiped)
                 equipableItem.UnEquip(player);
             else
-                equipableItem.Equip(player);            
+                equipableItem.Equip(player);
         }
         void StartBattle()
         {
@@ -239,8 +239,8 @@ namespace TextRPGGame
             BattleManager.battleManager.StartBattle();
         }
 
-        
-        
+
+
 
         #region 행동 선택
         public void SetNextAction(int minValue, int maxValue)
@@ -257,6 +257,6 @@ namespace TextRPGGame
 
             return true;
         }
-    #endregion
-}
+        #endregion
+    }
 }
