@@ -17,7 +17,6 @@ namespace TextRPGGame
         {
             // GameManager에서 초기화한 플레이어 복사
             player = GameManager.Instance.player;
-
             // battleManager에서 생성한 전투할 몬스터 리스트 복사
             monsters = BattleManager.battleManager.monsters;
             // GameManager에서 초기화한 스킬 리스트 복사
@@ -101,13 +100,23 @@ namespace TextRPGGame
             // 스킬 공격 대상이 2명 이상일 때
             else
             {
-                // 몬스터 선택
-                // 선택될 몬스터 배열 선언
-                Monster[] selectedMonster = new Monster[skills[skill].AttackNum];
-
                 // 선택될 몬스터 랜덤 선정
-                for (int i = 0; i < selectedMonster.Length; i++)
+                for (int i = 0; i < skills[skill].AttackNum; i++)
                 {
+                    // 살아있는 몬스터 있는지 확인
+                    int deadMonsterCount = 0;
+                    for (int j = 0; j < monsters.Count; j++)
+                    {
+                        if (monsters[j].IsDead)
+                        {
+                            deadMonsterCount++;
+                        }
+                    }
+                    if (deadMonsterCount == monsters.Count)
+                    {
+                        return;
+                    }
+
                     Random random = new Random();
                     int num = random.Next(0, monsters.Count);
 
@@ -116,15 +125,11 @@ namespace TextRPGGame
                     {
                         num = random.Next(0, monsters.Count);
                     }
-                    selectedMonster[i] = monsters[num];
-                }
-                int damage = skills[skill].Attack;
+                    Monster selectedMonster = monsters[num];
 
-                for (int i = 0; i < selectedMonster.Length; i++)
-                {
-                    selectedMonster[i].Attacked(damage);
+                    int damage = skills[skill].Attack;
 
-                    PrintResultMessage(selectedMonster[i], damage);
+                    PrintResultMessage(selectedMonster, damage);
                 }
 
                 BattleManager.battleManager.MonsterAttack();
@@ -151,7 +156,8 @@ namespace TextRPGGame
             Utill.WriteRedText($"{monster.Level} ");
             Console.WriteLine($"{monster.Name}");
             Console.Write("Hp ");
-            Utill.WriteRedText($"{(monster.IsDead ? "Dead" : monster.Hp + damage)} ");
+            Utill.WriteRedText($"{monster.Hp} ");
+            monster.Attacked(damage);
             Console.WriteLine($"-> {(monster.IsDead ? "Dead" : monster.Hp)}\n");
 
             // 몬스터가 죽었으면 경험치 획득

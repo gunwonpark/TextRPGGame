@@ -84,7 +84,7 @@ namespace TextRPGGame
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("00던전에 오신 것을 환영합니다");
+                Console.WriteLine("십오야 던전에 오신 것을 환영합니다");
                 Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
                 Utill.WriteRedText("0. ");
                 Console.WriteLine("게임 종료 및 저장");
@@ -233,8 +233,6 @@ namespace TextRPGGame
         void StartBattle()
         {
             monsters = stage.CreateMonster();
-            //BattleManager battleManager = new BattleManager();
-            //battleManager.StartBattle();
             BattleManager.battleManager.SpawnMonster();
             BattleManager.battleManager.StartBattle();
         }

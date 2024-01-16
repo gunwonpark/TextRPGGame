@@ -209,8 +209,8 @@ namespace TextRPGGame
                 Defense += 1; // 방어력 상승
                 MaxHp += 30;
                 Hp = MaxHp;
-                MaxHp += 15;
-                Hp = MaxHp;
+                MaxMp += 15;
+                Mp = MaxMp;
                 LevelUpMessage();
                 return true;
             }
