@@ -84,8 +84,10 @@ namespace TextRPGGame
         // 메인 씬 활성화
         public void MainScene()
         {
+            SoundPlayer soundPlayer = new SoundPlayer("../../../Sounds/CommonPlayer.wav");
             while (true)
             {
+                soundPlayer.PlayLooping();
                 Console.Clear();
                 Console.WriteLine("십오야 던전에 오신 것을 환영합니다");
                 Console.WriteLine("이제 전투를 시작할 수 있습니다\n");
@@ -106,7 +108,7 @@ namespace TextRPGGame
 
                 // 원하는 행동 선택
                 SetNextAction(0, 5);
-
+                soundPlayer.Stop();
                 switch (action)
                 {
                     case 0:
