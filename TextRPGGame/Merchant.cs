@@ -827,6 +827,7 @@ namespace TextRPGGame
             Console.WriteLine("원하시는 행동을 선택해 주세요.");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(">> ");
+            Console.ResetColor();
         }
 
 

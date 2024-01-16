@@ -87,7 +87,13 @@ namespace TextRPGGame
             string equipStatus = IsEquiped ? "[E] " : "";
             Console.WriteLine($"{equipStatus}{Name} | 공격력 {Attack} | {Description}"); 
         }
-
+        public void Enhance(Player player)
+        {
+            UnEquip(player);
+            Console.WriteLine("아이템의 공격력이 1만큼 상승했습니다\n");
+            this.Attack += 1;
+            Equip(player);
+        }
         public Weapon Clone()
         {
             Weapon weapon = new Weapon(Name, Description, Attack, Price);
@@ -119,6 +125,7 @@ namespace TextRPGGame
                 UpdateStatus(player);
                 if (player.equippedShield != null)
                     player.equippedShield.UnEquip(player);
+                player.equippedShield = this;
             }
         }
         public void UnEquip(Player player)
@@ -156,6 +163,7 @@ namespace TextRPGGame
         public void Enhance(Player player)
         {
             UnEquip(player);
+            Console.WriteLine("아이템의 방어력이 1만큼 상승했습니다\n");
             this.Defense += 1;
             Equip(player);
         }
