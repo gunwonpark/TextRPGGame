@@ -350,6 +350,7 @@ namespace TextRPGGame
                     }
                     else
                     {
+                        Console.Clear();
                         weapons[number - 1].IsSell();
                         Weapon weapon = weapons[number - 1].Clone();
                         GameManager.Instance.player.Gold -= weapons[number - 1].Price;
@@ -467,6 +468,7 @@ namespace TextRPGGame
                     }
                     else
                     {
+                        Console.Clear();
                         shields[number - 1].IsSell();
                         Shield shield = shields[number - 1].Clone();
                         GameManager.Instance.player.Gold -= shields[number - 1].Price;
