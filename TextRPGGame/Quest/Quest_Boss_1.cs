@@ -5,7 +5,7 @@ namespace TextRPGGame.Quest
 	{
         int clearCondition = 1;
         int current = 0;
-        
+        Shield rewardItem = new Shield("스켈레톤 갑주", "스켈레톤 킹이 입고있는 갑옷", 25, 4500);
 
         public Quest_Boss_1()
         {
@@ -32,6 +32,10 @@ namespace TextRPGGame.Quest
             {
                 Console.Write($"{current} / {clearCondition}");
             }
+            Console.WriteLine();
+            Console.WriteLine("보상");
+            Console.WriteLine(rewardGold + "G");
+            Console.WriteLine(rewardItem.Name);
 
         }
 
@@ -46,6 +50,7 @@ namespace TextRPGGame.Quest
         {
             base.Clear();
             GameManager.Instance.player.Gold += rewardGold;
+            GameManager.Instance.player.inventory.Add(rewardItem);
             GameManager.Instance.player.slainMonsters.RemoveAll(monster => monster.Name == target);
 
 

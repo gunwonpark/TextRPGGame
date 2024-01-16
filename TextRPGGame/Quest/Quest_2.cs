@@ -5,7 +5,7 @@ namespace TextRPGGame.Quest
 	{
         int clearCondition = 5;
         int current = 0;
-        
+        Weapon rewardItem = new Weapon("뼈 창", "스켈레톤의 뼈로 만든 창", 8, 1000);
 
         public Quest_2()
         {
@@ -36,7 +36,10 @@ namespace TextRPGGame.Quest
             {
                 Console.Write($"{current} / {clearCondition}");
             }
-
+            Console.WriteLine();
+            Console.WriteLine("보상");
+            Console.WriteLine(rewardGold + "G");
+            Console.WriteLine(rewardItem.Name);
         }
 
 
@@ -50,6 +53,7 @@ namespace TextRPGGame.Quest
         {
             base.Clear();
             GameManager.Instance.player.Gold += rewardGold;
+            GameManager.Instance.player.inventory.Add(rewardItem);
             GameManager.Instance.player.slainMonsters.RemoveAll(monster => monster.Name == target);
 
         }

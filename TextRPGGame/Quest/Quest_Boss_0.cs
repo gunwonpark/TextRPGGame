@@ -31,6 +31,9 @@ namespace TextRPGGame.Quest
             {
                 Console.Write($"{current} / {clearCondition}");
             }
+            Console.WriteLine();
+            Console.WriteLine("보상");
+            Console.WriteLine(rewardGold + "G");
 
         }
 
