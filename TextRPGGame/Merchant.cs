@@ -47,6 +47,7 @@ namespace TextRPGGame
             Console.WriteLine("1. 무기 구매");
             Console.WriteLine("2. 방어구 구매");
             Console.WriteLine("3. 아이템 판매");
+            Console.WriteLine("4. 강화 주문서 구매");
             Console.WriteLine();
             Console.WriteLine("0. 나가기");
             NextActionMessage();
@@ -66,6 +67,10 @@ namespace TextRPGGame
                     Console.Clear();
                     MerchantEquipSellManagement();
                     break;
+                case "4":
+                    Console.Clear();
+                    BuyEnhancementOrders();
+                    break;
                 case "0":
                     Console.Clear();
                     break;
@@ -76,6 +81,142 @@ namespace TextRPGGame
                     break;
             }
 
+        }
+        private void BuyEnhancementOrders()
+        {
+            Console.Clear();
+            Console.WriteLine("강화 주문서를 골라보세요!\n");
+            Console.WriteLine("\n[보유 골드]");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(GameManager.Instance.player.Gold);
+            Console.ResetColor();
+            Console.WriteLine(" G");
+            Console.WriteLine();
+
+            // 다양한 확률로 이용 가능한 주문을 표시
+            Console.WriteLine("1. 낮은 확률 강화 주문 (성공 확률 20%) - 500 골드");
+            Console.WriteLine("2. 중간 확률 강화 주문 (성공 확률 40%) - 1000 골드");
+            Console.WriteLine("3. 높은 확률 강화 주문 (성공 확률 60%) - 1500 골드");
+            Console.WriteLine("\n0. 나가기");
+            NextActionMessage();
+            string action = Console.ReadLine();
+
+            int orderCost = 0;
+            double successProbability = 0.0;
+
+            switch (action)
+            {
+                case "1":
+                    orderCost = 500;
+                    successProbability = 0.2;
+                    break;
+                case "2":
+                    orderCost = 1000;
+                    successProbability = 0.4;
+                    break;
+                case "3":
+                    orderCost = 1500;
+                    successProbability = 0.6;
+                    break;
+                case "0":
+                    Console.Clear();
+                    break;
+                default:
+                    Console.Clear();
+                    WrongInput();
+                    MerchantMenu();
+                    break;
+            }
+            if (GameManager.Instance.player.Gold < orderCost)
+            {
+                Console.Clear();
+                Console.WriteLine("골드가 모자란 듯 보이네.");
+                BuyEnhancementOrders();
+                return;
+            }
+            if (action != "0" && GameManager.Instance.player.Gold >= orderCost)
+            {
+                Console.Clear();
+                List<Item> enhanceItemList = new List<Item>();
+                int selectedItemNumber = SelectItemForEnhacene(enhanceItemList);
+                if (selectedItemNumber == 0) return;
+                GameManager.Instance.player.Gold -= orderCost;
+                ProcessEnhancementOrder(successProbability, enhanceItemList[selectedItemNumber - 1]);
+                Console.WriteLine($"{orderCost} G를 소모하여 강화하였습니다.");
+            }
+            else if (action != "0")
+            {
+                Console.WriteLine("골드가 모자랍니다.");
+            }
+        }
+        // 강화 할 무기나 방패 선택
+        private int SelectItemForEnhacene(List<Item> items)
+        {
+            int CanEnhance = 0;
+            // 장착중인 장비가 없으면 강화 실패
+            if (GameManager.Instance.player.equippedWeapon != null)
+            {
+                items.Add(GameManager.Instance.player.equippedWeapon);
+                CanEnhance++;
+            }
+            if (GameManager.Instance.player.equippedShield != null)
+            {
+                items.Add(GameManager.Instance.player.equippedShield);
+                CanEnhance++;
+            }
+            if (CanEnhance == 0)
+            {
+                Console.WriteLine("장착중인 장비가 없습니다.\n");
+
+                Utill.WriteRedText("0. ");
+                Console.WriteLine("다음 ");
+
+                GameManager.Instance.SetNextAction(0, 0);
+                return CanEnhance;
+            }
+
+
+            Console.WriteLine("강화할 아이템을 선택해 주세요\n");
+
+            // 강화 가능 아이템 보여주기
+            for (int i = 0; i < items.Count; i++)
+            {
+                Console.Write($"{i + 1} ");
+                items[i].ItemInfo();
+            }
+
+            // 아이템 선택
+            GameManager.Instance.SetNextAction(1, items.Count);
+
+            return GameManager.Instance.action;
+        }
+        private void ProcessEnhancementOrder(double successProbability, Item item)
+        {
+            // 확률을 기반으로 강화가 성공했는지 확인합니다.
+            bool isEnhancementSuccessful = (new Random().NextDouble() <= successProbability);
+
+            if (isEnhancementSuccessful)
+            {
+                IEquipable enhancedItem = item as IEquipable;
+                // 성공 메시지 또는 추가 정보를 표시합니다.
+                enhancedItem.Enhance(GameManager.Instance.player);
+                Console.WriteLine("강화 성공!\n");
+
+                Utill.WriteRedText("0. ");
+                Console.WriteLine("다음 ");
+
+                GameManager.Instance.SetNextAction(0, 0);
+            }
+            else
+            {
+                // 실패 메시지 또는 추가 정보를 표시합니다.
+                Console.WriteLine("강화 실패.\n");
+
+                Utill.WriteRedText("0. ");
+                Console.WriteLine("다음 ");
+
+                GameManager.Instance.SetNextAction(0, 0);
+            }
         }
 
         #region Menu

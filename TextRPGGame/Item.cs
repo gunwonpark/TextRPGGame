@@ -29,6 +29,7 @@ namespace TextRPGGame
         public void Equip(Player player) { }
         public void UnEquip(Player player) { }
         public void UpdateStatus(Player player) { }
+        public void Enhance(Player player) { }
     }
 
     class Weapon : Item, IEquipable
@@ -151,6 +152,12 @@ namespace TextRPGGame
         {
             Shield shield = new Shield(Name, Description, Defense, Price);
             return shield;
+        }
+        public void Enhance(Player player)
+        {
+            UnEquip(player);
+            this.Defense += 1;
+            Equip(player);
         }
     }
     enum ItemType
