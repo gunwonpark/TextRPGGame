@@ -47,8 +47,6 @@ namespace TextRPGGame
                 if (deadMonsterCount == monsters.Count)
                 {
                     Victory(deadMonsterCount);
-                    // 높은 던전으로 이동
-                    GameManager.Instance.stage.Level++;
                     // 메인 씬 활성화
                     GameManager.Instance.MainScene();
                     return;
@@ -193,6 +191,8 @@ namespace TextRPGGame
             while (true)
             {
                 Console.Clear();
+                if (GameManager.Instance.stage.Level == 1) Utill.PrintSlimeKing();
+                else Utill.PrintSkeletonKing();
                 Utill.WriteOrangeText("Battle!!\n");
                 Console.WriteLine();
 
