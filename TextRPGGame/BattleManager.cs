@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Numerics;
 using System.Text;
 using System.Threading;
@@ -187,6 +188,9 @@ namespace TextRPGGame
 
         void BossBattle()
         {
+            // 한번 넣어본 음악 기능
+            SoundPlayer soundPlayer = new SoundPlayer("../../../Sounds/BossMusic.wav");
+            soundPlayer.PlayLooping();
             while (true)
             {
                 Console.Clear();
@@ -204,12 +208,14 @@ namespace TextRPGGame
                     // 높은 던전으로 이동
                     if (bossMonster.IsDead)
                         GameManager.Instance.stage.Level++;
+                    soundPlayer.Stop();
                     return;
                 }
                 // 내 체력이 0이되면 게임종료
                 if (player.IsDead)
                 {
                     Lose();
+                    soundPlayer.Stop();
                     return;
                 }
 
@@ -238,6 +244,7 @@ namespace TextRPGGame
 
                 if (GameManager.Instance.action == 0)
                 {
+                    soundPlayer.Stop();
                     return;
                 }
 
