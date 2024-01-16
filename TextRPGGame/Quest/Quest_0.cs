@@ -5,7 +5,7 @@ namespace TextRPGGame.Quest
 	{
 		int clearCondition = 5;
 		int current = 0;
-
+        Weapon rewardItem = new Weapon("슬라임 채찍", "슬라임으로 만든 채찍,말랑말랑 하다.", 3, 750);
         public Quest_0()
 		{
 			SetQuest(0, "마을을 위협하는 슬라임 처치", 1000);
@@ -35,7 +35,10 @@ namespace TextRPGGame.Quest
 			{
 				Console.Write($"{current} / {clearCondition}");
 			}
-			
+            Console.WriteLine();
+            Console.WriteLine("보상");
+            Console.WriteLine(rewardGold + "G");
+            Console.WriteLine(rewardItem.Name);
         }
 
 
@@ -49,6 +52,7 @@ namespace TextRPGGame.Quest
         {
             base.Clear();
             GameManager.Instance.player.Gold += rewardGold;
+            GameManager.Instance.player.inventory.Add(rewardItem);
             GameManager.Instance.player.slainMonsters.RemoveAll(monster => monster.Name == target);
 
         }

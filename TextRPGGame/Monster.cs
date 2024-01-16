@@ -32,7 +32,6 @@ namespace TextRPGGame
             {
                 if (Hp <= 0)
                 {
-                    GameManager.Instance.questBoard.Check_MonsterQuest(Name);
                     return true;
                 } 
                 else
@@ -75,6 +74,10 @@ namespace TextRPGGame
 
         public void Attacked(int damage)
         {
+            if (Hp - damage <= 0 && !IsDead)
+            {
+              GameManager.Instance.questBoard.Check_MonsterQuest(Name);
+            }
             Hp -= damage;
         }
 

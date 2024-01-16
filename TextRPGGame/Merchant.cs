@@ -588,6 +588,13 @@ namespace TextRPGGame
                     if (GameManager.Instance.player.inventory[number-1] is Weapon)
                     {
                         Weapon weapon = (Weapon)GameManager.Instance.player.inventory[number - 1];
+                        foreach(Weapon item in GameManager.Instance.merchant.weapons)
+                        {
+                            if(item.Name == weapon.Name && item.isSell)
+                            {
+                                item.IsSell();
+                            }
+                        }
                         if (weapon.IsEquiped)
                         {
                             weapon.UnEquip(GameManager.Instance.player);
@@ -604,10 +611,17 @@ namespace TextRPGGame
                     }
                     else
                     {
-                        Shield weapon = (Shield)GameManager.Instance.player.inventory[number - 1];
-                        if (weapon.IsEquiped)
+                        Shield shield = (Shield)GameManager.Instance.player.inventory[number - 1];
+                        foreach (Shield item in GameManager.Instance.merchant.shields)
                         {
-                            weapon.UnEquip(GameManager.Instance.player);
+                            if (item.Name == shield.Name && item.isSell)
+                            {
+                                item.IsSell();
+                            }
+                        }
+                        if (shield.IsEquiped)
+                        {
+                            shield.UnEquip(GameManager.Instance.player);
                             GameManager.Instance.player.Gold += (int)(GameManager.Instance.player.inventory[number - 1].Price * 0.85f);
                             GameManager.Instance.player.inventory.RemoveAt(number - 1);
                         }

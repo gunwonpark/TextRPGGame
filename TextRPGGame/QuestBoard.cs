@@ -147,9 +147,6 @@ public class QuestBoard
         quest.ShowQuestInfo();
         Console.WriteLine();
         Console.WriteLine();
-        Console.WriteLine("보상");
-        Console.WriteLine(quest.rewardGold +"G");
-        Console.WriteLine();
         switch (quest.questState)
         {
             case QuestState.REQUIRE_ACHIEVED :
