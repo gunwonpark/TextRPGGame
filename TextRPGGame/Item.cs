@@ -29,6 +29,7 @@ namespace TextRPGGame
         public void Equip(Player player) { }
         public void UnEquip(Player player) { }
         public void UpdateStatus(Player player) { }
+        public void Enhance(Player player) { }
     }
 
     class Weapon : Item, IEquipable
@@ -92,7 +93,12 @@ namespace TextRPGGame
             Weapon weapon = new Weapon(Name, Description, Attack, Price);
             return weapon;
         }
-
+        public void Enhance(Player player)
+        {
+            UnEquip(player);
+            this.Attack += 1;
+            Equip(player);
+        }
     }
     class Shield : Item, IEquipable
     {
@@ -118,6 +124,7 @@ namespace TextRPGGame
                 UpdateStatus(player);
                 if (player.equippedShield != null)
                     player.equippedShield.UnEquip(player);
+                player.equippedShield = this;
             }
         }
         public void UnEquip(Player player)
@@ -151,6 +158,12 @@ namespace TextRPGGame
         {
             Shield shield = new Shield(Name, Description, Defense, Price);
             return shield;
+        }
+        public void Enhance(Player player)
+        {
+            UnEquip(player);
+            this.Defense += 1;
+            Equip(player);
         }
     }
     enum ItemType
