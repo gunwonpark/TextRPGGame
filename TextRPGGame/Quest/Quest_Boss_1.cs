@@ -53,7 +53,11 @@ namespace TextRPGGame.Quest
             GameManager.Instance.player.inventory.Add(rewardItem);
             GameManager.Instance.player.slainMonsters.RemoveAll(monster => monster.Name == target);
 
-
+        }
+        public override void ClearInfo()
+        {
+            base.ClearInfo();
+            Console.WriteLine(rewardItem.Name);
         }
         public override void CheckCondition(string name)
         {

@@ -33,26 +33,26 @@ namespace TextRPGGame.Quest
         public virtual void Clear()
 		{
 			questState = QuestState.CLEAR;
-			ClearInfo();
-		}
-		public virtual void ClearInfo()
-		{
-			Console.Clear();
-			Console.WriteLine();
+            Console.Clear();
+            Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("퀘스트를 완료했습니다!!");
             Console.WriteLine();
             Console.WriteLine();
-			Console.Write(questName);
+            Console.Write(questName);
             Console.WriteLine();
             Utill.WriteGreenText("퀘스트 보상!");
+            ClearInfo();
+            Console.WriteLine();
+            Console.WriteLine();
+            Utill.WriteGreenText("PRESS THE ENTER");
+            Console.ReadLine();
+        }
+		public virtual void ClearInfo()
+		{
             Console.WriteLine();
 			Console.WriteLine($"{rewardGold} G");
-            Console.WriteLine();
-            Console.WriteLine();
-			Utill.WriteGreenText("PRESS THE ENTER");
-			Console.ReadLine();
-
+        
         }
 
 		public void SetQuest(int id,string name,int gold)

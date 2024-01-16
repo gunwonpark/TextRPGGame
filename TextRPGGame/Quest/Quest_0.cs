@@ -3,7 +3,7 @@ namespace TextRPGGame.Quest
 {
 	public class Quest_0 : Quest
 	{
-		int clearCondition = 5;
+		int clearCondition = 3;
 		int current = 0;
         Weapon rewardItem = new Weapon("슬라임 채찍", "슬라임으로 만든 채찍,말랑말랑 하다.", 3, 750);
         public Quest_0()
@@ -56,7 +56,11 @@ namespace TextRPGGame.Quest
             GameManager.Instance.player.slainMonsters.RemoveAll(monster => monster.Name == target);
 
         }
-
+        public override void ClearInfo()
+        {
+            base.ClearInfo();
+            Console.WriteLine(rewardItem.Name);
+        }
 
         public override void CheckCondition(string name)
         {
