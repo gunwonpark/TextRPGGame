@@ -82,6 +82,7 @@ namespace TextRPGGame
                         Console.WriteLine("취소");
                         GameManager.Instance.SetNextAction(0, 0);
                         StartSkill();
+                        return;
                     }
 
                     SkillAttack(GameManager.Instance.action - 1);

@@ -43,20 +43,18 @@ namespace TextRPGGame
                     monsters[i].ShowStatus();
                 }
 
+                // 보스 몬스터 사망시 게임 종료
+                if (bossMonster.IsDead) return;
                 // 모든 몬스터가 죽었으면 게임종료
                 if (deadMonsterCount == monsters.Count)
                 {
                     Victory(deadMonsterCount);
-                    // 메인 씬 활성화
-                    GameManager.Instance.MainScene();
                     return;
                 }
                 // 내 체력이 0이되면 게임종료
                 if (player.IsDead)
                 {
                     Lose();
-                    // 메인 씬 활성화
-                    GameManager.Instance.MainScene();
                     return;
                 }
 
@@ -159,6 +157,7 @@ namespace TextRPGGame
             if (GameManager.Instance.action == 0)
             {
                 StartBattle();
+                return;
             }
 
             // 몬스터 선택
